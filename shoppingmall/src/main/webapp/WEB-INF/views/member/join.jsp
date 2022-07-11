@@ -131,13 +131,15 @@
   </div>
 
 
-  <!--  footer.jsp -->
-  <%@include file="/WEB-INF/views/include/footer.jsp" %>
+<!--  footer.jsp -->
+<%@include file="/WEB-INF/views/include/footer.jsp" %>
+
 </div>
 
 <%@include file="/WEB-INF/views/include/common.jsp" %>
     
     
+<!-- 우편변호 관련 API -->
 <!-- iOS에서는 position:fixed 버그가 있음, 적용하는 사이트에 맞게 position:absolute 등을 이용하여 top,left값 조정 필요 -->
 <div id="layer" style="display:none;position:fixed;overflow:hidden;z-index:1;-webkit-overflow-scrolling:touch;">
 <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnCloseLayer" style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1" onclick="closeDaumPostcode()" alt="닫기 버튼">
@@ -150,6 +152,7 @@
 
     function closeDaumPostcode() {
         // iframe을 넣은 element를 안보이게 한다.
+        // 태그참조변수. style.css속석명령어 = '값';
         element_layer.style.display = 'none';
     }
 
