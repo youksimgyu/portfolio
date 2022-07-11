@@ -6,4 +6,6 @@ public interface MemberMapper {
 
 	void join(MemberVO vo);
 	
+	String idCheck(String mem_id);
+	
 }

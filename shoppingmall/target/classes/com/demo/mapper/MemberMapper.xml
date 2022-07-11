@@ -12,5 +12,13 @@
 		  #{mem_addr_d}, #{mem_phone}, #{mem_nick}, #{mem_email}, #{mem_accept_e} )
 		
 	</insert>
+	
+	<select id="idCheck" parameterType="String" resultType="String">
+		
+		SELECT MEM_ID
+		FROM TBL_MEMBER
+		WHERE MEM_ID = #{MEM_ID}
+		
+	</select>
 
 </mapper>

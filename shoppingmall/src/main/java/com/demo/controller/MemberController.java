@@ -1,10 +1,14 @@
 package com.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.demo.domain.MemberVO;
@@ -36,7 +40,28 @@ public class MemberController {
 		
 		service.join(vo);
 		
-		return "";
+		return ""; // 회원가입 후 이동할 주소
 	}
+	
+	@ResponseBody
+	@GetMapping("/idCheck")
+	public ResponseEntity<String> idCheck(@RequestParam("mem_id") String mem_id){
+		
+		ResponseEntity<String> entity = null;
+		
+		// 아이디 존재여부 작업
+		String isUseID = "";
+		
+		if(service.idCheck(mem_id) != null) {
+			isUseID = "no"; // 같은 아이디가 존재한다
+		}else {
+			isUseID = "yes"; // 사용 가능 아이디
+		}
+		
+		entity = new ResponseEntity<String>(isUseID, HttpStatus.OK);
+		
+		return entity;
+	}
+	
 	
 }

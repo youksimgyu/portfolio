@@ -50,9 +50,9 @@
 		      <input type="text" class="form-control" id="mem_id" name="mem_id" placeholder="아이디를  8~15이내로 입력">
 		    </div>
 		    <div class="col-sm-3">
-		      <button type="button" class="btn btn-link">ID중복체크</button>
+		      <button type="button" class="btn btn-link" id="btnIDCheck">ID중복체크</button>
 		    </div>
-		    <label for="staticEmail" class="col-sm-2 col-form-label">중복체크결과</label>
+		    <label class="col-sm-2 col-form-label" style="display:none" id="idCheckStatus">중복체크결과</label>
 		  </div>
 		  <div class="form-group row">
 		    <label for="mem_pw" class="col-sm-2 col-form-label">비밀번호</label>
@@ -61,9 +61,9 @@
 		    </div>
 		  </div>
 		  <div class="form-group row">
-		    <label for="staticEmail" class="col-sm-2 col-form-label">비밀번호확인</label>
+		    <label for="mem_pw_2" class="col-sm-2 col-form-label">비밀번호확인</label>
 		    <div class="col-sm-10">
-		      <input type="password" class="form-control" id="staticEmail">
+		      <input type="password" class="form-control" id="mem_pw_2">
 		    </div>
 		  </div>
 		  <div class="form-group row">
@@ -138,27 +138,10 @@
 
 <%@include file="/WEB-INF/views/include/common.jsp" %>
 
-  <script>
-
-  	let joinForm = $("#joinForm");
-  
-    $(document).ready(function(){
-
-      // 회원정보 저장하기
-      $("#joinSend").on("click", function(){
-        
-        console.log("회원가입");
-        
-        //유효성 검사작업 해야 함
+<!-- 아이디 중복체크 js-->
+<script type="text/javascript" src="/resources/js/member/join.js"></script>
 
 
-        joinForm.submit();
-      });
-
-    });
-
-  </script>
-    
 <!-- 우편변호 관련 API -->
 <!-- iOS에서는 position:fixed 버그가 있음, 적용하는 사이트에 맞게 position:absolute 등을 이용하여 top,left값 조정 필요 -->
 <div id="layer" style="display:none;position:fixed;overflow:hidden;z-index:1;-webkit-overflow-scrolling:touch;">
