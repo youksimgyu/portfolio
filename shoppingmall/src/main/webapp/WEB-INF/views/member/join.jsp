@@ -43,7 +43,7 @@
 
 <div class="container">
   <div class="mb-3 text-center">
-	  <form>
+	  <form id="joinForm" action="join" method="post">
 		  <div class="form-group row">
 		    <label for="mem_id" class="col-sm-2 col-form-label">아이디</label>
 		    <div class="col-sm-5">
@@ -119,12 +119,12 @@
 		  <div class="form-group row">
 		      <label class="form-check-label col-sm-2" for="mem_accept_e">메일 수신동의</label>
 			  <div class="col-sm-10 text-left">
-			  	<input class="form-check-input" type="checkbox" value="" id="mem_accept_e" name="mem_accept_e">
+			  	<input class="form-check-input" type="checkbox" id="mem_accept_e" name="mem_accept_e">
 			  </div>			
 		  </div>
 		  <div class="form-group row">
 			  <div class="col-sm-12 text-center">
-			  	<button type="button" class="btn btn-dark">회원가입</button>
+			  	<button type="button" class="btn btn-dark" id="joinSend">회원가입</button>
 			  </div>			
 		  </div>
 	 </form>
@@ -137,7 +137,27 @@
 </div>
 
 <%@include file="/WEB-INF/views/include/common.jsp" %>
-    
+
+  <script>
+
+  	let joinForm = $("#joinForm");
+  
+    $(document).ready(function(){
+
+      // 회원정보 저장하기
+      $("#joinSend").on("click", function(){
+        
+        console.log("회원가입");
+        
+        //유효성 검사작업 해야 함
+
+
+        joinForm.submit();
+      });
+
+    });
+
+  </script>
     
 <!-- 우편변호 관련 API -->
 <!-- iOS에서는 position:fixed 버그가 있음, 적용하는 사이트에 맞게 position:absolute 등을 이용하여 top,left값 조정 필요 -->
