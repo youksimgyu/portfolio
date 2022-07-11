@@ -21,8 +21,8 @@
 		 -->
 		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" />
 		<property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@localhost:1521:xe"></property>
-		<property name="username" value="COMMUNITY"></property>
-		<property name="password" value="COMMUNITY"></property>
+		<property name="username" value="SPRING"></property>
+		<property name="password" value="SPRING"></property>
 		
 	</bean>	
 	
