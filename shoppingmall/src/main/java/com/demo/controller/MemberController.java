@@ -121,10 +121,14 @@ public class MemberController {
 				session.setAttribute("loginStatus", vo); // 인증성공시 서버측에 세션을 통한 정보를 저장.
 				msg = "loginSuccess";
 				
+				log.info("로그인 성공 : " + msg);
+				
 			} else {
 				// 2)비번 일치 안되는 경우
 				url = "/member/login"; // 로그인 화면
 				msg = "passwdFailure";
+				
+				log.info("비밀번호 x : " + msg);
 			}
 			
 			
@@ -132,7 +136,6 @@ public class MemberController {
 			
 			url = "/member/login"; // 로그인 화면
 			msg = "idFailure";
-			
 		}
 		
 		rttr.addFlashAttribute("msg", msg); // 이동하는 주소의 jsp에서 참조함.

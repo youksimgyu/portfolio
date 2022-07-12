@@ -39,7 +39,7 @@
       let msg = "${msg}";
       if(msg == "idFailure"){
         alert("아이디를 확인하세요.");
-      }else if(meg == "passwdFailure"){
+      }else if(msg == "passwdFailure"){
         alert("비밀번호를 확인하세요.");
       }
     </script>
@@ -87,7 +87,7 @@
 
 <script>
 
-  /* 회원정보 저장 및 아이디 중복 체크 */
+  /* 로그인 */
  
    // html문서와 내용을 브라우저가 읽고 난 이후에 동작되는 특징
    $(document).ready(function(){
