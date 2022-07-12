@@ -85,10 +85,17 @@
 		    </div>
 		  </div>
 		  <div class="form-group row">
-		    <label for="mem_authcode" class="col-sm-2 col-form-label">전자우편 인증코드</label>
-		    <div class="col-sm-10">
+		  
+		  	<label for="mem_authcode" class="col-sm-2 col-form-label">메일인증코드</label>
+		  
+		  	<div class="col-sm-4">
+		      <button type="button" class="btn btn-link" id="btnAuthcode">메일인증요청</button>
+		    </div>
+		    
+		    <div class="col-sm-6">
 		      <input type="text" class="form-control" id="mem_authcode" name="mem_authcode">
 		    </div>
+		    
 		  </div>
 		  <div class="form-group row">
 		    <label for="mem_phone" class="col-sm-2 col-form-label">휴대폰 번호</label>

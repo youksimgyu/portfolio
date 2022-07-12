@@ -7,7 +7,7 @@ public class EmailDTO {
 	
 	private String senderName; // 발신자 이름
 	private String senderMail; // 발신자 메일주소
-	private String receiveMail; // 수신자 메일주소
+	private String receiveMail; // 수신자 메일주소. 회원메일주소사용
 	private String subject; // 제목
 	private String message; // 본문
 
