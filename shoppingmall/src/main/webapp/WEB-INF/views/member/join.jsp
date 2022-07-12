@@ -161,7 +161,7 @@
     $("#btnAuthcode").on("click", function(){
 
       if($("#mem_email").val() == "") {
-        alert("메일을 입력해주세요.")
+        alert("메일을 입력해주세요.");
         return;
       }
 
