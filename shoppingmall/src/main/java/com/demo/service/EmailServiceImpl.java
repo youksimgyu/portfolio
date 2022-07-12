@@ -18,7 +18,7 @@ public class EmailServiceImpl implements EmailService {
 	private JavaMailSender mailSender;
 	
 	@Override
-	public void sendMain(EmailDTO dto, String message) {
+	public void sendMain(EmailDTO dto, String authCode) {
 		
 		// 메일구성정보를 담당하는 객체(받는사람, 보내는사람, 전자우편주소, 본문내용)
 		MimeMessage msg = mailSender.createMimeMessage();
@@ -34,7 +34,7 @@ public class EmailServiceImpl implements EmailService {
 			msg.setSubject(dto.getSubject(), "utf-8");
 			
 			// 본문내용
-			msg.setText(dto.getMessage(), "utf-8");
+			msg.setText(authCode, "utf-8");
 			
 			mailSender.send(msg); // g-mail 보안설정을 낮게 해야 한다
 			

@@ -66,6 +66,24 @@ public class MemberController {
 		return entity;
 	}
 	
+	//인증확인작업
+	@PostMapping("/confirmAuthCode")
+	@ResponseBody
+	public ResponseEntity<String> confirmAuthCode(String uAuthCode, HttpSession session){
+		
+		ResponseEntity<String> entity = null;
+		
+		String authCode = (String) session.getAttribute("authCode");
+		
+		if(uAuthCode.equals(authCode)) {
+			entity = new ResponseEntity<String>("success", HttpStatus.OK);
+		} else {
+			entity = new ResponseEntity<String>("fail", HttpStatus.OK);
+		}
+		
+		return entity;
+	}
+	
 	@GetMapping("/login")
 	public void login() {
 		
@@ -75,28 +93,51 @@ public class MemberController {
 	@PostMapping("/loginPost")
 	public String login_ok(LoginDTO dto, RedirectAttributes rttr, HttpSession session) throws Exception {
 		
+//		RedirectAttributes 인터페이스 주요 설명
+//		1) rttr.addFlashAttribute(attributeName, attributeValue) : 페이지 이동주소의 jsp에서 참조할 경우
+		
+//		2) rttr.addAttribute(attributeName, attributeValue) : 리다이렉트 주소에 파라미터로 사용. /member/login?파라미터1=값&파리미터2=값
+//			rttr.addAttribute("pageNum", pageNum);
+//			rttr.addAttribute("amount", amount);
+		
+		log.info("로그인 정보 : " + dto);
+		
 		// 로그인정보 인증작업
 		MemberVO vo = service.login_ok(dto);
 		
 		String url = "";
+		String msg = "";
 		
 		if(vo != null) { // 아이디가 존재하는 경우
 			
 			// 사용자가 입력한 평문텍스트(일반비번)과 DB에 저장된 암호화된 비밀번호 비교작업
 			
 			// 1)비번 일치
-			url = "/"; // 메인페이지
+			String passwd = dto.getMem_pw(); //사용자가 입력한 비밀번호
+			String db_passwd = vo.getMem_pw(); //DB에서 가져온 비밀번호
 			
-			// 2)비번 일치 안되는 경우
-			url = "/member/login"; // 로그인 화면
+			if(passwd.equals(db_passwd)) {
+				url = "/"; // 메인페이지
+				session.setAttribute("loginStatus", vo); // 인증성공시 서버측에 세션을 통한 정보를 저장.
+				msg = "loginSuccess";
+				
+			} else {
+				// 2)비번 일치 안되는 경우
+				url = "/member/login"; // 로그인 화면
+				msg = "passwdFailure";
+			}
+			
 			
 		} else { // 아이디가 존재하지 않는 경우
 			
 			url = "/member/login"; // 로그인 화면
+			msg = "idFailure";
 			
 		}
 		
-		return "redirect:/" + url; // 다른주소로 이동
+		rttr.addFlashAttribute("msg", msg); // 이동하는 주소의 jsp에서 참조함.
+		
+		return "redirect:" + url; // 다른주소로 이동
 	}
 	
 }

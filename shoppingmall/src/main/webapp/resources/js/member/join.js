@@ -1,4 +1,4 @@
-/* 회원가입 */
+/* 회원정보 저장 및 아이디 중복 체크 */
  
    // html문서와 내용을 브라우저가 읽고 난 이후에 동작되는 특징
    $(document).ready(function(){
@@ -6,7 +6,7 @@
     let joinForm = $("#joinForm");
 
     // 회원정보 저장하기
-    $("#joinSend").on("click", function(){
+    $("#btnJoin").on("click", function(){
       
       console.log("회원가입");
       

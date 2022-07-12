@@ -34,109 +34,43 @@
     
     <!-- Custom styles for this template -->
     <link href="pricing.css" rel="stylesheet">
+    
+    <script>
+      let msg = "${msg}";
+      if(msg == "idFailure"){
+        alert("아이디를 확인하세요.");
+      }else if(meg == "passwdFailure"){
+        alert("비밀번호를 확인하세요.");
+      }
+    </script>
+    
+    
   </head>
   <body>
     
 <%@include file="/WEB-INF/views/include/header.jsp" %>
 
-<h3>회원가입</h3>
+<h3>로그인</h3>
 
 <div class="container">
   <div class="mb-3 text-center">
-	  <form id="joinForm" action="join" method="post">
+	  <form id="loginForm" action="loginPost" method="post">
 		  <div class="form-group row">
 		    <label for="mem_id" class="col-sm-2 col-form-label">아이디</label>
 		    <div class="col-sm-5">
 		      <input type="text" class="form-control" id="mem_id" name="mem_id" placeholder="아이디를  8~15이내로 입력">
 		    </div>
-		    <div class="col-sm-3">
-		      <button type="button" class="btn btn-link" id="btnIDCheck">ID중복체크</button>
-		    </div>
-		    <label class="col-sm-2 col-form-label" style="display:none" id="idCheckStatus">중복체크결과</label>
 		  </div>
 		  <div class="form-group row">
 		    <label for="mem_pw" class="col-sm-2 col-form-label">비밀번호</label>
-		    <div class="col-sm-10">
+		    <div class="col-sm-5">
 		      <input type="password" class="form-control" id="mem_pw" name="mem_pw" placeholder="비밀번호를  8~15이내로 입력">
 		    </div>
 		  </div>
-		  <div class="form-group row">
-		    <label for="mem_pw_2" class="col-sm-2 col-form-label">비밀번호확인</label>
-		    <div class="col-sm-10">
-		      <input type="password" class="form-control" id="mem_pw_2">
-		    </div>
-		  </div>
-		  <div class="form-group row">
-		    <label for="mem_name" class="col-sm-2 col-form-label">이름</label>
-		    <div class="col-sm-10">
-		      <input type="text" class="form-control" id="mem_name" name="mem_name">
-		    </div>
-		  </div>
-		  <div class="form-group row">
-		    <label for="mem_nick" class="col-sm-2 col-form-label">닉네임</label>
-		    <div class="col-sm-10">
-		      <input type="text" class="form-control" id="mem_nick" name="mem_nick">
-		    </div>
-		  </div>
-		  <div class="form-group row">
-		    <label for="mem_email" class="col-sm-2 col-form-label">전자우편</label>
-		    <div class="col-sm-10">
-		      <input type="text" class="form-control" id="mem_email" name="mem_email">
-		    </div>
-		  </div>
-
-		  <div class="form-group row">
 		  
-		  	<label for="mem_authcode" class="col-sm-2 col-form-label">메일인증코드</label>
-		  
-		  	<div class="col-sm-3">
-		      <button type="button" class="btn btn-primary" id="btnAuthcode">메일인증요청</button>
-		    </div>
-		    
-		    <div class="col-sm-4">
-		      <input type="text" class="form-control" id="mem_authcode" name="mem_authcode">
-		    </div>
-
-        <div class="col-sm-3">
-		      <button type="button" class="btn btn-link" id="btnConfirmAuthcode">메일인증확인</button>
-		    </div>
-		  </div>
-
 		  <div class="form-group row">
-		    <label for="mem_phone" class="col-sm-2 col-form-label">휴대폰 번호</label>
-		    <div class="col-sm-10">
-		      <input type="text" class="form-control" id="mem_phone" name="mem_phone">
-		    </div>
-		  </div>
-		  <div class="form-group row">
-		    <label for="sample2_postcode" class="col-sm-2 col-form-label">우편번호</label>
-		    <div class="col-sm-10">
-		      <input type="text" class="form-control" id="sample2_postcode" name="mem_zipcode">
-		      <input type="button" onclick="sample2_execDaumPostcode()" value="우편번호 찾기">
-		    </div>
-		  </div>
-		  <div class="form-group row">
-		    <label for="sample2_address" class="col-sm-2 col-form-label">주소</label>
-		    <div class="col-sm-10">
-		      <input type="text" class="form-control" id="sample2_address" name="mem_addr">
-		    </div>
-		  </div>
-		  <div class="form-group row">
-		    <label for="sample2_detailAddress" class="col-sm-2 col-form-label">상세주소</label>
-		    <div class="col-sm-10">
-		      <input type="text" class="form-control" id="sample2_detailAddress" name="mem_addr_d">
-		      <input type="hidden" id="sample2_extraAddress" placeholder="참고항목">
-		    </div>
-		  </div>
-		  <div class="form-group row">
-		      <label class="form-check-label col-sm-2" for="mem_accept_e">메일 수신동의</label>
-			  <div class="col-sm-10 text-left">
-			  	<input class="form-check-input" type="checkbox" id="mem_accept_e" name="mem_accept_e">
-			  </div>			
-		  </div>
-		  <div class="form-group row">
-			  <div class="col-sm-12 text-center">
-			  	<button type="button" class="btn btn-dark" id="btnJoin">회원가입</button>
+			  <div class="col-sm-9 text-center">
+			  	<button type="submit" class="btn btn-dark" id="btnLogin">로그인</button>
 			  </div>			
 		  </div>
 	 </form>
@@ -150,62 +84,37 @@
 
 <%@include file="/WEB-INF/views/include/common.jsp" %>
 
-<!-- 아이디 중복체크 js-->
-<script type="text/javascript" src="/resources/js/member/join.js"></script>
 
 <script>
 
-  $(document).ready(function(){
+  /* 회원정보 저장 및 아이디 중복 체크 */
+ 
+   // html문서와 내용을 브라우저가 읽고 난 이후에 동작되는 특징
+   $(document).ready(function(){
 
-    // 메일 인증코드 요청
-    $("#btnAuthcode").on("click", function(){
+      let loginForm = $("#loginForm");
 
-      if($("#mem_email").val() == "") {
-        alert("메일을 입력해주세요.")
-        return;
-      }
-
-
-      $.ajax({
-          url: '/email/send',
-          type: 'get',
-          dataType: 'text',
-          data: {receiveMail : $("#mem_email").val()},
-          success: function(result){
-			        if(result = "success"){
-                alert("메일이 발송되어, 인증코드를 확인바랍니다.");
-              } else {
-                alert("메일이 발송이 실패되어, 메일주소 확인 또는 관리자에게 문의 바랍니다.");
-              }
-          }
-      });
-    });
-
-    let isAuthCode = false;
-
-    // 메일 인증확인
-    $("#btnConfirmAuthcode").on("click", function(){
-
-      let authCode = $("#mem_authcode").val();
-
-      $.ajax({
-        url: '/member/confirmAuthCode',
-        type: 'post',
-        dataType: 'text',
-        data: {uAuthCode: authCode},
-        success: function(result){
-
-          if(result == "success"){
-              alert("인증번호 확인 완료");
-              isAuthCode = true;
-          }else if(result == "fail"){
-              alert("인증번호가 틀렸습니다. \n 다시 진행해주세요.");
-              isAuthCode = false;
-          }
+      // 로그인 정보 전송
+      $("#loginForm").on("submit", function(){
+        
+        console.log("로그인 진행");
+        
+        //유효성 검사작업 해야 함
+        if($("#mem_id").val() == "") {
+          alert("아이디를 입력하세요.");
+          $("#mem_id").focus();
+          return false;
         }
+
+        if($("#mem_pw").val() == "") {
+          alert("비밀번호를 입력하세요.");
+          $("#mem_pw").focus();
+          return false;
+        }
+
+        return true;
       });
     });
-  });
 
 </script>
 
@@ -215,7 +124,7 @@
 <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnCloseLayer" style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1" onclick="closeDaumPostcode()" alt="닫기 버튼">
 </div>
 
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></>
 <script>
     // 우편번호 찾기 화면을 넣을 element
     var element_layer = document.getElementById('layer');
@@ -309,3 +218,4 @@
     
   </body>
 </html>
+    
