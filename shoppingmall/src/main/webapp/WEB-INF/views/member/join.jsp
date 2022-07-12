@@ -84,19 +84,24 @@
 		      <input type="text" class="form-control" id="mem_email" name="mem_email">
 		    </div>
 		  </div>
+
 		  <div class="form-group row">
 		  
 		  	<label for="mem_authcode" class="col-sm-2 col-form-label">메일인증코드</label>
 		  
-		  	<div class="col-sm-4">
-		      <button type="button" class="btn btn-link" id="btnAuthcode">메일인증요청</button>
+		  	<div class="col-sm-3">
+		      <button type="button" class="btn btn-primary" id="btnAuthcode">메일인증요청</button>
 		    </div>
 		    
-		    <div class="col-sm-6">
+		    <div class="col-sm-4">
 		      <input type="text" class="form-control" id="mem_authcode" name="mem_authcode">
 		    </div>
-		    
+
+        <div class="col-sm-3">
+		      <button type="button" class="btn btn-link" id="btnConfirmAuthcode">메일인증확인</button>
+		    </div>
 		  </div>
+
 		  <div class="form-group row">
 		    <label for="mem_phone" class="col-sm-2 col-form-label">휴대폰 번호</label>
 		    <div class="col-sm-10">
@@ -148,6 +153,35 @@
 <!-- 아이디 중복체크 js-->
 <script type="text/javascript" src="/resources/js/member/join.js"></script>
 
+<script>
+  $(document).ready(function(){
+
+    // 메일 인증코드 요청
+    $("#btnAuthcode").on("click", function(){
+
+      if($("#mem_email").val() == "") {
+        alert("메일을 입력해주세요.")
+        return;
+      }
+
+
+      $.ajax({
+          url: '/email/send',
+          type: 'get',
+          dataType: 'text',
+          data: {receiveMail : $("#mem_email").val()},
+          success: function(result){
+			        if(result = "success"){
+                alert("메일이 발송되어, 인증코드를 확인바랍니다.");
+              } else {
+                alert("메일이 발송이 실패되어, 메일주소 확인 또는 관리자에게 문의 바랍니다.");
+              }
+          }
+      });
+    });
+  });
+
+</script>
 
 <!-- 우편변호 관련 API -->
 <!-- iOS에서는 position:fixed 버그가 있음, 적용하는 사이트에 맞게 position:absolute 등을 이용하여 top,left값 조정 필요 -->
@@ -155,7 +189,7 @@
 <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnCloseLayer" style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1" onclick="closeDaumPostcode()" alt="닫기 버튼">
 </div>
 
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></>
 <script>
     // 우편번호 찾기 화면을 넣을 element
     var element_layer = document.getElementById('layer');

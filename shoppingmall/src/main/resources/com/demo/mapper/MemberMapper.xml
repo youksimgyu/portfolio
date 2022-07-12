@@ -20,5 +20,14 @@
 		WHERE MEM_ID = #{MEM_ID}
 		
 	</select>
+	
+	<select id="login_ok" parameterType="com.demo.dto.LoginDTO" resultType="com.demo.dto.LoginDTO">
+		
+		SELECT MEM_ID, MEM_NAME, MEM_PW, MEM_ZIPCODE, MEM_ADDR, MEM_ADDR_D, MEM_PHONE,\
+			   MEM_NICK, MEM_EMAIL, MEM_ACCEPT_E, MEM_POINT, MEM_DATE_SUB, MEM_DATE_UP, MEM_DATE_LAST, MEM_AUTHCODE
+		FROM TBL_MEMBER
+		WHERE MEM_ID = #{MEM_ID} <!-- AND MEM_PW = #{MEM_PW} -->
+		
+	</select>
 
 </mapper>
