@@ -34,6 +34,13 @@
     
     <!-- Custom styles for this template -->
     <link href="pricing.css" rel="stylesheet">
+    
+    <script>
+    	if('${msg}' == 'logout'){
+    		alert("로그아웃 되었습니다.");
+    	}
+    </script>
+    
   </head>
   <body>
     

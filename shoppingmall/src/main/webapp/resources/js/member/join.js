@@ -11,7 +11,20 @@
       console.log("회원가입");
       
       //유효성 검사작업 해야 함
+      // 폼입력양식 태그 데이터 입력여부, 아이디, 비밀번호
 
+
+      // 아이디 중복체크 사용여부 isIDCheck
+      if(!isIDCheck) {
+        alert("아이디 중복체크를 해야 합니다.");
+        return;
+      }
+
+      // 메일 인증확인 여부 isAuthCode
+      if(!isAuthCode) {
+        alert("메일 인증확인을 해야 합니다.");
+        return;
+      }
 
       joinForm.submit();
     });

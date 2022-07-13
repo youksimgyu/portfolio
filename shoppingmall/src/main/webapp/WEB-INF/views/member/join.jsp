@@ -181,7 +181,7 @@
       });
     });
 
-    let isAuthCode = false;
+    let isAuthCode = false; // 메일인증확인 여부
 
     // 메일 인증확인
     $("#btnConfirmAuthcode").on("click", function(){

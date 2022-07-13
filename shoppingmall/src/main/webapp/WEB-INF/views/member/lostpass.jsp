@@ -34,27 +34,19 @@
     
     <!-- Custom styles for this template -->
     <link href="pricing.css" rel="stylesheet">
-    
-    <script>
-      let msg = "${msg}";
-      if(msg == "idFailure"){
-        alert("아이디를 확인하세요.");
-      }else if(msg == "passwdFailure"){
-        alert("비밀번호를 확인하세요.");
-      }
-    </script>
-    
-    
+     
   </head>
   <body>
     
 <%@include file="/WEB-INF/views/include/header.jsp" %>
 
-<h3>로그인</h3>
+<h3>ID/PW Search</h3>
 
 <div class="container">
-  <div class="mb-3 text-center">
-	  <form id="loginForm" action="loginPost" method="post">
+  <div class="mb-3 text-center row">
+	  <!-- 아이디찾기 -->
+	  <div class="col-6">
+	  	<form id="loginForm" action="loginPost" method="post">
 		  <div class="form-group row">
 		    <label for="mem_id" class="col-sm-2 col-form-label">아이디</label>
 		    <div class="col-sm-5">
@@ -70,11 +62,37 @@
 		  
 		  <div class="form-group row">
 			  <div class="col-sm-9 text-center">
-			  	<button type="submit" class="btn btn-dark" id="btnLogin">로그인</button>
-          <button type="button" class="btn btn-dark" id="btnSearchIDPW">ID/PW Search</button>
+			  	<button type="submit" class="btn btn-dark" id="btnLogin">아이디 찾기</button>
+          <button type="button" class="btn btn-dark" id="btnSearchIDPW">로그인</button>
 			  </div>
 		  </div>
-	 </form>
+	 	</form>
+	  </div>
+	  
+	  <!-- 임시비밀번호 발급 -->
+	  <div class="col-6">
+	  	<form id="loginForm" action="loginPost" method="post">
+		  <div class="form-group row">
+		    <label for="mem_id" class="col-sm-2 col-form-label">아이디</label>
+		    <div class="col-sm-5">
+		      <input type="text" class="form-control" id="mem_id" name="mem_id" placeholder="아이디를  8~15이내로 입력">
+		    </div>
+		  </div>
+		  <div class="form-group row">
+		    <label for="mem_pw" class="col-sm-2 col-form-label">비밀번호</label>
+		    <div class="col-sm-5">
+		      <input type="password" class="form-control" id="mem_pw" name="mem_pw" placeholder="비밀번호를  8~15이내로 입력">
+		    </div>
+		  </div>
+		  
+		  <div class="form-group row">
+			  <div class="col-sm-9 text-center">
+			  	<button type="submit" class="btn btn-dark" id="btnLogin">임시비밀번호 발급</button>
+          <button type="button" class="btn btn-dark" id="btnSearchIDPW">로그인</button>
+			  </div>
+		  </div>
+	 	</form>
+	  </div>
   </div>
 
 
@@ -93,39 +111,14 @@
    // html문서와 내용을 브라우저가 읽고 난 이후에 동작되는 특징
    $(document).ready(function(){
 
-      let loginForm = $("#loginForm");
-
-      // 로그인 정보 전송
-      $("#loginForm").on("submit", function(){
-        
-        console.log("로그인 진행");
-        
-        //유효성 검사작업 해야 함
-        if($("#mem_id").val() == "") {
-          alert("아이디를 입력하세요.");
-          $("#mem_id").focus();
-          return false;
-        }
-
-        if($("#mem_pw").val() == "") {
-          alert("비밀번호를 입력하세요.");
-          $("#mem_pw").focus();
-          return false;
-        }
-
-        return true;
-      });
-
-      // ID/PW 찾기버튼
-      $("#btnSearchIDPW").on("click", function(){
-        
-        location.href="/member/lostpass";
-      });
+      
     });
 
 </script>
 
 
+
+    
     
   </body>
 </html>

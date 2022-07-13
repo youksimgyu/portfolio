@@ -13,11 +13,17 @@
     </c:if>
     
     <!-- 로그인 이후상태 -->
+    <!-- sessionScope.loginStatus는 MemberVO vo변수에 담긴 로그인 정보임 -->
     <c:if test="${sessionScope.loginStatus != null }">
-    <a class="p-2 text-dark" href="/member/login">LOGOUT</a> |
+    <a class="p-2 text-dark" href="/member/logout">[${sessionScope.loginStatus.mem_id} 님]  LOGOUT</a> |
     </c:if>
     
-    <a class="p-2 text-dark" href="#">MYPAGE</a> |
+    <a class="p-2 text-dark" href="#">MYPAGE
+    <c:if test="${sessionScope.loginStatus != null }">
+    	<span style="color:red;">Point [${sessionScope.loginStatus.mem_point}]</span>
+    </c:if>	
+    </a> |
+    
     <a class="p-2 text-dark" href="#">ORDER</a> |
     <a class="p-2 text-dark" href="#">CART</a>
   </nav>
