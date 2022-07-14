@@ -16,6 +16,7 @@
     <!-- sessionScope.loginStatus는 MemberVO vo변수에 담긴 로그인 정보임 -->
     <c:if test="${sessionScope.loginStatus != null }">
     <a class="p-2 text-dark" href="/member/logout">[${sessionScope.loginStatus.mem_id} 님]  LOGOUT</a> |
+    <a class="p-2 text-dark" href="/member/confirmPW">MODIFY</a> |
     </c:if>
     
     <a class="p-2 text-dark" href="#">MYPAGE

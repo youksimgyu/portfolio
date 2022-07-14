@@ -41,7 +41,7 @@ public class EmailController {
 		
 		// 메일보내기 기능
 		try {
-			service.sendMain(dto, authCode);
+			service.sendMail(dto, authCode);
 			entity = new ResponseEntity<String>("success", HttpStatus.OK);
 		} catch (Exception ex) {
 			ex.printStackTrace();

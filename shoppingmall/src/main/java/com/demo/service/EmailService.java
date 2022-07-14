@@ -4,6 +4,6 @@ import com.demo.dto.EmailDTO;
 
 public interface EmailService {
 
-	void sendMain(EmailDTO dto, String authCode);
+	void sendMail(EmailDTO dto, String authCode);
 	
 }

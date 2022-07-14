@@ -36,12 +36,12 @@
     <link href="pricing.css" rel="stylesheet">
     
     <script>
-      let msg = "${msg}";
-      if(msg == "idFailure"){
-        alert("아이디를 확인하세요.");
-      }else if(msg == "passwdFailure"){
-        alert("비밀번호를 확인하세요.");
-      }
+    
+    	let msg = "${msg}";
+    	if(msg == "noPW"){
+    		alert("비밀번호를 확인해주세요.");
+    	}
+    
     </script>
     
     
@@ -50,15 +50,15 @@
     
 <%@include file="/WEB-INF/views/include/header.jsp" %>
 
-<h3>로그인</h3>
+<h3>비밀번호 재확인</h3>
 
 <div class="container">
   <div class="mb-3 text-center">
-	  <form id="loginForm" action="loginPost" method="post">
+	  <form id="confirmPWForm" action="confirmPW" method="post">
 		  <div class="form-group row">
 		    <label for="mem_id" class="col-sm-2 col-form-label">아이디</label>
 		    <div class="col-sm-5">
-		      <input type="text" class="form-control" id="mem_id" name="mem_id" placeholder="ID">
+		      <input type="text" class="form-control" id="mem_id" name="mem_id" value="${sessionScope.loginStatus.mem_id }" readonly>
 		    </div>
 		  </div>
 		  <div class="form-group row">
@@ -70,8 +70,8 @@
 		  
 		  <div class="form-group row">
 			  <div class="col-sm-9 text-center">
-			  	<button type="submit" class="btn btn-dark" id="btnLogin">로그인</button>
-          		<button type="button" class="btn btn-dark" id="btnSearchIDPW">ID/PW Search</button>
+			  	<button type="submit" class="btn btn-dark" id="btnconfirmPW">확인</button>
+          		<button type="button" class="btn btn-dark" id="btnCancel">취소</button>
 			  </div>
 		  </div>
 	 </form>
@@ -93,20 +93,11 @@
    // html문서와 내용을 브라우저가 읽고 난 이후에 동작되는 특징
    $(document).ready(function(){
 
-      let loginForm = $("#loginForm");
+      let confirmPWForm = $("#confirmPWForm");
 
       // 로그인 정보 전송
-      $("#loginForm").on("submit", function(){
+      $("#confirmPWForm").on("submit", function(){
         
-        console.log("로그인 진행");
-        
-        //유효성 검사작업 해야 함
-        if($("#mem_id").val() == "") {
-          alert("아이디를 입력하세요.");
-          $("#mem_id").focus();
-          return false;
-        }
-
         if($("#mem_pw").val() == "") {
           alert("비밀번호를 입력하세요.");
           $("#mem_pw").focus();
@@ -116,11 +107,6 @@
         return true;
       });
 
-      // ID/PW 찾기버튼
-      $("#btnSearchIDPW").on("click", function(){
-        
-        location.href="/member/lostpass";
-      });
     });
 
 </script>

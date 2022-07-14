@@ -29,5 +29,50 @@
 		WHERE MEM_ID = #{mem_id} <!-- AND MEM_PW = #{MEM_PW} -->
 		
 	</select>
+	
+	<select id="searchID" resultType="String">
+		
+		SELECT MEM_ID
+		FROM TBL_MEMBER
+		WHERE MEM_NAME = #{mem_name}
+		AND MEM_EMAIL = #{mem_email}
+		
+	</select>
+	
+	<select id="getIDEmailExists" resultType="String">
+	
+		SELECT MEM_ID, MEM_EMAIL
+		FROM TBL_MEMBER
+		WHERE MEM_ID = #{mem_id} AND MEM_EMAIL = #{mem_email}
+	
+	</select>
+	
+	<update id="changePW">
+	
+		UPDATE TBL_MEMBER
+		SET MEM_PW = #{mem_pw}
+		WHERE MEM_ID = #{mem_id}
+	
+	</update>
+	
+	<update id="modify" parameterType="com.demo.domain.MemberVO">
+	
+		UPDATE TBL_MEMBER
+		SET MEM_NAME = #{mem_name},
+		
+			<if test="mem_pw != null">
+			MEM_PW = #{mem_pw},
+			</if>
+			
+			MEM_ZIPCODE = #{mem_zipcode},
+			MEM_ADDR = #{mem_addr},
+			MEM_ADDR_D = #{mem_addr_d},
+			MEM_PHONE = #{mem_phone},
+			MEM_NICK = #{mem_nick},
+			MEM_EMAIL = #{mem_email},
+			MEM_ACCEPT_E = #{mem_accept_e}
+		WHERE MEM_ID = #{mem_id}
+	
+	</update>
 
 </mapper>

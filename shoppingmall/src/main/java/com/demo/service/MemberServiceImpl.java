@@ -34,6 +34,30 @@ public class MemberServiceImpl implements MemberService {
 		return mapper.login_ok(dto);
 	}
 
+	@Override
+	public String searchID(String mem_name, String mem_email) {
+		// TODO Auto-generated method stub
+		return mapper.searchID(mem_name, mem_email);
+	}
+
+	@Override
+	public String getIDEmailExists(String mem_id, String mem_email) {
+		// TODO Auto-generated method stub
+		return mapper.getIDEmailExists(mem_id, mem_email);
+	}
+
+	@Override
+	public void changePW(String mem_id, String enc_mem_pw) {
+		// TODO Auto-generated method stub
+		mapper.changePW(mem_id, enc_mem_pw);
+	}
+
+	@Override
+	public void modify(MemberVO vo) {
+		// TODO Auto-generated method stub
+		mapper.modify(vo);
+	}
+
 	
 	
 	

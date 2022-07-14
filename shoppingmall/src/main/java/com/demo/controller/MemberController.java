@@ -1,5 +1,7 @@
 package com.demo.controller;
 
+import java.util.UUID;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,15 +9,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.demo.domain.MemberVO;
+import com.demo.dto.EmailDTO;
 import com.demo.dto.LoginDTO;
+import com.demo.service.EmailService;
 import com.demo.service.MemberService;
 
 import lombok.extern.log4j.Log4j;
@@ -31,7 +37,10 @@ public class MemberController {
 	
 	
 	@Autowired
-	private MemberService service;
+	private MemberService memService;
+	
+	@Autowired
+	private EmailService mailService;
 	
 	// 회원가입폼
 	@GetMapping("/join")
@@ -59,7 +68,7 @@ public class MemberController {
 		
 		log.info(vo); // vo.toString()
 		
-		service.join(vo);
+		memService.join(vo);
 		
 		return "/member/login"; // 회원가입 후 이동할 주소
 	}
@@ -74,7 +83,7 @@ public class MemberController {
 		// 아이디 존재여부 작업
 		String isUseID = "";
 		
-		if(service.idCheck(mem_id) != null) {
+		if(memService.idCheck(mem_id) != null) {
 			isUseID = "no"; // 같은 아이디가 존재한다
 		}else {
 			isUseID = "yes"; // 사용 가능 아이디
@@ -130,7 +139,7 @@ public class MemberController {
 		log.info("로그인 정보 : " + dto);
 		
 		// 로그인정보 인증작업
-		MemberVO vo = service.login_ok(dto);
+		MemberVO vo = memService.login_ok(dto);
 		
 		String url = "";
 		String msg = "";
@@ -187,5 +196,153 @@ public class MemberController {
 	public void lostpass() {
 		
 	}
+	
+	//아이디찾기
+	@PostMapping("/searchID")  //@RequestParam은 폼에서 가져올때와 일치하면 안적어도 됨. 쓸거면 ("")안 내용과 맞춰 써야됨.
+	public String searchID(@RequestParam("mem_name") String mem_name,@RequestParam("mem_email") String mem_email,
+							 Model model, RedirectAttributes rttr) {
+		
+		log.info("이름 : " + mem_name);
+		log.info("이메일 : " + mem_email);
+		
+		String mem_id = memService.searchID(mem_name, mem_email);
+		
+		String url = "";
+		
+		if(mem_id != null) {
+			
+			model.addAttribute("mem_id", mem_id); // key, value
+			url = "/member/searchID";
+			
+		} else {
+			
+			url = "redirect:/member/lostpass"; // 이동주소(get방식요청)
+			rttr.addFlashAttribute("msg", "noID");
+		}
+		
+		return url;
+		
+	}
+	
+	
+	//임시비밀번호 발급
+	@PostMapping("/searchPW")
+	public String searchPW(@RequestParam("mem_id") String mem_id,@RequestParam("mem_email") String mem_email,
+							Model model, RedirectAttributes rttr) {
+		
+		String db_mem_id = memService.getIDEmailExists(mem_id, mem_email);
+		
+		String temp_mem_pw = "";
+		
+		String url = "";
+		
+		if(db_mem_id != null) {
+			
+			// 메일보내기 작업
+			// 1) 임시비밀번호 생성
+			UUID uuid = UUID.randomUUID();
+			temp_mem_pw = uuid.toString().substring(0, 6); // 인덱스 6은 제외한 범위의 6자리 문자열
+			
+			log.info("임시 비밀번호 : " + temp_mem_pw);
+			
+			//temp_mem_pw 임시비밀번호를 암호화하여, db에 저장
+			// 2) 임시비밀번호 저장
+			memService.changePW(mem_id, bCryptPasswordEncoder.encode(temp_mem_pw));
+			
+			// 3) 메일보내기
+			EmailDTO dto = new EmailDTO("DocMall", "DocMall", "mem_email", "DocMall 임시비밀번호 입니다.", "");
+			
+			try {
+				
+				mailService.sendMail(dto, temp_mem_pw);
+				model.addAttribute("mail", "mail");
+				url = "/member/searchID";
+				
+			} catch(Exception ex) {
+				ex.printStackTrace();
+			}
+			
+		} else {
+			
+			url = "redirect:/member/lostpass";
+			rttr.addFlashAttribute("msg", "noID");
+		}
+		
+		return url;
+	}
+	
+	
+	// 회원정보수정을 위한 비밀번호 재확인 폼
+	@GetMapping("/confirmPW")
+	public void confirmPW() {
+		
+	}
+	
+	// 회원정보수정을 위한 비밀번호 재확인
+	@PostMapping("/confirmPW")
+	public String confirmPW(@RequestParam("mem_pw") String mem_pw, HttpSession session, RedirectAttributes rttr) {
+		
+		// 세션에서 로그인시 사용한 정보를 사용
+		String mem_id = ((MemberVO) session.getAttribute("loginStatus")).getMem_id();
+		
+		String url = "";
+		
+		// 로그인시 사용한 코드 재사용
+		
+		LoginDTO dto = new LoginDTO(mem_id, mem_pw);
+		
+		MemberVO vo = memService.login_ok(dto);
+		
+		if(vo != null) { // 비밀번호 재확인 o
+			url = "member/modify";
+		} else { // 비밀번호 재확인 x
+			url = "member/confirmPW";
+			rttr.addFlashAttribute("msg", "noPW");
+		}
+		
+		
+		return "redirect:/" + url;
+	}
+	
+	// HttpSession session 파라미터로 사용할 경우?
+	// 로그인한 상태에서 세션에서 로그인정보를 참조하고자 할 경우.(로그아웃,회원정보수정 등)
+	
+	// 회원정보수정 폼
+	@GetMapping("/modify")
+	public void modify(HttpSession session, Model model) {
+		
+		// 세션에서 로그인시 사용한 정보를 사용
+		String mem_id = ((MemberVO) session.getAttribute("loginStatus")).getMem_id();
+		
+		LoginDTO dto = new LoginDTO(mem_id, ""); // 비밀번호는 쿼리에서 사용이 안되고 있음. 공백처리
+		
+		// 로그인 쿼리가 회원정보 쿼리와 동일하여 사용함.
+		MemberVO vo = memService.login_ok(dto);
+		
+		model.addAttribute("memberVO", vo);
+		
+	}
+	
+	
+	// 회정정보수정 저장하기
+	@PostMapping("/modify")
+	public String modify(MemberVO vo, RedirectAttributes rttr) {
+		
+		//메일수신여부
+		if(vo.getMem_accept_e().equals("on")) {
+			vo.setMem_accept_e("Y");
+		}
+		
+		// 비밀번호 null이 아닌 입력한 경우에만 암호화해서 데이터에 넣는다
+		if(vo.getMem_pw() != null) {
+		String cryptEncoderPW = bCryptPasswordEncoder.encode(vo.getMem_pw());
+		vo.setMem_pw(cryptEncoderPW);
+		}
+		
+		memService.modify(vo);
+		
+		return "redirect:/";
+	}
+	
 	
 }

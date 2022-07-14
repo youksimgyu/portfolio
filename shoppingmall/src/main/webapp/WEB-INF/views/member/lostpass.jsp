@@ -34,6 +34,14 @@
     
     <!-- Custom styles for this template -->
     <link href="pricing.css" rel="stylesheet">
+    
+    <script>
+
+		  if('${msg}' == 'noID'){
+			  alert("내용과 일치하는 회원정보가 없습니다.");
+		  }
+
+	</script>
      
   </head>
   <body>
@@ -46,24 +54,25 @@
   <div class="mb-3 text-center row">
 	  <!-- 아이디찾기 -->
 	  <div class="col-6">
-	  	<form id="loginForm" action="loginPost" method="post">
+	  <h5>아이디 찾기</h5>
+	  	<form id="searchIDForm" action="searchID" method="post">
 		  <div class="form-group row">
-		    <label for="mem_id" class="col-sm-2 col-form-label">아이디</label>
-		    <div class="col-sm-5">
-		      <input type="text" class="form-control" id="mem_id" name="mem_id" placeholder="아이디를  8~15이내로 입력">
+		    <label for="mem_name" class="col-sm-4 col-form-label">이름</label>
+		    <div class="col-sm-8">
+		      <input type="text" class="form-control" id="mem_name" name="mem_name" placeholder="NAME">
 		    </div>
 		  </div>
 		  <div class="form-group row">
-		    <label for="mem_pw" class="col-sm-2 col-form-label">비밀번호</label>
-		    <div class="col-sm-5">
-		      <input type="password" class="form-control" id="mem_pw" name="mem_pw" placeholder="비밀번호를  8~15이내로 입력">
+		    <label for="mem_email" class="col-sm-4 col-form-label">이메일</label>
+		    <div class="col-sm-8">
+		      <input type="text" class="form-control" id="mem_email" name="mem_email" placeholder="EMAIL">
 		    </div>
 		  </div>
 		  
 		  <div class="form-group row">
-			  <div class="col-sm-9 text-center">
+			  <div class="col-sm-12 text-center">
 			  	<button type="submit" class="btn btn-dark" id="btnLogin">아이디 찾기</button>
-          <button type="button" class="btn btn-dark" id="btnSearchIDPW">로그인</button>
+          		<button type="button" class="btn btn-dark" id="btnSearchIDPW" onclick="location.href='login'">로그인</button>
 			  </div>
 		  </div>
 	 	</form>
@@ -71,24 +80,25 @@
 	  
 	  <!-- 임시비밀번호 발급 -->
 	  <div class="col-6">
-	  	<form id="loginForm" action="loginPost" method="post">
+	  <h5>임시비밀번호 발급</h5>
+	  	<form id="searchPWForm" action="searchPW" method="post">
 		  <div class="form-group row">
-		    <label for="mem_id" class="col-sm-2 col-form-label">아이디</label>
-		    <div class="col-sm-5">
-		      <input type="text" class="form-control" id="mem_id" name="mem_id" placeholder="아이디를  8~15이내로 입력">
+		    <label for="mem_id" class="col-sm-4 col-form-label">아이디</label>
+		    <div class="col-sm-8">
+		      <input type="text" class="form-control" id="mem_id" name="mem_id" placeholder="ID">
 		    </div>
 		  </div>
 		  <div class="form-group row">
-		    <label for="mem_pw" class="col-sm-2 col-form-label">비밀번호</label>
-		    <div class="col-sm-5">
-		      <input type="password" class="form-control" id="mem_pw" name="mem_pw" placeholder="비밀번호를  8~15이내로 입력">
+		    <label for="mem_email" class="col-sm-4 col-form-label">이메일</label>
+		    <div class="col-sm-8">
+		      <input type="text" class="form-control" id="mem_email" name="mem_email" placeholder="EMAIL">
 		    </div>
 		  </div>
 		  
 		  <div class="form-group row">
-			  <div class="col-sm-9 text-center">
+			  <div class="col-sm-12 text-center">
 			  	<button type="submit" class="btn btn-dark" id="btnLogin">임시비밀번호 발급</button>
-          <button type="button" class="btn btn-dark" id="btnSearchIDPW">로그인</button>
+          		<button type="button" class="btn btn-dark" id="btnSearchIDPW" onclick="location.href='login'">로그인</button>
 			  </div>
 		  </div>
 	 	</form>
@@ -106,16 +116,31 @@
 
 <script>
 
-  /* 로그인 */
- 
-   // html문서와 내용을 브라우저가 읽고 난 이후에 동작되는 특징
-   $(document).ready(function(){
+		$(document).ready(function(){
 
-      
-    });
+			let searchIDForm = $("#searchIDForm");
+
+			$("#searchIDForm").on("submit", function(){
+
+				// 입력했는지 체크
+				if($("#mem_name").val() == "") {
+					alert("이름을 입력해주세요.");
+					$("#mem_name").focus();
+					return false;
+				}
+
+				if($("#mem_email").val() == "") {
+					alert("이메일을 입력해주세요.");
+					$("#mem_email").focus();
+					return false;
+				}
+				
+				return true;
+
+			});
+		});
 
 </script>
-
 
 
     
