@@ -297,11 +297,22 @@ public class MemberController {
 		MemberVO vo = memService.login_ok(dto);
 		
 		if(vo != null) { // 비밀번호 재확인 o
-			url = "member/modify";
-			log.info("비밀번호 O");
+
+			String db_passwd = vo.getMem_pw(); //DB에서 가져온 비밀번호
+			
+			if(bCryptPasswordEncoder.matches(mem_pw, db_passwd)) { //비밀번호 재확인 되었을경우
+
+				url = "member/modify";
+				log.info("비밀번호 O");
+				
+			} else { // 비밀번호 일치 안된경우
+				url = "member/confirmPW";
+				rttr.addFlashAttribute("msg", "noPW");
+			}
+			
 		} else { // 비밀번호 재확인 x
 			url = "member/confirmPW";
-			rttr.addFlashAttribute("msg", "noPW");
+			rttr.addFlashAttribute("msg", "noID");
 			log.info("비밀번호 X");
 		}
 		

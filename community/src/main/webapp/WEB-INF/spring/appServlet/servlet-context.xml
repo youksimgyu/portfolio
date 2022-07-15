@@ -16,13 +16,20 @@
 	<resources mapping="/resources/**" location="/resources/" />
 	
 	
-	<!-- 추가주소 -->
-	<resources mapping="/bower_components/**" location="/resources/bower_components/" />
-	<resources mapping="/dist/**" location="/resources/dist/" />
-	<resources mapping="/plugins/**" location="/resources/plugins/" />
 	
-	<resources mapping="/css/**" location="/resources/css/" />
-	<resources mapping="/js/**" location="/resources/js/" />
+	<!-- 추가주소 부트스트랩-->
+	<resources mapping="/bootstrap5.2/bower_components/**" location="/resources/bootstrap5.2/bower_components/" />
+	<resources mapping="/bootstrap5.2/dist/**" location="/resources/bootstrap5.2/dist/" />
+	<resources mapping="/bootstrap5.2/plugins/**" location="/resources/bootstrap5.2/plugins/" />
+	<resources mapping="/bootstrap5.2/css/**" location="/resources/bootstrap5.2/css/" />
+	<resources mapping="/bootstrap5.2/js/**" location="/resources/bootstrap5.2/js/" />
+	
+	<!-- admin 부트스트랩 -->
+	<resources mapping="/admin/bulid/**" location="/resources/admin/bulid/" />
+	<resources mapping="/admin/dist/**" location="/resources/admin/dist/" />
+	<resources mapping="/admin/docs/**" location="/resources/admin/docs/" />
+	<resources mapping="/admin/pages/**" location="/resources/admin/pages/" />
+	<resources mapping="/admin/plugins/**" location="/resources/admin/plugins/" />
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
