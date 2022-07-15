@@ -60,7 +60,7 @@
 		UPDATE TBL_MEMBER
 		SET MEM_NAME = #{mem_name},
 		
-			<if test="mem_pw != null">
+			<if test="mem_pw != null and !mem_pw.equals('')">
 			MEM_PW = #{mem_pw},
 			</if>
 			

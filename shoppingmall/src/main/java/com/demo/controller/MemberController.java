@@ -64,6 +64,8 @@ public class MemberController {
 		
 		if(vo.getMem_accept_e().equals("on")) {
 			vo.setMem_accept_e("Y");
+		} else {
+			vo.setMem_accept_e("N");
 		}
 		
 		log.info(vo); // vo.toString()
@@ -288,16 +290,19 @@ public class MemberController {
 		String url = "";
 		
 		// 로그인시 사용한 코드 재사용
-		
+		// 로그인id는 기존에 사용했던 세션에서 가져와서 변수를 만들어 넣었고, 비밀번호는 입력한 값 DTO에 다시 넣음
+		// DTO에 넣은 값과 MemberVO에 있는 비밀번호와 비교
 		LoginDTO dto = new LoginDTO(mem_id, mem_pw);
 		
 		MemberVO vo = memService.login_ok(dto);
 		
 		if(vo != null) { // 비밀번호 재확인 o
 			url = "member/modify";
+			log.info("비밀번호 O");
 		} else { // 비밀번호 재확인 x
 			url = "member/confirmPW";
 			rttr.addFlashAttribute("msg", "noPW");
+			log.info("비밀번호 X");
 		}
 		
 		
@@ -328,15 +333,27 @@ public class MemberController {
 	@PostMapping("/modify")
 	public String modify(MemberVO vo, RedirectAttributes rttr) {
 		
+		log.info("회원정보수정 : " + vo);
+		
+//		클라이언트에서 입력한 정보에 파라미터명이 MemberVO클래스와 일치하지 않으면, 필드가 참조타입일 경우에는 null이 된다
+//		파라미터가 일치하지 않는 경우 예)비밀번호. 클라이언트 mem_pw100 -> 서버(스프링) MemberVO클래스의 필드 mem_pw. null이 됨.
+//		파라미터가 일치하는 경우 값을 입력 안하면    클라이언트 mem_pw -> 서버(스프링) MemberVO클래스의 필드 mem_pw. 공백("")이 됨.
+		
+		//비밀번호 변경란에 입력 안하는경우 출력
+		if(vo.getMem_pw().equals("")) log.info("공백문자열");
+		
+		// 비밀번호 null이 아닌 입력한 경우에만 암호화해서 데이터에 넣는다
+		if(vo.getMem_pw() != null && !vo.getMem_pw().equals("")) {
+			log.info("변경 비밀번호 : " + vo.getMem_pw());
+			String cryptEncoderPW = bCryptPasswordEncoder.encode(vo.getMem_pw());
+			vo.setMem_pw(cryptEncoderPW);
+		}
+		
 		//메일수신여부
 		if(vo.getMem_accept_e().equals("on")) {
 			vo.setMem_accept_e("Y");
-		}
-		
-		// 비밀번호 null이 아닌 입력한 경우에만 암호화해서 데이터에 넣는다
-		if(vo.getMem_pw() != null) {
-		String cryptEncoderPW = bCryptPasswordEncoder.encode(vo.getMem_pw());
-		vo.setMem_pw(cryptEncoderPW);
+		} else {
+			vo.setMem_accept_e("N");
 		}
 		
 		memService.modify(vo);
