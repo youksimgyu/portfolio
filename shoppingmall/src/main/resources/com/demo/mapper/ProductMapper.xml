@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.mapper.ProductMapper">
+
+	<select id="getCateList" resultType="com.demo.domain.CategoryVO">
+	
+		SELECT CG_CODE_C, CG_CODE_P, CG_NAME
+		FROM TBL_CATEGORY
+		WHERE CG_CODE_P IS NULL
+	
+	</select>
+	
+	<select id="getsubCateList" resultType="com.demo.domain.CategoryVO">
+	
+		SELECT CG_CODE_C, CG_CODE_P, CG_NAME
+		FROM TBL_CATEGORY
+		WHERE CG_CODE_P = #{categoryCode}
+	
+	</select>
+
+
+</mapper>
