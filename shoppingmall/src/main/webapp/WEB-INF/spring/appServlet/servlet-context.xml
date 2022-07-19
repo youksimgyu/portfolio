@@ -25,6 +25,8 @@
 	<resources mapping="/js/**" location="/resources/js/" />
 	
 	<resources location="/ckeditor/**" mapping="/resources/bower_components/ckeditor/"></resources>
+	
+	<!-- 프로제트 내부폴더를 업로드할 경우 -->
 	<resources location="/upload/**" mapping="/resources/upload/"></resources>
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
@@ -41,6 +43,7 @@
 	<!-- 파일업로드 bean설정. id="multipartResolver" 예약어-->
 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver"></beans:bean>
 	
+	<!-- 파일이 저장될 경로 설정 -->
 	<beans:bean id="uploadPath" class="java.lang.String">
 		<beans:constructor-arg value="C:\\Dev\\upload\\"></beans:constructor-arg>
 	</beans:bean>

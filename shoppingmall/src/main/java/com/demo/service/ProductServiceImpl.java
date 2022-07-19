@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.demo.domain.CategoryVO;
+import com.demo.domain.ProductVO;
 import com.demo.mapper.ProductMapper;
 
 import lombok.extern.log4j.Log4j;
@@ -27,6 +28,13 @@ public class ProductServiceImpl implements ProductService {
 	public List<CategoryVO> getsubCateList(Integer categoryCode) {
 		// TODO Auto-generated method stub
 		return proMapper.getsubCateList(categoryCode);
+	}
+
+	@Override
+	public void productInsert(ProductVO vo) {
+		// TODO Auto-generated method stub
+		proMapper.productInsert(vo);
+		
 	}
 	
 }

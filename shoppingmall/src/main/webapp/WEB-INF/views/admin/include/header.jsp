@@ -6,7 +6,7 @@
 <header class="main-header">
 
 	<!-- Logo -->
-	<a href="index2.html" class="logo"> <!-- mini logo for sidebar mini 50x50 pixels -->
+	<a href="/admin/main" class="logo"> <!-- mini logo for sidebar mini 50x50 pixels -->
 		<span class="logo-mini"><b>A</b>LT</span> <!-- logo for regular state and mobile devices -->
 		<span class="logo-lg"><b>Admin</b>LTE</span>
 	</a>
@@ -23,14 +23,14 @@
 
 				<c:if test="${sessionScope.adLoginStatus != null }">
 					<li>
-						<a href="/admin/adLogout"><span class="label-danger"> Logout </span></a>
+						<a href="/admin/adLogout"><span class="btn btn-danger"> Logout </span></a>
 					</li>
 				</c:if>
 
 				<!-- Messages: style can be found in dropdown.less-->
 				<li class="dropdown messages-menu">
 					<!-- Menu toggle button -->
-					<a href="/admin/adLogout" class="dropdown-toggle" data-toggle="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 						<i class="fa fa-envelope-o"></i>
 						<span class="label label-success">4</span></a>
 					<ul class="dropdown-menu">

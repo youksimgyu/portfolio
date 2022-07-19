@@ -75,75 +75,74 @@ desired effect
 				REGISTER PRODUCT
 			</div>
 			
-			<div class="box-body">
+			<form id="pruductForm" action="productInsert" method="post" enctype="multipart/form-data">
+			 <div class="box-body">
 			
-				<form id="pruductForm" action="" method="post">
-				  <div class="form-group row">
-				  	<label for="cg_name" class="col-sm-2 col-form-label">카테고리</label>
-				  	<div class="col-sm-3">
-				  		<select name="cg_code_p" id="firstCategory" class="form-control">
-				  			<option>1차 카테고리 선택</option>
-							<c:forEach items="${cateList }" var="categoryVO">
-								<option value="${categoryVO.cg_code_c }">${categoryVO.cg_name }</option>
-							</c:forEach>
-				  		</select>
-				  	</div>
-				  	<div class="col-sm-3">
-				  		<select name="cg_code_c" id="secondCategory" class="form-control">
-				  			<option value="">2차 카테고리 선택</option>
-				  		</select>
-				  	</div>
-				  </div>
-				  
-				  <div class="form-group row">
-				    <label for="pdt_name" class="col-sm-2 col-form-label">상품명</label>
-				    <div class="col-sm-4">
-				      <input type="text" class="form-control" id="pdt_name" name="pdt_name">
-				    </div>
-				    <label for="pdt_price" class="col-sm-2 col-form-label">상품가격</label>
-				    <div class="col-sm-4">
-				      <input type="text" class="form-control" id="pdt_price" name="pdt_price">
-				    </div>
-				  </div>
+			  <div class="form-group row">
+			  	<label for="cg_name" class="col-sm-2 col-form-label">카테고리</label>
+			  	<div class="col-sm-3">
+			  		<select name="cg_num_1" id="firstCategory" class="form-control">
+			  			<option>1차 카테고리 선택</option>
+						<c:forEach items="${cateList }" var="categoryVO">
+							<option value="${categoryVO.cg_code_c }">${categoryVO.cg_name }</option>
+						</c:forEach>
+			  		</select>
+			  	</div>
+			  	<div class="col-sm-3">
+			  		<select name="cg_num_2" id="secondCategory" class="form-control">
+			  			<option value="">2차 카테고리 선택</option>
+			  		</select>
+			  	</div>
+			  </div>
+			  
+			  <div class="form-group row">
+			    <label for="pdt_name" class="col-sm-2 col-form-label">상품명</label>
+			    <div class="col-sm-4">
+			      <input type="text" class="form-control" id="pdt_name" name="pdt_name">
+			    </div>
+			    <label for="pdt_price" class="col-sm-2 col-form-label">상품가격</label>
+			    <div class="col-sm-4">
+			      <input type="text" class="form-control" id="pdt_price" name="pdt_price">
+			    </div>
+			  </div>
 
-				  <div class="form-group row">
-				    <label for="pdt_discount" class="col-sm-2 col-form-label">할인율</label>
-				    <div class="col-sm-4">
-				      <input type="text" class="form-control" id="pdt_discount" name="pdt_discount">
-				    </div>
-				    <label for="pdt_company" class="col-sm-2 col-form-label">제조사</label>
-				    <div class="col-sm-4">
-				      <input type="text" class="form-control" id="pdt_company" name="pdt_company">
-				    </div>
-				  </div>
-				  <div class="form-group row">
-				    <label for="pdt_img" class="col-sm-2 col-form-label">상품이미지</label>
-				    <div class="col-sm-3">
-				      <input type="file" class="form-control" id="pdt_img" name="pdt_img" multiple>
-				    </div>
-				  </div>
-				  <div class="form-group row">
-				    <label for="pdt_detail" class="col-sm-2 col-form-label">상품설명</label>
-				    <div class="col-sm-10">
-				      <textarea class="form-control" row="3" id="pdt_detail" name="pdt_detail"></textarea>
-				    </div>
-				  </div>
-				  <div class="form-group row">
-				    <label for="pdt_amount" class="col-sm-2 col-form-label">수량</label>
-				    <div class="col-sm-3">
-				      <input type="text" class="form-control" id="pdt_amount" name="pdt_amount">
-				    </div>
-				  </div>
-				  <div class="form-group row">
-				    <label for="pdt_buy" class="col-sm-2 col-form-label">판매여부</label>
-				    <div class="col-sm-4">
-				      <select id="pdt_buy" name="pdt_buy">
-				      	<option value="Y">판매가능</option>
-				      	<option value="N">판매불가능</option>
-				      </select>
-				    </div>
-				  </div>
-				</form>
+			  <div class="form-group row">
+			    <label for="pdt_discount" class="col-sm-2 col-form-label">할인율</label>
+			    <div class="col-sm-4">
+			      <input type="text" class="form-control" id="pdt_discount" name="pdt_discount">
+			    </div>
+			    <label for="pdt_company" class="col-sm-2 col-form-label">제조사</label>
+			    <div class="col-sm-4">
+			      <input type="text" class="form-control" id="pdt_company" name="pdt_company">
+			    </div>
+			  </div>
+			  <div class="form-group row">
+			    <label for="pdt_img" class="col-sm-2 col-form-label">상품이미지</label>
+			    <div class="col-sm-3">
+			      <input type="file" class="form-control" id="uploadFile" name="uploadFile" multiple>
+			    </div>
+			  </div>
+			  <div class="form-group row">
+			    <label for="pdt_detail" class="col-sm-2 col-form-label">상품설명</label>
+			    <div class="col-sm-10">
+			      <textarea class="form-control" row="3" id="pdt_detail" name="pdt_detail"></textarea>
+			    </div>
+			  </div>
+			  <div class="form-group row">
+			    <label for="pdt_amount" class="col-sm-2 col-form-label">수량</label>
+			    <div class="col-sm-3">
+			      <input type="text" class="form-control" id="pdt_amount" name="pdt_amount">
+			    </div>
+			  </div>
+			  <div class="form-group row">
+			    <label for="pdt_buy" class="col-sm-2 col-form-label">판매여부</label>
+			    <div class="col-sm-4">
+			      <select id="pdt_buy" name="pdt_buy">
+			      	<option value="Y">판매가능</option>
+			      	<option value="N">판매불가능</option>
+			      </select>
+			    </div>
+			  </div>
 				
 			</div>
 			
@@ -153,10 +152,11 @@ desired effect
 				</div>
 				<div class="form-group row">
 					<div class="col-sm-12 text-center">
-						<button type="button" class="btn btn-dark" id="btnProduct">상품등록</button>
+						<button type="submit" class="btn btn-dark" id="btnProduct">상품등록</button>
 					</div>
 				</div>
 			</div>
+		  </form>
 			
 		</div>
 	</div>
@@ -267,7 +267,7 @@ immediately after the control sidebar -->
 			shiftEnterMode : CKEDITOR.ENTER_P,
 			toolbarCanCollapse : true,
 			removePlugins : "elementspath",
-			filebrowserUploadUrl: '/admin/product/imageUpload' //업로드 탭기능추가 속성
+			filebrowserUploadUrl: '/admin/product/imageUpload' //업로드 탭기능추가 속성. post 주소로 사용됨
 		}
 
 		CKEDITOR.replace("pdt_detail", ckeditor_config);

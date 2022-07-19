@@ -17,6 +17,18 @@
 		WHERE CG_CODE_P = #{categoryCode}
 	
 	</select>
+	
+	<insert id="productInsert">
+	
+		INSERT INTO TBL_PRODUCT
+					( PDT_NUM, CG_NUM_2, CG_NUM_1, PDT_NAME, PDT_PRICE,
+					  PDT_DISCOUNT, PDT_COMPANY, PDT_DETAIL, PDT_IMG, PDT_IMG_FOLDER, PDT_AMOUNT, PDT_BUY )
+		VALUES
+					(SEQ_TBL_PRODUCT_NUM.NEXTVAL, #{cg_num_2}, #{cg_num_1}, #{pdt_name},
+					  #{pdt_price}, #{pdt_discount}, #{pdt_company}, #{pdt_detail},
+					  #{pdt_img}, #{pdt_img_folder}, #{pdt_amount}, #{pdt_buy} )
+	
+	</insert>
 
 
 </mapper>
