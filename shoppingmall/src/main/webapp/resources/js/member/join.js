@@ -21,7 +21,7 @@
       }
 
       // 메일 인증확인 여부 isAuthCode
-      if(!isAuthCode) {
+      if(isAuthCode != null) {
         alert("메일 인증확인을 해야 합니다.");
         return;
       }

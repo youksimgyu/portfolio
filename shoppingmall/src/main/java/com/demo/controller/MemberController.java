@@ -62,7 +62,7 @@ public class MemberController {
 		
 		vo.setMem_pw(cryptEncoderPW);
 		
-		if(vo.getMem_accept_e().equals("on")) {
+		if(vo.getMem_accept_e() != null) {
 			vo.setMem_accept_e("Y");
 		} else {
 			vo.setMem_accept_e("N");

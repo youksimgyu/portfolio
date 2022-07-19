@@ -1,15 +1,19 @@
+CREATE USER SPRING IDENTIFIED BY SPRING;
+
+GRANT CONNECT, RESOURCE, DBA TO SPRING;
+
 /*
-ÀÛ¼ºÀÚ : À°½É±Ô
-ÆíÁýÀÏ : 2022-07-05
-ÇÁ·ÎÁ§Æ®¸í : ¼îÇÎ¸ôDEMO
+ìž‘ì„±ìž : ìœ¡ì‹¬ê·œ
+íŽ¸ì§‘ì¼ : 2022-07-05
+í”„ë¡œì íŠ¸ëª… : ì‡¼í•‘ëª°DEMO
 */
 
-/* Å×ÀÌºí »ý¼º */
---1. È¸¿ø°¡ÀÔ Å×ÀÌºí
+/* í…Œì´ë¸” ìƒì„± */
+--1. íšŒì›ê°€ìž… í…Œì´ë¸”
 CREATE TABLE TBL_MEMBER(
 	MEM_ID					VARCHAR2(15)					    CONSTRAINT PK_MEM_ID PRIMARY KEY,
 	MEM_NAME             	VARCHAR2(30)						NOT NULL,
-	MEM_PW                 	VARCHAR2(60)						NOT NULL,
+	MEM_PW                 	CHAR(60)    						NOT NULL,
 	MEM_ZIPCODE         	CHAR(5) 							NOT NULL,
 	MEM_ADDR              	VARCHAR2(100)						NOT NULL,
 	MEM_ADDR_D			    VARCHAR2(100)						NOT NULL,
@@ -21,36 +25,73 @@ CREATE TABLE TBL_MEMBER(
 	MEM_DATE_SUB      	    DATE            DEFAULT SYSDATE   	NOT NULL,
 	MEM_DATE_UP        	    DATE            DEFAULT SYSDATE		NOT NULL,
 	MEM_DATE_LAST   	    DATE            DEFAULT SYSDATE    	NOT NULL,
-	MEM_AUTHCODE		    CHAR(1)         DEFAULT 'N'			NOT NULL
+	MEM_AUTHCODE		    CHAR(1)         DEFAULT 'N'
 	-- MEM_SESSION_KEY	        VARCHAR2(50),
 	-- MEM_SESSION_LIMIT	    TIMESTAMP
 );
 
---2. Ä«Å×°í¸® Å×ÀÌºí
+--2. ì¹´í…Œê³ ë¦¬ í…Œì´ë¸”
 CREATE TABLE TBL_CATEGORY (
     CG_CODE_C       			NUMBER        				PRIMARY KEY,
     CG_CODE_P     		        NUMBER,                                          
     CG_NAME           		    VARCHAR2(50)         		NOT NULL
 );
 
---3. »óÇ° Å×ÀÌºí
+INSERT INTO TBL_CATEGORY VALUES(1, NULL, 'TOP');
+
+INSERT INTO TBL_CATEGORY VALUES(1001, 1, 'ë°˜íŒ”í‹°');
+INSERT INTO TBL_CATEGORY VALUES(1002, 1, 'ë‚˜ì‹œ');
+INSERT INTO TBL_CATEGORY VALUES(1003, 1, 'í”„ë¦°íŒ…í‹°');
+INSERT INTO TBL_CATEGORY VALUES(1004, 1, 'ë‹ˆíŠ¸');
+INSERT INTO TBL_CATEGORY VALUES(1005, 1, 'ë§¨íˆ¬ë§¨');
+INSERT INTO TBL_CATEGORY VALUES(1006, 1, 'ê¸´íŒ”í‹°');
+
+INSERT INTO TBL_CATEGORY VALUES(2, NULL, 'SHIRTS');
+
+INSERT INTO TBL_CATEGORY VALUES(2001, 2, 'ë² ì´ì§');
+INSERT INTO TBL_CATEGORY VALUES(2002, 2, 'ì²­ë‚¨ë°©');
+INSERT INTO TBL_CATEGORY VALUES(2003, 2, 'ì²´í¬');
+INSERT INTO TBL_CATEGORY VALUES(2004, 2, 'ìŠ¤íŠ¸ë¼ì´í”„');
+INSERT INTO TBL_CATEGORY VALUES(2005, 2, 'í—¨ë¦¬ë„¥');
+
+INSERT INTO TBL_CATEGORY VALUES(3, NULL, 'PANTS');
+
+INSERT INTO TBL_CATEGORY VALUES(3001, 3, 'ìŠ¬ëž™ìŠ¤');
+INSERT INTO TBL_CATEGORY VALUES(3002, 3, 'ë©´ë°”ì§€');
+INSERT INTO TBL_CATEGORY VALUES(3003, 3, 'ì²­ë°”ì§€');
+INSERT INTO TBL_CATEGORY VALUES(3004, 3, 'ë°´ë”©íŒ¬ì¸ ');
+INSERT INTO TBL_CATEGORY VALUES(3005, 3, 'ë°˜ë°”ì§€');
+
+COMMIT;
+
+--3. ìƒí’ˆ í…Œì´ë¸”
 CREATE TABLE TBL_PRODUCT(
     PDT_NUM					NUMBER								CONSTRAINT PK_PDT_NUM PRIMARY KEY,
-    CG_NUM_1                NUMBER,
     CG_NUM_2                NUMBER,
+    CG_NUM_1                NUMBER,
     PDT_NAME				VARCHAR2(50)						NOT NULL,
     PDT_PRICE				NUMBER								NOT NULL,
     PDT_DISCOUNT			NUMBER								NOT NULL,
     PDT_COMPANY			    VARCHAR2(30)						NOT NULL,
     PDT_DETAIL				VARCHAR2(4000)					    NOT NULL,
-    PDT_IMG					VARCHAR2(50)						NOT NULL,
+    PDT_IMG					VARCHAR2(200)						NOT NULL,
+    PDT_IMG_FOLDER          VARCHAR2(50)						NOT NULL,
     PDT_AMOUNT			    NUMBER								NOT NULL,
-    PDT_BUY					CHAR(1)								NOT NULL,
-    PDT_DATE_SUB			DATE 								NOT NULL,
+    PDT_BUY					CHAR(1) DEFAULT 'Y'					NOT NULL,
+    PDT_DATE_SUB			DATE 		DEFAULT SYSDATE			NOT NULL,
     PDT_DATE_UP			    DATE        DEFAULT SYSDATE			NOT NULL
 );
+DROP TABLE TBL_PRODUCT;
+-- ìƒí’ˆì½”ë“œ ì‹œí€€ìŠ¤
+CREATE SEQUENCE SEQ_TBL_PRODUCT_NUM;
 
---4. Àå¹Ù±¸´Ï Å×ÀÌºí 
+INSERT INTO TBL_PRODUCT
+					( PDT_NUM, CG_NUM_2, CG_NUM_1, PDT_NAME, PDT_PRICE,
+					  PDT_DISCOUNT, PDT_COMPANY, PDT_DETAIL, PDT_IMG, PDT_IMG_FOLDER, PDT_AMOUNT, PDT_BUY )
+		VALUES
+					( SEQ_TBL_PRODUCT_NUM.NEXTVAL, 1, 2, '1', 1, 1, '1', '1', '1', '1', 1, 'Y');
+
+--4. ìž¥ë°”êµ¬ë‹ˆ í…Œì´ë¸” 
 CREATE TABLE TBL_CART(
 	CART_CODE				NUMBER								PRIMARY KEY,			
 	PDT_NUM				    NUMBER								NOT NULL,
@@ -60,7 +101,7 @@ CREATE TABLE TBL_CART(
     FOREIGN KEY(MEM_ID) REFERENCES TBL_MEMBER(MEM_ID)
 );
 
---5. ÁÖ¹® Å×ÀÌºí
+--5. ì£¼ë¬¸ í…Œì´ë¸”
 CREATE TABLE TBL_ORDER(
 	ODR_CODE				NUMBER								CONSTRAINT PK_ODR_CODE PRIMARY KEY,
 	MEM_ID					VARCHAR2(60)						NOT NULL,
@@ -74,7 +115,7 @@ CREATE TABLE TBL_ORDER(
     FOREIGN KEY(MEM_ID) REFERENCES TBL_MEMBER(MEM_ID)
 );
 
---6. ÁÖ¹® »ó¼¼ Å×ÀÌºí
+--6. ì£¼ë¬¸ ìƒì„¸ í…Œì´ë¸”
 CREATE TABLE TBL_ORDER_DETAIL(
 	ODR_CODE				NUMBER							NOT NULL,
 	PDT_NUM				    NUMBER							NOT NULL,
@@ -85,7 +126,7 @@ CREATE TABLE TBL_ORDER_DETAIL(
     FOREIGN KEY(PDT_NUM) REFERENCES TBL_PRODUCT(PDT_NUM)
 );
 
---7. °Ô½ÃÆÇ Å×ÀÌºí
+--7. ê²Œì‹œíŒ í…Œì´ë¸”
 CREATE TABLE TBL_BOARD(
 	BRD_NUM				    NUMBER							CONSTRAINT PK_BRD_NUM PRIMARY KEY,
 	MEM_ID					VARCHAR2(15)					NOT NULL,
@@ -95,7 +136,7 @@ CREATE TABLE TBL_BOARD(
     FOREIGN KEY(MEM_ID) REFERENCES TBL_MEMBER(MEM_ID)
 );
 
---8. »óÇ°ÈÄ±â Å×ÀÌºí 
+--8. ìƒí’ˆí›„ê¸° í…Œì´ë¸” 
 CREATE TABLE TBL_REVIEW(
 	RV_NUM					NUMBER								CONSTRAINT PK_RV_NUM PRIMARY KEY,
 	MEM_ID					VARCHAR2(50)						NOT NULL,
@@ -107,16 +148,16 @@ CREATE TABLE TBL_REVIEW(
     FOREIGN KEY(PDT_NUM) REFERENCES TBL_PRODUCT(PDT_NUM)
 );
 
---9. °ü¸®ÀÚ ·Î±×ÀÎ Å×ÀÌºí
+--9. ê´€ë¦¬ìž ë¡œê·¸ì¸ í…Œì´ë¸”
 CREATE TABLE TBL_ADMIN(
 	ADMIN_ID				VARCHAR2(15)						PRIMARY KEY,
-	ADMIN_PW				VARCHAR2(30)						NOT NULL,
+	ADMIN_PW				CHAR(60)    						NOT NULL,
 	ADMIN_NAME			    VARCHAR2(15)						NOT NULL,
 	ADMIN_DATE_LATE	        DATE        		                NOT NULL
 );
 
 
-/* Å×ÀÌºí Á¶È¸ */
+/* í…Œì´ë¸” ì¡°íšŒ */
 SELECT * FROM TBL_MEMBER;
 SELECT * FROM TBL_CATEGORY;
 SELECT * FROM TBL_PRODUCT;
@@ -127,133 +168,31 @@ SELECT * FROM TBL_BOARD;
 SELECT * FROM TBL_REVIEW;
 
 
-/* »ùÇÃ µ¥ÀÌÅÍ ÀÔ·Â */
---1. ¸â¹ö Å×ÀÌºí 
-INSERT INTO MEMBER_TBL(MEM_ID, MEM_NAME, MEM_PW, MEM_EMAIL, MEM_ZIPCODE, MEM_ADDR, MEM_ADDR_D, MEM_PHONE, MEM_NICK, MEM_ACCEPT_E ) 
-	VALUES('user01', 'È«±æµ¿', '1111', 'user01@example.com','13555', '¼­¿ï½Ã Á¾·Î±¸ Ã¢½Åµ¿', '00¾ÆÆÄÆ® 101µ¿', '010-1111-1111', 'À¯Àú01', 'Y');
-INSERT INTO MEMBER_TBL(MEM_ID, MEM_NAME, MEM_PW, MEM_EMAIL, MEM_ZIPCODE, MEM_ADDR, MEM_ADDR_D, MEM_PHONE, MEM_NICK, MEM_ACCEPT_E ) 
-	VALUES('user02', 'ÀÌ½Â¿±', '2222', 'user02@example.com','13555', '¼­¿ï½Ã Á¾·Î±¸ Ã¢½Åµ¿', '00¾ÆÆÄÆ® 102µ¿', '010-2222-2222', 'À¯Àú02', 'Y');
-INSERT INTO MEMBER_TBL(MEM_ID, MEM_NAME, MEM_PW, MEM_EMAIL, MEM_ZIPCODE, MEM_ADDR, MEM_ADDR_D, MEM_PHONE, MEM_NICK, MEM_ACCEPT_E ) 
-	VALUES('user03', '¼ÕÈï¹Î', '3333', 'user03@example.com','13555', '¼­¿ï½Ã Á¾·Î±¸ Ã¢½Åµ¿', '00¾ÆÆÄÆ® 103µ¿', '010-3333-3333', 'À¯Àú03', 'Y');
-INSERT INTO MEMBER_TBL(MEM_ID, MEM_NAME, MEM_PW, MEM_EMAIL, MEM_ZIPCODE, MEM_ADDR, MEM_ADDR_D, MEM_PHONE, MEM_NICK, MEM_ACCEPT_E ) 
-	VALUES('user04', 'ÀÌÁ¤ÈÄ', '4444', 'user04@example.com','13555', '¼­¿ï½Ã Á¾·Î±¸ Ã¢½Åµ¿', '00¾ÆÆÄÆ® 104µ¿', '010-4444-4444', 'À¯Àú04', 'N');
-INSERT INTO MEMBER_TBL(MEM_ID, MEM_NAME, MEM_PW, MEM_EMAIL, MEM_ZIPCODE, MEM_ADDR, MEM_ADDR_D, MEM_PHONE, MEM_NICK, MEM_ACCEPT_E ) 
-	VALUES('user05', '¹ÚÂùÈ£', '5555', 'user05@example.com','13555', '¼­¿ï½Ã Á¾·Î±¸ Ã¢½Åµ¿', '00¾ÆÆÄÆ® 105µ¿', '010-5555-5555', 'À¯Àú05', 'N');
-
---2. Ä«Å×°í¸® Å×ÀÌºí
-INSERT INTO CATEGORY_TBL
-	VALUES('1000', NULL, '»óÀÇ');
-INSERT INTO CATEGORY_TBL
-	VALUES('2000', NULL, 'ÇÏÀÇ');
-INSERT INTO CATEGORY_TBL
-	VALUES('3000', NULL, '¾Æ¿ìÅÍ');
-INSERT INTO CATEGORY_TBL
-	VALUES('7000', NULL, 'ACC');
-INSERT INTO CATEGORY_TBL
-	VALUES('1100', '1000', '¼ÅÃ÷/ºí¶ó¿ì½º');
-INSERT INTO CATEGORY_TBL
-	VALUES('1200', '1000', '´ÏÆ®');
-INSERT INTO CATEGORY_TBL
-	VALUES('2100', '2000', 'Ã»¹ÙÁö');
-
---3. »óÇ° Å×ÀÌºí
-INSERT INTO PRODUCT_TBL(PDT_NUM, CG_CODE, PDT_NAME, PDT_PRICE, PDT_DISCOUNT, PDT_COMPANY, PDT_DETAIL, PDT_IMG, PDT_AMOUNT, PDT_BUY)
-	VALUES(0001, '1100', '±âº»ºí¶ó¿ì½º', 30000, 10, 'A»ç', '»óÇ°¼Ò°³', 'ÀÌ¹ÌÁö', 10000, 'Y'); 
-INSERT INTO PRODUCT_TBL(PDT_NUM, CG_CODE, PDT_NAME, PDT_PRICE, PDT_DISCOUNT, PDT_COMPANY, PDT_DETAIL, PDT_IMG, PDT_AMOUNT, PDT_BUY)
-	VALUES(0002, '1100', '±âº»¼ÅÃ÷', 30000, 20, 'B»ç', '»óÇ°¼Ò°³', 'ÀÌ¹ÌÁö', 10000, 'Y'); 
-INSERT INTO PRODUCT_TBL(PDT_NUM, CG_CODE, PDT_NAME, PDT_PRICE, PDT_DISCOUNT, PDT_COMPANY, PDT_DETAIL, PDT_IMG, PDT_AMOUNT, PDT_BUY)
-	VALUES(0003, '2100', '±âº»¿¬Ã»¹ÙÁö', 50000, 30, 'B»ç', '»óÇ°¼Ò°³', 'ÀÌ¹ÌÁö', 10000, 'Y'); 
-INSERT INTO PRODUCT_TBL(PDT_NUM, CG_CODE, PDT_NAME, PDT_PRICE, PDT_DISCOUNT, PDT_COMPANY, PDT_DETAIL, PDT_IMG, PDT_AMOUNT, PDT_BUY)
-	VALUES(0004, '2100', '±âº»ÁßÃ»¹ÙÁö', 50000, 40, 'C»ç', '»óÇ°¼Ò°³', 'ÀÌ¹ÌÁö', 10000, 'Y'); 
-INSERT INTO PRODUCT_TBL(PDT_NUM, CG_CODE, PDT_NAME, PDT_PRICE, PDT_DISCOUNT, PDT_COMPANY, PDT_DETAIL, PDT_IMG, PDT_AMOUNT, PDT_BUY)
-	VALUES(0005, '2100', '±âº»ÈæÃ»¹ÙÁö', 70000, 50, 'C»ç', '»óÇ°¼Ò°³', 'ÀÌ¹ÌÁö', 00000, 'N'); 
-	
---4. °ü¸®ÀÚ °èÁ¤ Ãß°¡
-INSERT INTO ADMIN_TBL(admin_id, ADMIN_PW, ADMIN_NAME)
-VALUES('admin', '1111', 'admin');
 
 
-/* ½ÃÄö½º »ý¼º ¹× »èÁ¦ */
--- 1-1. »óÇ°Å×ÀÌºí_»óÇ°ÄÚµå ½ÃÄö½º »ý¼º
-create sequence seq_pdt_num
-start with 1
-increment by 1;
+select mem_id from tbl_member where mem_id = dbrtlarb;
 
--- 1-2. ½ÃÄö½º »èÁ¦
-drop SEQUENCE seq_pdt_num;
-
--- 2-1. Àå¹Ù±¸´ÏÅ×ÀÌºí_Àå¹Ù±¸´ÏÄÚµå ½ÃÄö½º »ý¼º
-create sequence seq_cart_code
-start with 1
-increment by 1;
-
--- 2-2. ½ÃÄö½º »èÁ¦
-drop SEQUENCE seq_cart_code;
-
--- 3-1. ÁÖ¹®Å×ÀÌºí_ÁÖ¹®ÄÚµå ½ÃÄö½º »ý¼º
-create sequence seq_odr_code
-start with 1
-increment by 1;
-
---3-2. ½ÃÄö½º »èÁ¦
-drop SEQUENCE seq_odr_code;
-
---4-1. ÁÖ¹®Å×ÀÌºí_ÁÖ¹®ÄÚµå ½ÃÄö½º »ý¼º
-create sequence seq_rv_num
-start with 1
-increment by 1;
-
---4-2. ½ÃÄö½º »èÁ¦
-drop SEQUENCE seq_rv_num;
+SELECT MEM_ID
+FROM TBL_MEMBER
+WHERE MEM_ID = 'dbrtlarb';
 
 
 
 
--- »óÇ°Å×½ºÆ®¿ëloop(»ùÇÃ µ¥ÀÌÅÍ »ý¼º)
-declare
-	v_cnt number := 0;
-begin
-	dbms_output.enable;
-	
-	loop
-		insert into product_tbl(pdt_num, cg_code, pdt_name, pdt_price, pdt_discount, pdt_company,
-			pdt_detail, pdt_img, 
-			pdt_amount, pdt_buy, pdt_date_sub)
-		values(seq_pdt_num.nextval, 9, 'Å×½ºÆ®»óÇ°'||to_char(v_cnt), 10000, 10000, 'flower', 
-			'Æ«¸³', '/2020/03/24/s_58c0d28f-c6d9-4bbe-8fd6-1b323328988d_Tulips.jpg',
-			1000, 'Y', sysdate);
-			
-		v_cnt := v_cnt +1;
-		
-		exit when v_cnt>100;
-	end loop;
-	
-	dbms_output.put_line('µ¥ÀÌÅÍ ÀÔ·Â ¿Ï·á!');
-end;
+insert into TBL_ADMIN
+values('admin', '$2a$10$rfHhMGtD4b.ar9AppvkbNON6vIcpmJPKtpD8WHh7TzL5jfXDlN/fe', 'ê´€ë¦¬ìž', sysdate);
 
--- »óÇ°Å×ÀÌºí ºñ¿ì±â
-delete from product_tbl;
-
-
---  ÁÖ¹®Å×ÀÌºí¿¡ µé¾î¿À¸é ¹°Ç° Å×ÀÌºí¿¡¼­ °³¼ö °¨¼Ò½ÃÅ°´Â Æ®¸®°Å
-CREATE OR REPLACE TRIGGER trg_order 
-   AFTER INSERT 
-   ON order_detail_tbl
-   FOR EACH ROW 
-DECLARE
-   v_odr_amount NUMBER;
-   v_pdt_num NVARCHAR2(50);
-BEGIN
-   DBMS_OUTPUT.PUT_LINE('trg_order¸¦ ½ÇÇàÇÕ´Ï´Ù.');
-   -- »ç¿ëÀÚ°¡ ÀÔ·ÂÇÑ ±¸¸Å ¼ö·®À» v_orderAmount¿¡ ÀúÀå
-   SELECT :NEW.odr_amount INTO v_odr_amount FROM DUAL;
-   -- »ç¿ëÀÚ°¡ ±¸¸ÅÇÑ ¹°Ç°¸íÀ» v_prodName¿¡ ÀúÀå
-   SELECT :NEW.pdt_num INTO v_pdt_num FROM DUAL;
-   -- ÁÖ¹® ¼ö·®¸¸Å­ ¼ö·® °¨¼Ò
-   UPDATE product_tbl SET pdt_amount = pdt_amount - v_odr_amount 
-       WHERE pdt_num = v_pdt_num ;
-END;
-
--- Ä¿¹Ô
 commit;
-	
+
+SELECT ADMIN_ID, ADMIN_PW, ADMIN_NAME, ADMIN_DATE_LATE
+FROM TBL_ADMIN;
+
+
+INSERT INTO PDT_NUM, CG_NUM_1, CG_NUM_2, PDT_NAME, PDT_PRICE,
+PDT_DISCOUNT, PDT_COMPANY, PDT_DETAIL, PDT_IMG, PDT_IMG_FOLDER,
+PDT_AMOUNT, PDT_BUY, PDT_DATE_SUB, PDT_DATE_UP
+VALUES();
+
+CREATE SEQUENCE SEQ_TBL_PRODUCT_NUM;
+
+
