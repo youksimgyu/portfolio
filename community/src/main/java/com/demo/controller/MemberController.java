@@ -1,5 +1,7 @@
 package com.demo.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,13 +22,19 @@ public class MemberController {
 	@Autowired
 	private MemberService service;
 	
+	
+	@GetMapping("/main")
+	public void main() {
+		
+	}
+	
 	@GetMapping("/join")
 	public void join() {
 		
 	}
 	
 	@PostMapping("/join")
-	public String join(MemberVO vo, RedirectAttributes rttr) throws Exception {
+	public String join(MemberVO vo, RedirectAttributes rttr, HttpSession session) throws Exception {
 		
 		service.join(vo);
 		
