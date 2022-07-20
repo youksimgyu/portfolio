@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.demo.domain.CategoryVO;
 import com.demo.domain.ProductVO;
+import com.demo.dto.Criteria;
 import com.demo.mapper.ProductMapper;
 
 import lombok.extern.log4j.Log4j;
@@ -35,6 +36,18 @@ public class ProductServiceImpl implements ProductService {
 		// TODO Auto-generated method stub
 		proMapper.productInsert(vo);
 		
+	}
+
+	@Override
+	public List<ProductVO> getProductList(Criteria cri) {
+		// TODO Auto-generated method stub
+		return proMapper.getProductList(cri);
+	}
+
+	@Override
+	public int getProductTotalCount(Criteria cri) {
+		// TODO Auto-generated method stub
+		return proMapper.getProductTotalCount(cri);
 	}
 	
 }

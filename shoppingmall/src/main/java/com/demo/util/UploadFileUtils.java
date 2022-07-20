@@ -7,6 +7,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import net.coobird.thumbnailator.Thumbnailator;
@@ -43,7 +47,7 @@ public class UploadFileUtils {
 		
 		try {
 			// 유일한 파일이름으로 객체생성
-			File saveFile = new File(uploadPath, uploadClientFileName);
+			File saveFile = new File(uploadPath, uploadFileName);
 			uploadFile.transferTo(saveFile); // 파일업로드 됨(파일복사)
 			
 			if(checkImageType(saveFile)) {
@@ -84,9 +88,9 @@ public class UploadFileUtils {
 		
 		try {
 			
-		String contentType = Files.probeContentType(saveFile.toPath()); // text/html, text/plain, image/jpeg
-		
-		isImage = contentType.startsWith("image");
+			String contentType = Files.probeContentType(saveFile.toPath()); // text/html, text/plain, image/jpeg
+			
+			isImage = contentType.startsWith("image");
 		
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -95,4 +99,25 @@ public class UploadFileUtils {
 		return isImage;
 	}
 
+	// 이미지를 바이토배열로 읽어오는 작업
+	public static ResponseEntity<byte[]> getFile(String uploadPath, String fileName){
+		
+		File file = new File(uploadPath, fileName); //이미지파일 정보를 이용하여 파일 객체 생성
+		
+		ResponseEntity<byte[]> entity = null;
+		
+		// 브라우저에게 서버에서 보내는 데이터에 대한 설명
+		HttpHeaders headers = new HttpHeaders();
+		
+		try {
+			// 브라우저에게 보낼 데이터의 MIME정보(image/png, image/jpeg, image/gif 등) 패킷의 헤더부분에 추가
+			headers.add("Content-Type", Files.probeContentType(file.toPath()));
+			entity = new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(file), headers, HttpStatus.OK);
+			
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		return entity;
+	}
 }

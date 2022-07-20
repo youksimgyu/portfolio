@@ -18,4 +18,10 @@ public class MemberServiceImpl implements MemberService {
 		
 	}
 
+	@Override
+	public String idCheck(String mem_id) {
+		// TODO Auto-generated method stub
+		return mapper.idCheck(mem_id);
+	}
+
 }

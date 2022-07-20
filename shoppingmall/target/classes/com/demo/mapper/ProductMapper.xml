@@ -31,4 +31,56 @@
 	</insert>
 
 
+	<!-- 검색조건 쿼리. [제목 or 작성자]선택.  value="TW" -->
+	<!-- typeArr: 파라미터타입의 Criteria클래스의 메서드를 가리킴. 검색종류(타입)의 값을 참조하게 됨. [제목 or 작성자]선택.  value="TW"  -->
+	<sql id="criteria">
+		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+			<foreach collection="typeArr" item="type">
+				<trim prefix="OR">
+					<choose>
+						<when test="type == 'N'.toString()">
+							PDT_NAME like '%' || #{keyword} || '%'
+						</when>
+						<when test="type == 'C'.toString()">
+							PDT_COMPANY like '%' || #{keyword} || '%'
+						</when>
+					</choose>
+				</trim>
+			</foreach>
+		</trim>
+	</sql>
+	
+
+	<!-- 1)데이터 목록 데이터 가져오기 : 페이징쿼리(인덱스힌트 구문) -->
+	<select id="getProductList" resultType="com.demo.domain.ProductVO">
+		<![CDATA[
+		SELECT RN, PDT_NUM, CG_NUM_2, CG_NUM_1, PDT_NAME, PDT_PRICE, PDT_DISCOUNT, PDT_COMPANY, PDT_DETAIL, PDT_IMG, PDT_IMG_FOLDER, PDT_AMOUNT, PDT_BUY, PDT_DATE_SUB, PDT_DATE_UP
+		FROM (
+		    SELECT  /*+ INDEX_DESC(TBL_PRODUCT PK_PDT_NUM)*/
+		    ROWNUM RN, PDT_NUM, CG_NUM_2, CG_NUM_1, PDT_NAME, PDT_PRICE, PDT_DISCOUNT, PDT_COMPANY, PDT_DETAIL, PDT_IMG, PDT_IMG_FOLDER, PDT_AMOUNT, PDT_BUY, PDT_DATE_SUB, PDT_DATE_UP
+		    FROM TBL_PRODUCT
+		    WHERE  
+		]]>
+		 <include refid="criteria"></include> 
+		 
+		<![CDATA[ 
+		   
+		         ROWNUM <= #{pageNum} * #{amount}
+		)
+		WHERE RN > (#{pageNum}-1) * #{amount}
+		]]>
+	
+	</select>
+	
+	
+	<!-- 2)테이블 데이타개수 : 페이징구현사용 -->
+	<select id="getProductTotalCount" resultType="int">
+		SELECT COUNT(*) FROM TBL_PRODUCT WHERE
+		
+		<include refid="criteria"></include> 
+		
+		PDT_NUM > 0
+		
+	</select>
+
 </mapper>

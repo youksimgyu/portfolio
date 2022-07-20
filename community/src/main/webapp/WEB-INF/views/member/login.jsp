@@ -12,7 +12,11 @@
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/sign-in/">
 
-    
+<!-- blog css -->
+<%@include file="/WEB-INF/views/include/blog_plugin.jsp" %>
+
+<!-- bootstrap 5.2 -->
+<%@include file="/WEB-INF/views/include/plugin1.jsp" %>
 
     
 
