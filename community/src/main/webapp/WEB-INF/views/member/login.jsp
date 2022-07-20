@@ -11,6 +11,22 @@
     <title>Signin Template · Bootstrap v5.2</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/sign-in/">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+<script  src="http://code.jquery.com/jquery-latest.min.js"></script>    
+
+<style>
+<!--
+	.container-log{
+		padding-left: 600px;
+		padding-right: 600px;
+	}
+	
+	h1 {
+		padding: 40px;
+	}
+-->
+</style>
 
 <!-- blog css -->
 <%@include file="/WEB-INF/views/include/blog_plugin.jsp" %>
@@ -18,105 +34,99 @@
 <!-- bootstrap 5.2 -->
 <%@include file="/WEB-INF/views/include/plugin1.jsp" %>
 
-    
-
-<link href="/docs/5.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-
-    <!-- Favicons -->
-<link rel="apple-touch-icon" href="/docs/5.2/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
-<link rel="icon" href="/docs/5.2/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
-<link rel="icon" href="/docs/5.2/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
-<link rel="manifest" href="/docs/5.2/assets/img/favicons/manifest.json">
-<link rel="mask-icon" href="/docs/5.2/assets/img/favicons/safari-pinned-tab.svg" color="#712cf9">
-<link rel="icon" href="/docs/5.2/assets/img/favicons/favicon.ico">
-<meta name="theme-color" content="#712cf9">
-
-
-    <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
+    <script>
+      let msg = "${msg}";
+      if(msg == "idFailure"){
+        alert("아이디를 확인하세요.");
+      }else if(msg == "passwdFailure"){
+        alert("비밀번호를 확인하세요.");
       }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-
-      .b-example-divider {
-        height: 3rem;
-        background-color: rgba(0, 0, 0, .1);
-        border: solid rgba(0, 0, 0, .15);
-        border-width: 1px 0;
-        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-      }
-
-      .b-example-vr {
-        flex-shrink: 0;
-        width: 1.5rem;
-        height: 100vh;
-      }
-
-      .bi {
-        vertical-align: -.125em;
-        fill: currentColor;
-      }
-
-      .nav-scroller {
-        position: relative;
-        z-index: 2;
-        height: 2.75rem;
-        overflow-y: hidden;
-      }
-
-      .nav-scroller .nav {
-        display: flex;
-        flex-wrap: nowrap;
-        padding-bottom: 1rem;
-        margin-top: -1px;
-        overflow-x: auto;
-        text-align: center;
-        white-space: nowrap;
-        -webkit-overflow-scrolling: touch;
-      }
-    </style>
+    </script>
 
     
-    <!-- Custom styles for this template -->
-    <link href="signin.css" rel="stylesheet">
-  </head>
-  <body class="text-center" cz-shortcut-listen="true">
+</head>
+
+<body class="text-center" cz-shortcut-listen="true">
+
+<!-- header -->
+<%@include file="/WEB-INF/views/include/header.jsp" %>
+
+<!-- nav -->
+<%@include file="/WEB-INF/views/include/nav.jsp" %>
     
-<main class="form-signin w-100 m-auto">
-  <form>
-    <img class="mb-4" src="/docs/5.2/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+
+  <form id= "loginForm" class="container-log" action="login" method="post">
     <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
-    <div class="form-floating">
-      <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-      <label for="floatingInput">Email address</label>
+    <div class="form-floating m-2">
+      <input type="text" class="form-control" id="mem_id" name="mem_id" placeholder="ID">
+      <label for="mem_id">ID</label>
     </div>
-    <div class="form-floating">
-      <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-      <label for="floatingPassword">Password</label>
+    <div class="form-floating m-2">
+      <input type="password" class="form-control" id="mem_pw" name="mem_pw" placeholder="Password">
+      <label for="mem_pw">Password</label>
     </div>
 
     <div class="checkbox mb-3">
       <label>
-        <input type="checkbox" value="remember-me"> Remember me
+        <input type="checkbox" value="remember-me" checked="checked">아이디 저장
       </label>
     </div>
-    <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+    <div class="row">
+	    <div class="col">
+	    <button class="w-100 btn btn-lg btn-primary" type="submit">log in</button>
+	    </div>
+	    
+	    <div class="col">
+	    <button class="w-100 btn btn-lg btn-primary" type="button" id="btnSearchIDPW">ID/PW Search</button>
+	    </div>
+    </div>
     <p class="mt-5 mb-3 text-muted">© 2017–2022</p>
   </form>
-</main>
 
 
-    
+
+<!-- footer -->
+<%@include file="/WEB-INF/views/include/footer.jsp" %>
+
+<script>
+
+  /* 로그인 */
+ 
+   // html문서와 내용을 브라우저가 읽고 난 이후에 동작되는 특징
+   $(document).ready(function(){
+
+      let loginForm = $("#loginForm");
+
+      // 로그인 정보 전송
+      $("#loginForm").on("submit", function(){
+        
+        console.log("로그인 진행");
+        
+        //유효성 검사작업 해야 함
+        if($("#mem_id").val() == "") {
+          alert("아이디를 입력하세요.");
+          $("#mem_id").focus();
+          return false;
+        }
+
+        if($("#mem_pw").val() == "") {
+          alert("비밀번호를 입력하세요.");
+          $("#mem_pw").focus();
+          return false;
+        }
+
+        return true;
+      });
+
+      // ID/PW 찾기버튼
+      $("#btnSearchIDPW").on("click", function(){
+        
+        location.href="/member/lostpass";
+      });
+    });
+
+</script>
   
 
 </body></html>

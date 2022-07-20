@@ -30,7 +30,7 @@
 <div class="container my-5 p-5">
 	<h3 style="text-align:center;">Join</h3>
 		
-		<form id="joinForm" method="post" action="join">
+		<form id="joinForm" method="post" action="join" class="contatiner p-5 my-5 border">
 		
 			<div class="mb-3 mt-3">
 			<label for="email" class="form-label">아이디:</label>
@@ -197,7 +197,8 @@ $(document).ready(function(){
           dataType: 'text',
           data: {receiveMail : $("#mem_email").val()},
           success: function(result){
-			        if(result = "success"){
+        	  
+			  if(result = "success"){
                 alert("메일이 발송되어, 인증코드를 확인바랍니다.");
               } else {
                 alert("메일이 발송이 실패되어, 메일주소 확인 또는 관리자에게 문의 바랍니다.");
@@ -206,8 +207,9 @@ $(document).ready(function(){
       });
     });
 
-    let isAuthCode = false; // 메일인증확인 여부
 
+    let isAuthCode = false; // 메일인증확인 여부
+    
     // 메일 인증확인
     $("#btnConfirmAuthcode").on("click", function(){
 

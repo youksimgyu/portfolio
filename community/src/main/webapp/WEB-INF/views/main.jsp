@@ -16,6 +16,13 @@
 <!-- bootstrap 5.2 -->
 <%@include file="/WEB-INF/views/include/plugin1.jsp" %>
 
+
+    <script>
+    	if('${msg}' == 'logout'){
+    		alert("로그아웃 되었습니다.");
+    	}
+    </script>
+    
   </head>
   <body>
 
