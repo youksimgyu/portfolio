@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -186,11 +187,68 @@ public class AdProductController {
 	@GetMapping("/displayFile")
 	public ResponseEntity<byte[]> displayFile(String folderName, String fileName){
 		
-		log.info("폴더이름: " + folderName);
-		log.info("파일이름: " + fileName);
+//		log.info("폴더이름: " + folderName);
+//		log.info("파일이름: " + fileName);
 		
 		// 이미지를 바이트배열로 읽어오는 작업
 		return UploadFileUtils.getFile(uploadPath, folderName + "\\" + fileName);
+	}
+	
+	
+	// 상품목록에서 수정폼
+	@GetMapping("/productModify")
+	public void productModify(@RequestParam("pdt_num") Integer pdt_num, @ModelAttribute("cri") Criteria cri, Model model) {
+		
+		log.info("상품코드 : " + pdt_num);
+		log.info("페이지관련코드 : " + cri);
+		
+		// 1차 카테고리 선택
+		model.addAttribute("cateList", proService.getCateList());
+		
+		// 상품정보 - 1차카테고리를 참조한 정보 들어있음
+		ProductVO vo = proService.getProductpdt_num(pdt_num);
+		model.addAttribute("productVO", vo);
+		
+		// 상품정보에서 1차카테고리 코드를 참조해서 2차카테고리 가져오기.
+		Integer cg_num_1 = vo.getCg_num_1();
+		// 1차를 부모로 하는 2차 카테고리 정보
+		model.addAttribute("subCateList", proService.getsubCateList(cg_num_1));
+		
+	}
+	
+	
+	// 상품수정 업데이트
+	@PostMapping("/productModify")
+	public String productModify(ProductVO vo, Criteria cri, RedirectAttributes rttr) {
+		
+		log.info("상품 수정 정보 : " + vo);
+		
+		// 상품이미지 변경문제.
+		// 파일업로드 변경 유뮤 체크
+		if(!vo.getUploadFile().isEmpty()) { // 파일이 있다는 뜻
+	
+			// 1) 수정전 이미지 파일삭제 (날짜폴더명, 변경전 구 이미지파일명)
+			// C:/Dev/upload 2022\07\21\\s_d536cfd6-fb00-4276-8603-1e1cb433f9d9_화면 캡처 2022-07-18 092024.png
+			UploadFileUtils.deleteFile(uploadPath, vo.getPdt_img_folder() + "\\s_" + vo.getPdt_img());
+			
+//			C:\\Dev\\upload, 2022\07\21\\s_ac735c99-18ab-4f26-9883-a70c6d8f2982_화면 캡처 2022-07-18 092024.png
+			
+			log.info("uploadPath : " + uploadPath);
+			log.info("삭제폴더주소 : " + vo.getPdt_img_folder());
+			log.info("삭제이미지 이름 : " + vo.getPdt_img());
+			
+			// 파일수정 업로드
+			String uploadDateFolderPath = UploadFileUtils.getFolder();
+			vo.setPdt_img_folder(uploadDateFolderPath);
+			vo.setPdt_img(UploadFileUtils.uploadFile(uploadPath, uploadDateFolderPath, vo.getUploadFile()));
+			
+		}
+		
+	
+		// 2) 상품정보 수정. 업데이트
+		proService.productModify(vo);
+		
+		return "redirect:/admin/product/productList" + cri.getListLink();
 	}
 	
 }

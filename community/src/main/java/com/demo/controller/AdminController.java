@@ -3,6 +3,7 @@ package com.demo.controller;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +20,10 @@ import lombok.extern.log4j.Log4j;
 @RequestMapping("/admin/*")
 @Log4j
 public class AdminController {
+	
+	// 스프링시큐리티 암호화 라이브러리 클래스 주입
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	@Autowired
 	private AdminService service;
@@ -47,10 +52,7 @@ public class AdminController {
 			String passwd = dto.getAdm_pw();
 			String db_passwd = vo.getAdm_pw();
 			
-			log.info(dto);
-			log.info(vo);
-			
-			if(passwd.equals(db_passwd)) {
+			if(bCryptPasswordEncoder.matches(passwd, db_passwd)) {
 				url = "/admin/main";
 				session.setAttribute("adLoginStatus", vo);
 				msg = "adLoginSuccess";
@@ -70,7 +72,7 @@ public class AdminController {
 		return "redirect:" + url;
 	}
 	
-	
+	// 로그아웃
 	@GetMapping("/adLogout")
 	public String adLogout(HttpSession session) {
 		

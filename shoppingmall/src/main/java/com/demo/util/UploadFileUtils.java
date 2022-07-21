@@ -1,5 +1,7 @@
 package com.demo.util;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.file.Files;
@@ -13,8 +15,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import lombok.extern.log4j.Log4j;
 import net.coobird.thumbnailator.Thumbnailator;
 
+@Log4j
 public class UploadFileUtils {
 
 	// 업로드시 날짜폴더 생성해서 파일관리.
@@ -120,4 +124,26 @@ public class UploadFileUtils {
 		
 		return entity;
 	}
+	
+	// 파일삭제
+	public static void deleteFile(String uploadPath, String fileName) {
+		
+		//윈도우 운영체제 : 경로구분자. \(역슬래쉬)
+		//원본이미지, 썸네일이미지 : 파일 2개
+		
+//		uploadPath : C:\\Dev\\upload
+//		fileName : 2022/07/21/s_askfjalfjalsdflkaf.jpg
+		
+		String front = fileName.substring(0, 11);
+		String end = fileName.substring(13);
+		String origin = front + end;
+		
+		// 원본이미지 삭제
+		new File(uploadPath + origin.replace('/', File.separatorChar)).delete();
+		
+		// 썸네일 이미지 삭제
+		new File(uploadPath + fileName.replace('/', File.separatorChar)).delete();
+
+	}
+	
 }

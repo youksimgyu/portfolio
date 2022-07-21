@@ -62,9 +62,11 @@
 		UPDATE MEMBER
 		SET MEM_NAME = #{mem_name},
 		
+			<trim prefix="set" suffixOverrides=",">
 			<if test="mem_pw != null and !mem_pw.equals('')">
 			MEM_PW = #{mem_pw},
 			</if>
+			</trim>
 			
 			MEM_PHONE = #{mem_phone},
 			MEM_EMAIL = #{mem_email}

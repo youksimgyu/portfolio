@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.mapper.AdCategoryMapper">
+
+	<insert id="categoryInsert">
+	
+		INSERT INTO CATEGORY (CAT_NUM, CAT_NAME)
+		VALUES (SEQ_CAT_NUM.NEXTVAL, #{cat_name})
+	
+	</insert>
+
+
+</mapper>

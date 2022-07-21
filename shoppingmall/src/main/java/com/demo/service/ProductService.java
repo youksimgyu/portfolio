@@ -18,4 +18,8 @@ public interface ProductService {
 	
 	int getProductTotalCount(Criteria cri);
 	
+	ProductVO getProductpdt_num(Integer pdt_num);
+	
+	void productModify(ProductVO vo);
+	
 }

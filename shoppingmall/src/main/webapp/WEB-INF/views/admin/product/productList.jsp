@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <!DOCTYPE html>
@@ -76,7 +75,10 @@ desired effect
 			<div class="box-header">
 				LIST PRODUCT
 			</div>
+			
 			<div class="box body">
+			
+				<!-- 검색기능 -->
 				<form id="searchForm" action="/admin/product/productList" method="get">
 				  <select name="type">
 					  <option value="" <c:out value="${pageMaker.cri.type == null ? 'selected' : '' }" />>--</option>
@@ -88,7 +90,7 @@ desired effect
 				  <input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum }">
 				  <input type="hidden" name="amount" value="${pageMaker.cri.amount }">
 				  <button type="submit" class="btn btn-link">Search</button>
-			  </form>
+			  	</form>
 			  
 			  <table class="table table-hover">
 				  <thead>
@@ -108,14 +110,14 @@ desired effect
 				    <tr>
 				      <th scope="row"><c:out value="${productVO.pdt_num }" /></th>
 				      <td>
-				      	<img src="/admin/product/displayFile?folderName=${productVO.pdt_img_folder }&fileName=${productVO.pdt_img }" alt="" style="width: 80px;height: 80px;">
+				      	<img src="/admin/product/displayFile?folderName=${productVO.pdt_img_folder }&fileName=s_${productVO.pdt_img }" alt="" style="width: 80px;height: 80px;">
 				      	<a class="move" href="${productVO.pdt_num }"><c:out value="${productVO.pdt_name }" escapeXml="true" /></a>
 				      </td>
 				      <td><c:out value="${productVO.pdt_price }" /></td>
 				      <td><fmt:formatDate value="${productVO.pdt_date_sub }" pattern="yyyy-MM-dd hh:mm" /></td>
 				      <td><c:out value="${productVO.pdt_buy }" /></td>
-				      <td>수정</td>
-				      <td>삭제</td>
+				      <td><button type="button" name="btnProductEdit" data-pdt_num="${productVO.pdt_num }" class="btn btn-link">Edit</button></td>
+				      <td><button type="button" name="btnProductDelete" data-pdt_num="${productVO.pdt_num }" class="btn btn-link">Delete</button></td>
 				    </tr>
 				    </c:forEach>
 				    
@@ -149,13 +151,15 @@ desired effect
 				    </c:if>
 					
 				  </ul>
-				  <!--페이지 번호 클릭시 list주소로 보낼 파라미터 작업-->
+				  
+				  	<!--페이지 번호 클릭시 list주소로 보낼 파라미터 작업-->
 					<form id="actionForm" action="/board/list" method="get">
 						<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}">
 						<input type="hidden" name="amount" value="${pageMaker.cri.amount}">
 						<input type="hidden" name="type" value="${pageMaker.cri.type}">
 						<input type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
 					</form>
+					
 				</nav>
 			</div>
 			
@@ -264,5 +268,33 @@ immediately after the control sidebar -->
     Both of these plugins are recommended to enhance the
     user experience. -->
     
+<script>
+
+	$(document).ready(function(){
+
+		let actionForm = $("#actionForm");
+
+		// 상품수정 클릭시
+		$("button[name='btnProductEdit']").on("click", function(){
+			// console.log("상품코드 : " $(this).data("pdt_num"));
+
+			//상품코드를 자식으로 추가
+			actionForm.append("<input type='hidden' name='pdt_num' value='" + $(this).data("pdt_num") + "'>");
+			actionForm.attr("method", "get");
+			actionForm.attr("action", "/admin/product/productModify");
+			actionForm.submit();
+
+		});
+
+		// 상품삭제 클릭시
+		$("button[name='btnProductDelete']").on("click", function(){
+			
+		});
+
+	});
+	
+</script>
+
+
 </body>
 </html>

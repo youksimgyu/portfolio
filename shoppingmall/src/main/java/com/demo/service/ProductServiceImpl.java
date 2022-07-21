@@ -49,5 +49,17 @@ public class ProductServiceImpl implements ProductService {
 		// TODO Auto-generated method stub
 		return proMapper.getProductTotalCount(cri);
 	}
+
+	@Override
+	public ProductVO getProductpdt_num(Integer pdt_num) {
+		// TODO Auto-generated method stub
+		return proMapper.getProductpdt_num(pdt_num);
+	}
+
+	@Override
+	public void productModify(ProductVO vo) {
+		// TODO Auto-generated method stub
+		proMapper.productModify(vo);
+	}
 	
 }
