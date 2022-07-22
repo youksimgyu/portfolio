@@ -72,78 +72,97 @@ desired effect
 		<div class="box box-primary">
 		
 			<div class="box-header">
-				REGISTER PRODUCT
+				PRODUCT
 			</div>
 			
-			<form id="productForm" action="productInsert" method="post" enctype="multipart/form-data">
+			<form id="checkForm" action="productList" method="get" enctype="multipart/form-data">
 			 <div class="box-body">
 			
 			  <div class="form-group row">
+
+					<!-- 페이징 및 검색정보(Criteria 클래스의 필드)? 원래상태의 리스트에서 필요한 정보 -->
+					<input type="hidden" name="pageNum" value="${cri.pageNum }">
+					<input type="hidden" name="amount" value="${cri.amount }">
+					<input type="hidden" name="type" value="${cri.type }">
+					<input type="hidden" name="keyword" value="${cri.keyword }">
+
 			  	<label for="cg_name" class="col-sm-2 col-form-label">카테고리</label>
 			  	<div class="col-sm-3">
-			  		<select name="cg_num_1" id="firstCategory" class="form-control">
+			  		<select name="cg_num_1" id="firstCategory" class="form-control" disabled>
 			  			<option>1차 카테고리 선택</option>
 						<c:forEach items="${cateList }" var="categoryVO">
-							<option value="${categoryVO.cg_code_c }">${categoryVO.cg_name }</option>
+							<option value="${categoryVO.cg_code_c }" ${categoryVO.cg_code_c == productVO.cg_num_1 ? 'selected':'' }>${categoryVO.cg_name }</option>
 						</c:forEach>
 			  		</select>
 			  	</div>
 			  	<div class="col-sm-3">
-			  		<select name="cg_num_2" id="secondCategory" class="form-control">
-			  			<option value="">2차 카테고리 선택</option>
+			  		<select name="cg_num_2" id="secondCategory" class="form-control" disabled>
+			  			<option>2차 카테고리 선택</option>
+						<c:forEach items="${subCateList }" var="subCategoryVO">
+							<option value="${subCategoryVO.cg_code_c }" ${subCategoryVO.cg_code_c == productVO.cg_num_2 ? 'selected':'' }>${subCategoryVO.cg_name }</option>
+						</c:forEach>
 			  		</select>
 			  	</div>
 			  </div>
 			  
-			  <div class="form-group row">
+			   <div class="form-group row">
 			    <label for="pdt_name" class="col-sm-2 col-form-label">상품명</label>
 			    <div class="col-sm-4">
-			      <input type="text" class="form-control" id="pdt_name" name="pdt_name">
+			    
+			      <!-- 게시물 넘버를 숨겨서 넘겨줌 -->
+			      <input type="hidden" id="pdt_num" name="pdt_num" value="${productVO.pdt_num }">
+			      
+			      <input type="text" class="form-control" id="pdt_name" name="pdt_name" value="${productVO.pdt_name }" readonly>
 			    </div>
 			    <label for="pdt_price" class="col-sm-2 col-form-label">상품가격</label>
 			    <div class="col-sm-4">
-			      <input type="text" class="form-control" id="pdt_price" name="pdt_price">
+			      <input type="text" class="form-control" id="pdt_price" name="pdt_price" value="${productVO.pdt_price }" readonly>
 			    </div>
 			  </div>
 
 			  <div class="form-group row">
 			    <label for="pdt_discount" class="col-sm-2 col-form-label">할인율</label>
 			    <div class="col-sm-4">
-			      <input type="text" class="form-control" id="pdt_discount" name="pdt_discount">
+			      <input type="text" class="form-control" id="pdt_discount" name="pdt_discount" value="${productVO.pdt_discount }" readonly>
 			    </div>
 			    <label for="pdt_company" class="col-sm-2 col-form-label">제조사</label>
 			    <div class="col-sm-4">
-			      <input type="text" class="form-control" id="pdt_company" name="pdt_company">
+			      <input type="text" class="form-control" id="pdt_company" name="pdt_company" value="${productVO.pdt_company }" readonly>
 			    </div>
 			  </div>
+			  
+			      <input type="hidden" class="form-control" id="uploadFile" name="uploadFile">
+			      
+			      <!-- 날짜폴더, 상품이미지 파일명 -->
+			      <!-- 사진 변경하지 않으면 있던 자료 그대로 넘어감 -->
+			      <input type="hidden" id="pdt_img_folder" name="pdt_img_folder" value="${productVO.pdt_img_folder }">
+			      <input type="hidden" id="pdt_img" name="pdt_img" value="${productVO.pdt_img }">
+			  
 			  <div class="form-group row">
-			    <label for="pdt_img" class="col-sm-2 col-form-label">파일선택</label>
+			    <label for="pdt_img" class="col-sm-2 col-form-label">현재이미지</label>
 			    <div class="col-sm-4">
-			      <input type="file" class="form-control" id="uploadFile" name="uploadFile" multiple>
+			      <img src="/admin/product/displayFile?folderName=${productVO.pdt_img_folder }&fileName=${productVO.pdt_img }" alt="" style="width: 80px;height: 80px;">
 			    </div>
-				<label for="pdt_img" class="col-sm-2 col-form-label">이미지 미리보기</label>
-				<div class="col-sm-4">
-					<img id="change_img" style="width: 80px;height: 80px;">
-				</div>
 			  </div>
+			  
 			  <div class="form-group row">
 			    <label for="pdt_detail" class="col-sm-2 col-form-label">상품설명</label>
 			    <div class="col-sm-10">
-			      <textarea class="form-control" row="3" id="pdt_detail" name="pdt_detail"></textarea>
+			      <textarea class="form-control" row="3" id="pdt_detail" name="pdt_detail" readonly>${productVO.pdt_detail }</textarea>
 			    </div>
 			  </div>
 			  <div class="form-group row">
 			    <label for="pdt_amount" class="col-sm-2 col-form-label">수량</label>
 			    <div class="col-sm-3">
-			      <input type="text" class="form-control" id="pdt_amount" name="pdt_amount">
+			      <input type="text" class="form-control" id="pdt_amount" name="pdt_amount" value="${productVO.pdt_amount }" readonly>
 			    </div>
 			  </div>
 			  <div class="form-group row">
 			    <label for="pdt_buy" class="col-sm-2 col-form-label">판매여부</label>
 			    <div class="col-sm-4">
-			      <select id="pdt_buy" name="pdt_buy">
-			      	<option value="Y">판매가능</option>
-			      	<option value="N">판매불가능</option>
+			      <select id="pdt_buy" name="pdt_buy" disabled>
+			      	<option value="Y" ${productVO.pdt_buy == 'Y' ? 'selected':'' }>판매가능</option>
+			      	<option value="N" ${productVO.pdt_buy == 'N' ? 'selected':'' }>판매불가능</option>
 			      </select>
 			    </div>
 			  </div>
@@ -156,7 +175,7 @@ desired effect
 				</div>
 				<div class="form-group row">
 					<div class="col-sm-12 text-center">
-						<button type="submit" class="btn btn-dark" id="btnProduct">상품등록</button>
+						<button type="submit" class="btn btn-dark" id="btnProduct">돌아가기</button>
 					</div>
 				</div>
 			</div>

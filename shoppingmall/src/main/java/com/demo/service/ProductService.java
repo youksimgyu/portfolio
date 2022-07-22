@@ -22,4 +22,6 @@ public interface ProductService {
 	
 	void productModify(ProductVO vo);
 	
+	void productDelete(Integer pdt_num);
+	
 }

@@ -196,7 +196,7 @@ public class AdProductController {
 	
 	
 	// 상품목록에서 수정폼
-	@GetMapping("/productModify")
+	@GetMapping(value= {"/productModify", "/productCheck"})
 	public void productModify(@RequestParam("pdt_num") Integer pdt_num, @ModelAttribute("cri") Criteria cri, Model model) {
 		
 		log.info("상품코드 : " + pdt_num);
@@ -207,6 +207,8 @@ public class AdProductController {
 		
 		// 상품정보 - 1차카테고리를 참조한 정보 들어있음
 		ProductVO vo = proService.getProductpdt_num(pdt_num);
+		// modify로 옮겨갈때 폴더 이름 변경
+		vo.setPdt_img_folder(vo.getPdt_img_folder().replace("\\", "/"));
 		model.addAttribute("productVO", vo);
 		
 		// 상품정보에서 1차카테고리 코드를 참조해서 2차카테고리 가져오기.
@@ -251,4 +253,19 @@ public class AdProductController {
 		return "redirect:/admin/product/productList" + cri.getListLink();
 	}
 	
+	
+	// 상품삭제
+	@GetMapping("/productDelete") // 상품코드, 페이지 및 검색 파라미터, 날짜폴더, 파일이름
+	public String productDelete(@RequestParam("pdt_num") Integer pdt_num, @ModelAttribute("cri") Criteria cri, String pdt_img_folder, String pdt_img) {
+		
+		// 이미지 파일삭제
+		UploadFileUtils.deleteFile(uploadPath, pdt_img_folder + "\\s_" + pdt_img);
+		
+		proService.productDelete(pdt_num);
+		
+		return "redirect:/admin/product/productList" + cri.getListLink();
+	}
+	
+	
+
 }

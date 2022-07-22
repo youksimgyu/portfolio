@@ -131,7 +131,7 @@ desired effect
 			    </div>
 			  </div>
 			  <div class="form-group row">
-			    <label for="pdt_img" class="col-sm-2 col-form-label">상품이미지</label>
+			    <label for="pdt_img" class="col-sm-2 col-form-label">파일선택</label>
 			    <div class="col-sm-3">
 			      <input type="file" class="form-control" id="uploadFile" name="uploadFile">
 			      
@@ -142,6 +142,18 @@ desired effect
 			      
 			    </div>
 			  </div>
+			  
+			  <div class="form-group row">
+			    <label for="pdt_img" class="col-sm-2 col-form-label">현재이미지</label>
+			    <div class="col-sm-4">
+			      <img src="/admin/product/displayFile?folderName=${productVO.pdt_img_folder }&fileName=${productVO.pdt_img }" alt="" style="width: 80px;height: 80px;">
+			    </div>
+				<label for="pdt_img" class="col-sm-2 col-form-label">변경이미지</label>
+				<div class="col-sm-4">
+					<img id="change_img" style="width: 80px;height: 80px;">
+				</div>
+			  </div>
+			  
 			  <div class="form-group row">
 			    <label for="pdt_detail" class="col-sm-2 col-form-label">상품설명</label>
 			    <div class="col-sm-10">
@@ -322,6 +334,21 @@ immediately after the control sidebar -->
 				secondCategory.append(optionStr);
 			});
 		});
+
+
+		// 이미지 미리보기
+		$("#uploadFile").on("change", function(e){
+
+			let file = e.target.files[0];
+	
+			let reader = new FileReader();
+			reader.onload = function(e){
+				$("#change_img").attr("src", e.target.result);
+			}
+	
+			reader.readAsDataURL(file);
+		});
+
 	});
 
 </script>

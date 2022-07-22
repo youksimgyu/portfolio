@@ -111,5 +111,13 @@
 		WHERE PDT_NUM = #{pdt_num}
 	
 	</update>
+	
+	
+	<delete id="productDelete">
+	
+		DELETE TBL_PRODUCT
+		WHERE PDT_NUM = #{pdt_num}
+	
+	</delete>
 
 </mapper>

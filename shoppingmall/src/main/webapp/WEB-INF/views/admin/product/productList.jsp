@@ -80,16 +80,15 @@ desired effect
 			
 				<!-- 검색기능 -->
 				<form id="searchForm" action="/admin/product/productList" method="get">
-				  <select name="type">
-					  <option value="" <c:out value="${pageMaker.cri.type == null ? 'selected' : '' }" />>--</option>
+				  <select name="type" style="width: 100px; height: 26px;">
+					  <option value="NC" <c:out value="${pageMaker.cri.type eq null ? 'selected' : '' }" />>전체</option>
 					  <option value="N" <c:out value="${pageMaker.cri.type eq 'N' ? 'selected' : '' }" />>상품명</option><!-- Title -->
 					  <option value="C" <c:out value="${pageMaker.cri.type eq 'C' ? 'selected' : '' }" />>제조사</option><!-- Content -->
-					  <option value="NC" <c:out value="${pageMaker.cri.type eq 'NC' ? 'selected' : '' }" />>상품명 or 제조사</option><!-- Title or Content -->
 				  </select>
 				  <input type="text" name="keyword" value="${pageMaker.cri.keyword }">
 				  <input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum }">
 				  <input type="hidden" name="amount" value="${pageMaker.cri.amount }">
-				  <button type="submit" class="btn btn-link">Search</button>
+				  <button type="button" id="btnSearch" class="btn btn-link">Search</button>
 			  	</form>
 			  
 			  <table class="table table-hover">
@@ -110,14 +109,19 @@ desired effect
 				    <tr>
 				      <th scope="row"><c:out value="${productVO.pdt_num }" /></th>
 				      <td>
-				      	<img src="/admin/product/displayFile?folderName=${productVO.pdt_img_folder }&fileName=s_${productVO.pdt_img }" alt="" style="width: 80px;height: 80px;">
-				      	<a class="move" href="${productVO.pdt_num }"><c:out value="${productVO.pdt_name }" escapeXml="true" /></a>
+				      	<img src="/admin/product/displayFile?folderName=${productVO.pdt_img_folder }&fileName=s_${productVO.pdt_img }"
+				      		 style="width: 80px;height: 80px;" onerror="this.onerror=null; this.src='/image/no_client.png'">
+				      	<a class="move" href="#" data-pdt_num="${productVO.pdt_num }"><c:out value="${productVO.pdt_name }" escapeXml="true" /></a>
 				      </td>
 				      <td><c:out value="${productVO.pdt_price }" /></td>
 				      <td><fmt:formatDate value="${productVO.pdt_date_sub }" pattern="yyyy-MM-dd hh:mm" /></td>
 				      <td><c:out value="${productVO.pdt_buy }" /></td>
 				      <td><button type="button" name="btnProductEdit" data-pdt_num="${productVO.pdt_num }" class="btn btn-link">Edit</button></td>
-				      <td><button type="button" name="btnProductDelete" data-pdt_num="${productVO.pdt_num }" class="btn btn-link">Delete</button></td>
+				      <td>
+						<input type="hidden" name="pdt_img" value="${productVO.pdt_img }">
+						<input type="hidden" name="pdt_img_folder" value="${productVO.pdt_img_folder }">
+						<button type="button" name="btnProductDelete" data-pdt_num="${productVO.pdt_num }" class="btn btn-link">Delete</button>
+					  </td>
 				    </tr>
 				    </c:forEach>
 				    
@@ -274,7 +278,7 @@ immediately after the control sidebar -->
 
 		let actionForm = $("#actionForm");
 
-		// 상품수정 클릭시
+		// 1) 상품수정 클릭시
 		$("button[name='btnProductEdit']").on("click", function(){
 			// console.log("상품코드 : " $(this).data("pdt_num"));
 
@@ -286,10 +290,62 @@ immediately after the control sidebar -->
 
 		});
 
-		// 상품삭제 클릭시
+		let searchForm = $("#searchForm");
+
+		// 검색버튼 클릭시 pageNum 초기화
+		$("#btnSearch").on("click", function(){
+
+			searchForm.find("input[name='pageNum']").val();
+
+		});
+
+		// 2) 상품삭제 클릭시
 		$("button[name='btnProductDelete']").on("click", function(){
 			
+			if(!confirm($(this).data("pdt_num") + " 번 상품을 삭제하겠습니까?")) return;
+
+			//상품코드를 자식으로 추가
+			actionForm.append("<input type='hidden' name='pdt_num' value='" + $(this).data("pdt_num") + "'>");
+			
+			//날짜폴더 추가
+			let pdt_img_folder = $(this).parent().children("input[name='pdt_img_folder']").val();
+			actionForm.append("<input type='hidden' name='pdt_img_folder' value='" + pdt_img_folder + "'>");
+			
+			//파일이름 추가
+			let pdt_img = $(this).parent().children("input[name='pdt_img']").val();
+			actionForm.append("<input type='hidden' name='pdt_img' value='" + pdt_img + "'>");
+
+			actionForm.attr("method", "get");
+			actionForm.attr("action", "/admin/product/productDelete");
+			actionForm.submit();
 		});
+
+		// 3) 페이지 번호 클릭
+		$("ul.pagination li a.page-link").on("click", function(e){
+			e.preventDefault(); // <a>태그의 링크기능 무력화
+			
+			let pageNum = $(this).attr("href");
+
+			actionForm.find("input[name='pageNum']").val(pageNum);
+
+			actionForm.attr("method", "get");
+			actionForm.attr("action", "/admin/product/productList");
+			actionForm.submit();
+		});
+
+
+		$("a.move").on("click", function(e){
+			e.preventDefault();
+
+			//상품코드를 자식으로 추가
+			actionForm.append("<input type='hidden' name='pdt_num' value='" + $(this).data("pdt_num") + "'>");
+			actionForm.attr("method", "get");
+			actionForm.attr("action", "/admin/product/productCheck");
+			actionForm.submit();
+
+
+		});
+
 
 	});
 	

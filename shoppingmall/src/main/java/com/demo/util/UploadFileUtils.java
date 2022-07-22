@@ -108,6 +108,15 @@ public class UploadFileUtils {
 		
 		File file = new File(uploadPath, fileName); //이미지파일 정보를 이용하여 파일 객체 생성
 		
+		// 이미지 파일명이 존재하지 않는 경우
+		if(!file.exists()) {
+			uploadPath = "C:\\Dev\\upload\\image\\";
+			fileName = "NO.png";
+			
+			file = new File(uploadPath, fileName);
+		}
+		
+		
 		ResponseEntity<byte[]> entity = null;
 		
 		// 브라우저에게 서버에서 보내는 데이터에 대한 설명

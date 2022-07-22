@@ -9,5 +9,13 @@
 	
 	</insert>
 
+	<select id="getCateList" resultType="com.demo.domain.CategoryVO">
+	
+		SELECT CG_CODE_C, CG_CODE_P, CG_NAME
+		FROM TBL_CATEGORY
+		WHERE CG_CODE_P IS NULL
+	
+	</select>
+
 
 </mapper>
