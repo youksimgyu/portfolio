@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.mapper.AdBoardMapper">
+
+	<select id="getCateList" resultType="com.demo.domain.CategoryVO">
+	
+		SELECT cat_c, cat_name, cat_p
+		FROM CATEGORY
+		WHERE cat_p IS NULL
+	
+	</select>
+	
+	<select id="getsubCateList" resultType="com.demo.domain.CategoryVO">
+	
+		SELECT cat_c, cat_name, cat_p
+		FROM CATEGORY
+		WHERE cat_p = #{categoryCode}
+	
+	</select>
+	
+	<insert id="boardInsert">
+	
+		INSERT INTO AD_BOARD
+					(ad_boa_num, ad_boa_c, ad_boa_p, ad_boa_title, ad_boa_content)
+		VALUES
+				(SEQ_AD_BOA_NUM.NEXTVAL, #{ad_boa_c}, #{ad_boa_p}, #{ad_boa_title}, #{ad_boa_content})
+	
+	</insert>
+	
+	
+	<!-- 검색조건 쿼리. [제목 or 작성자]선택.  value="TW" -->
+	<!-- typeArr: 파라미터타입의 Criteria클래스의 메서드를 가리킴. 검색종류(타입)의 값을 참조하게 됨. [제목 or 작성자]선택.  value="TW"  -->
+	<sql id="criteria">
+		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+			<foreach collection="typeArr" item="type">
+				<trim prefix="OR">
+					<choose>
+						<when test="type == 'N'.toString()">
+							ad_boa_title like '%' || #{keyword} || '%'
+						</when>
+						<when test="type == 'C'.toString()">
+							ad_boa_content like '%' || #{keyword} || '%'
+						</when>
+					</choose>
+				</trim>
+			</foreach>
+		</trim>
+	</sql>
+
+
+	<!-- 1)데이터 목록 데이터 가져오기 : 페이징쿼리(인덱스힌트 구문) -->
+	<select id="getBoardList" resultType="com.demo.domain.AdBoardVO">
+		<![CDATA[
+		SELECT RN, ad_boa_num, ad_boa_c, ad_boa_p, ad_boa_title, ad_boa_content, ad_boa_date_reg, ad_boa_date_up
+		FROM (
+		    SELECT  /*+ INDEX_DESC(AD_BOARD PK_BOA_NUM)*/
+		    ROWNUM RN, ad_boa_num, ad_boa_c, ad_boa_p, ad_boa_title, ad_boa_content, ad_boa_date_reg, ad_boa_date_up
+		    FROM AD_BOARD
+		    WHERE  
+		]]>
+		 <include refid="criteria"></include> 
+		 
+		<![CDATA[ 
+		   
+		         ROWNUM <= #{pageNum} * #{amount}
+		)
+		WHERE RN > (#{pageNum}-1) * #{amount}
+		]]>
+	
+	</select>
+	
+	
+	<!-- 2)테이블 데이타개수 : 페이징구현사용 -->
+	<select id="getBoardTotalCount" resultType="int">
+		SELECT COUNT(*) FROM AD_BOARD WHERE
+		
+		<include refid="criteria"></include> 
+		
+		ad_boa_num > 0
+		
+	</select>
+	
+	
+	<select id="getBoardad_boa_num" parameterType="int" resultType="com.demo.domain.AdBoardVO">
+	
+		SELECT ad_boa_num, ad_boa_c, ad_boa_p, ad_boa_title, ad_boa_content, ad_boa_date_reg, ad_boa_date_up
+		FROM AD_BOARD
+		WHERE ad_boa_num = #{ad_boa_num}
+	
+	</select>
+	
+	
+	<update id="boardModify" parameterType="com.demo.domain.AdBoardVO">
+	
+		UPDATE AD_BOARD
+		SET	AD_BOA_C = #{ad_boa_c},
+			AD_BOA_P = #{ad_boa_p},
+			AD_BOA_TITLE = #{ad_boa_title},
+			AD_BOA_CONTENT = #{ad_boa_content},
+			AD_BOA_DATE_UP = SYSDATE
+		WHERE AD_BOA_NUM = #{ad_boa_num}
+	
+	</update>
+	
+	
+	<delete id="boardDelete">
+	
+		DELETE AD_BOARD
+		WHERE AD_BOA_NUM = #{ad_boa_num}
+	
+	</delete>
+	
+	
+</mapper>

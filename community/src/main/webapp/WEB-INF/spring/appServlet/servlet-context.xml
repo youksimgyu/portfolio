@@ -31,6 +31,8 @@
 	<resources mapping="/admin/pages/**" location="/resources/admin/pages/" />
 	<resources mapping="/admin/plugins/**" location="/resources/admin/plugins/" />
 
+<resources location="/ckeditor/**" mapping="/resources/ckeditor/"></resources>
+
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/views/" />
