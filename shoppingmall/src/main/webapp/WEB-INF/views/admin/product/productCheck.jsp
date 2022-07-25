@@ -176,11 +176,24 @@ desired effect
 				<div class="form-group row">
 					<div class="col-sm-12 text-center">
 						<button type="submit" class="btn btn-dark" id="btnProduct">돌아가기</button>
+						<button type="button" name="btnProductEdit" data-pdt_num="${productVO.pdt_num }" class="btn btn-link">Edit</button>
+					
+						<input type="hidden" name="pdt_img" value="${productVO.pdt_img }">
+						<input type="hidden" name="pdt_img_folder" value="${productVO.pdt_img_folder }">
+						<button type="button" name="btnProductDelete" data-pdt_num="${productVO.pdt_num }" class="btn btn-link">Delete</button>
 					</div>
 				</div>
 			</div>
 		  </form>
 			
+				<!--페이지 번호 클릭시 list주소로 보낼 파라미터 작업-->
+				<form id="actionForm" action="/board/list" method="get">
+					<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}">
+					<input type="hidden" name="amount" value="${pageMaker.cri.amount}">
+					<input type="hidden" name="type" value="${pageMaker.cri.type}">
+					<input type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
+				</form>
+					
 		</div>
 	</div>
 </div>
@@ -338,6 +351,40 @@ immediately after the control sidebar -->
 			}
 
 			reader.readAsDataURL(file);
+		});
+		
+		// 1) 상품수정 클릭시
+		$("button[name='btnProductEdit']").on("click", function(){
+			// console.log("상품코드 : " $(this).data("pdt_num"));
+
+			//상품코드를 자식으로 추가
+			actionForm.append("<input type='hidden' name='pdt_num' value='" + $(this).data("pdt_num") + "'>");
+			actionForm.attr("method", "get");
+			actionForm.attr("action", "/admin/product/productModify");
+			actionForm.submit();
+
+		});
+
+
+		// 2) 상품삭제 클릭시
+		$("button[name='btnProductDelete']").on("click", function(){
+			
+			if(!confirm($(this).data("pdt_num") + " 번 상품을 삭제하겠습니까?")) return;
+
+			//상품코드를 자식으로 추가
+			actionForm.append("<input type='hidden' name='pdt_num' value='" + $(this).data("pdt_num") + "'>");
+			
+			//날짜폴더 추가
+			let pdt_img_folder = $(this).parent().children("input[name='pdt_img_folder']").val();
+			actionForm.append("<input type='hidden' name='pdt_img_folder' value='" + pdt_img_folder + "'>");
+			
+			//파일이름 추가
+			let pdt_img = $(this).parent().children("input[name='pdt_img']").val();
+			actionForm.append("<input type='hidden' name='pdt_img' value='" + pdt_img + "'>");
+
+			actionForm.attr("method", "get");
+			actionForm.attr("action", "/admin/product/productDelete");
+			actionForm.submit();
 		});
 	});
 

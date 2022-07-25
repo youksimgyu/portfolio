@@ -202,6 +202,11 @@ public class AdProductController {
 		log.info("상품코드 : " + pdt_num);
 		log.info("페이지관련코드 : " + cri);
 		
+		List<ProductVO> productList = proService.getProductList(cri);
+		// 페이징쿼리에 의한 상품목록
+		model.addAttribute("productList", productList);
+		
+		
 		// 1차 카테고리 선택
 		model.addAttribute("cateList", proService.getCateList());
 		

@@ -70,7 +70,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 					  <select name="ad_boa_p" id="firstCategory" class="form-control">
 			  			<option>1차 카테고리 선택</option>
 						<c:forEach items="${cateList }" var="categoryVO">
-							<option value="${categoryVO.cat_c }" ${categoryVO.cat_c == boardVO.ad_boa_p ? 'selected':'' }>${categoryVO.cat_name }</option>
+							<option value="${categoryVO.cat_c }">${categoryVO.cat_name }</option>
 						</c:forEach>
 				  	  </select>
 					</div>
@@ -78,9 +78,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 					<div class="col-sm-3">
 				  		<select name="ad_boa_c" id="secondCategory" class="form-control">
 				  			<option value="">2차 카테고리 선택</option>
-				  			<c:forEach items="${subCateList }" var="subCategoryVO">
-								<option value="${subCategoryVO.cat_c }" ${subCategoryVO.cat_c == boardVO.ad_boa_c ? 'selected':'' }>${subCategoryVO.cat_name }</option>
-							</c:forEach>
 				  		</select>
 				   </div>
 				 </div>
@@ -123,7 +120,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				      <th scope="row"><c:out value="${boardVO.ad_boa_num }" /></th>
 				      
 				      <!-- 카테고리 값 넣어야 함 -->
-				      <th scope="row"><c:out value="카테고리 값" /></th>
+				      <th scope="row"><c:out value="${categoryList.cat_name }" /></th>
 				      <th scope="row"><c:out value="카테고리 값" /></th>
 				      
 				      <td>

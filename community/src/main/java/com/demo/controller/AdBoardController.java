@@ -141,6 +141,9 @@ public class AdBoardController {
 	@GetMapping("/boardList")
 	public void boardList(@ModelAttribute("cri") Criteria cri, Model model) {
 		
+		// 1차 카테고리 정보 받아오기
+		model.addAttribute("cateList", adBoardService.getCateList());
+		
 		List<AdBoardVO> boardList = adBoardService.getBoardList(cri);
 		
 		// 페이징쿼리에 의한 상품목록

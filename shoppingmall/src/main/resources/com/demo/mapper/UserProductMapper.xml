@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.mapper.UserProductMapper">
+
+	<select id="getCategoryList" resultType="com.demo.domain.CategoryVO">
+	
+		SELECT CG_CODE_C, CG_CODE_P, CG_NAME
+		FROM TBL_CATEGORY
+		WHERE CG_CODE_P IS NULL
+	
+	</select>
+
+	<select id="getSubCagegoryList" resultType="com.demo.domain.CategoryVO">
+	
+		SELECT CG_CODE_C, CG_CODE_P, CG_NAME
+		FROM TBL_CATEGORY
+		WHERE CG_CODE_P = #{cg_code_c}
+	
+	</select>
+	
+	
+	<!-- 검색조건 쿼리. [제목 or 작성자]선택.  value="TW" -->
+	<!-- typeArr: 파라미터타입의 Criteria클래스의 메서드를 가리킴. 검색종류(타입)의 값을 참조하게 됨. [제목 or 작성자]선택.  value="TW"  -->
+	<sql id="criteria">
+		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+			<foreach collection="cri.typeArr" item="type">
+				<trim prefix="OR">
+					<choose>
+						<when test="type == 'N'.toString()">
+							PDT_NAME like '%' || #{cri.keyword} || '%'
+						</when>
+						<when test="type == 'C'.toString()">
+							PDT_COMPANY like '%' || #{cri.keyword} || '%'
+						</when>
+					</choose>
+				</trim>
+			</foreach>
+		</trim>
+	</sql>
+	
+
+	<!-- 1)데이터 목록 데이터 가져오기 : 페이징쿼리(인덱스힌트 구문) -->
+	<select id="getProductListbysubCategory" resultType="com.demo.domain.ProductVO">
+		<![CDATA[
+		SELECT RN, PDT_NUM, CG_NUM_2, CG_NUM_1, PDT_NAME, PDT_PRICE, PDT_DISCOUNT, PDT_COMPANY, PDT_DETAIL, PDT_IMG, PDT_IMG_FOLDER, PDT_AMOUNT, PDT_BUY, PDT_DATE_SUB, PDT_DATE_UP
+		FROM (
+		    SELECT  /*+ INDEX_DESC(TBL_PRODUCT PK_PDT_NUM)*/
+		    ROWNUM RN, PDT_NUM, CG_NUM_2, CG_NUM_1, PDT_NAME, PDT_PRICE, PDT_DISCOUNT, PDT_COMPANY, PDT_DETAIL, PDT_IMG, PDT_IMG_FOLDER, PDT_AMOUNT, PDT_BUY, PDT_DATE_SUB, PDT_DATE_UP
+		    FROM TBL_PRODUCT
+		    WHERE CG_NUM_2 = #{cg_code_c} AND
+		]]>
+		 <include refid="criteria"></include> 
+		 
+		<![CDATA[ 
+		   
+		         ROWNUM <= #{cri.pageNum} * #{cri.amount}
+		)
+		WHERE RN > (#{cri.pageNum}-1) * #{cri.amount}
+		]]>
+	
+	</select>
+	
+	
+	<!-- 2)테이블 데이타개수 : 페이징구현사용 -->
+	<select id="getProductCountbysubCategory" resultType="int">
+		SELECT COUNT(*) FROM TBL_PRODUCT WHERE CG_NUM_2 = #{cg_code_c} AND
+		
+		<include refid="criteria"></include>
+		
+		PDT_NUM > 0
+		
+	</select>
+	
+
+</mapper>
