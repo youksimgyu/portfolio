@@ -2,7 +2,7 @@ package com.demo.service;
 
 import java.util.List;
 
-import com.demo.domain.AdBoardVO;
+import com.demo.domain.BoardVO;
 import com.demo.domain.CategoryVO;
 import com.demo.dto.Criteria;
 
@@ -12,16 +12,18 @@ public interface AdBoardService {
 	
 	List<CategoryVO> getsubCateList(Integer categoryCode); // 2차 카테고리
 	
-	void boardInsert(AdBoardVO vo);
+	BoardVO getCate_name(CategoryVO cat_c);
 	
-	List<AdBoardVO> getBoardList(Criteria cri);
+	void boardInsert(BoardVO vo);
+	
+	List<BoardVO> getBoardList(Criteria cri);
 	
 	int getBoardTotalCount(Criteria cri);
 	
-	AdBoardVO getBoardad_boa_num(Integer ad_boa_num);
+	BoardVO getBoardboa_num(Integer boa_num);
 	
-	void boardModify(AdBoardVO vo);
+	void boardModify(BoardVO vo);
 	
-	void boardDelete(Integer ad_boa_num);
+	void boardDelete(Integer boa_num);
 	
 }

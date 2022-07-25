@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.demo.domain.AdBoardVO;
+import com.demo.domain.BoardVO;
 import com.demo.domain.CategoryVO;
 import com.demo.dto.Criteria;
 import com.demo.mapper.AdBoardMapper;
@@ -30,13 +30,13 @@ public class AdBoardServiceImpl implements AdBoardService {
 	}
 	
 	@Override
-	public void boardInsert(AdBoardVO vo) {
+	public void boardInsert(BoardVO vo) {
 		// TODO Auto-generated method stub
 		adBoardMapper.boardInsert(vo);
 	}
 
 	@Override
-	public List<AdBoardVO> getBoardList(Criteria cri) {
+	public List<BoardVO> getBoardList(Criteria cri) {
 		// TODO Auto-generated method stub
 		return adBoardMapper.getBoardList(cri);
 	}
@@ -48,21 +48,27 @@ public class AdBoardServiceImpl implements AdBoardService {
 	}
 
 	@Override
-	public AdBoardVO getBoardad_boa_num(Integer ad_boa_num) {
+	public BoardVO getBoardboa_num(Integer boa_num) {
 		// TODO Auto-generated method stub
-		return adBoardMapper.getBoardad_boa_num(ad_boa_num);
+		return adBoardMapper.getBoardboa_num(boa_num);
 	}
 
 	@Override
-	public void boardModify(AdBoardVO vo) {
+	public void boardModify(BoardVO vo) {
 		// TODO Auto-generated method stub
 		adBoardMapper.boardModify(vo);
 	}
 
 	@Override
-	public void boardDelete(Integer ad_boa_num) {
+	public void boardDelete(Integer boa_num) {
 		// TODO Auto-generated method stub
-		adBoardMapper.boardDelete(ad_boa_num);
+		adBoardMapper.boardDelete(boa_num);
+	}
+
+	@Override
+	public BoardVO getCate_name(CategoryVO cat_c) {
+		// TODO Auto-generated method stub
+		return adBoardMapper.getCate_name(cat_c);
 	}
 
 }

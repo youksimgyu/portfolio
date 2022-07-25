@@ -67,7 +67,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 					<!-- 카테고리 선택부분 -->
 					<div class="form-group mb-3 mt-3 row">
 					<div class="col-sm-3">
-					  <select name="ad_boa_p" id="firstCategory" class="form-control">
+					  <select name="cat_p" id="firstCategory" class="form-control">
 			  			<option>1차 카테고리 선택</option>
 						<c:forEach items="${cateList }" var="categoryVO">
 							<option value="${categoryVO.cat_c }">${categoryVO.cat_name }</option>
@@ -76,7 +76,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 					</div>
 					
 					<div class="col-sm-3">
-				  		<select name="ad_boa_c" id="secondCategory" class="form-control">
+				  		<select name="cat_c" id="secondCategory" class="form-control">
 				  			<option value="">2차 카테고리 선택</option>
 				  		</select>
 				   </div>
@@ -117,18 +117,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				    <c:forEach items="${boardList }" var="boardVO">
 				    <!-- BoardVO클래스의 필드명으로 코딩했지만, 호출은 getter메서드가 사용됨. -->
 				    <tr>
-				      <th scope="row"><c:out value="${boardVO.ad_boa_num }" /></th>
+				      <th scope="row"><c:out value="${boardVO.boa_num }" /></th>
 				      
 				      <!-- 카테고리 값 넣어야 함 -->
-				      <th scope="row"><c:out value="${categoryList.cat_name }" /></th>
-				      <th scope="row"><c:out value="카테고리 값" /></th>
+				      <th scope="row"><c:out value="${boardVO.boa_num }" /></th>
+				      <th scope="row"><c:out value="${boardVO.boa_num }" /></th>
 				      
 				      <td>
-				      	<a class="move" href="#" data-ad_boa_num="${boardVO.ad_boa_num }"><c:out value="${boardVO.ad_boa_title }" escapeXml="true" /></a>
+				      	<a class="move" href="#" data-boa_num="${boardVO.boa_num }"><c:out value="${boardVO.boa_title }" escapeXml="true" /></a>
 				      </td>
-				      <td><fmt:formatDate value="${boardVO.ad_boa_date_up }" pattern="yyyy-MM-dd hh:mm" /></td>
-				      <td><button type="button" name="btnBoardEdit" data-ad_boa_num="${boardVO.ad_boa_num }" class="btn btn-link">Edit</button></td>
-				      <td><button type="button" name="btnBoardDelete" data-ad_boa_num="${boardVO.ad_boa_num }" class="btn btn-link">Delete</button></td>
+				      <td><fmt:formatDate value="${boardVO.boa_date_up }" pattern="yyyy-MM-dd hh:mm" /></td>
+				      <td><button type="button" name="btnBoardEdit" data-boa_num="${boardVO.boa_num }" class="btn btn-link">Edit</button></td>
+				      <td><button type="button" name="btnBoardDelete" data-boa_num="${boardVO.boa_num }" class="btn btn-link">Delete</button></td>
 				    </tr>
 				    </c:forEach>
 				    
@@ -215,7 +215,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 			// console.log("상품코드 : " $(this).data("pdt_num"));
 
 			//상품코드를 자식으로 추가
-			actionForm.append("<input type='hidden' name='ad_boa_num' value='" + $(this).data("ad_boa_num") + "'>");
+			actionForm.append("<input type='hidden' name='boa_num' value='" + $(this).data("boa_num") + "'>");
 			actionForm.attr("method", "get");
 			actionForm.attr("action", "/admin/board/boardModify");
 			actionForm.submit();
@@ -234,10 +234,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 		// 2) 상품삭제 클릭시
 		$("button[name='btnBoardDelete']").on("click", function(){
 			
-			if(!confirm($(this).data("ad_boa_num") + " 번 상품을 삭제하겠습니까?")) return;
+			if(!confirm($(this).data("boa_num") + " 번 상품을 삭제하겠습니까?")) return;
 
 			//상품코드를 자식으로 추가
-			actionForm.append("<input type='hidden' name='ad_boa_num' value='" + $(this).data("ad_boa_num") + "'>");
+			actionForm.append("<input type='hidden' name='boa_num' value='" + $(this).data("boa_num") + "'>");
 
 			actionForm.attr("method", "get");
 			actionForm.attr("action", "/admin/board/boardDelete");
@@ -262,7 +262,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 			e.preventDefault();
 
 			//상품코드를 자식으로 추가
-			actionForm.append("<input type='hidden' name='ad_boa_num' value='" + $(this).data("ad_boa_num") + "'>");
+			actionForm.append("<input type='hidden' name='boa_num' value='" + $(this).data("boa_num") + "'>");
 			actionForm.attr("method", "get");
 			actionForm.attr("action", "/admin/board/boardCheck");
 			actionForm.submit();

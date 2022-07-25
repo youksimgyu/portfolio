@@ -60,7 +60,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 	<div class="form-group mb-3 mt-3 row">
 		<label for="cat_name" class="col-sm-2 col-form-label">카테고리</label>
 		<div class="col-sm-3">
-		  <select name="ad_boa_p" id="firstCategory" class="form-control">
+		  <select name="cat_p" id="firstCategory" class="form-control">
   			<option>1차 카테고리 선택</option>
 			<c:forEach items="${cateList }" var="categoryVO">
 				<option value="${categoryVO.cat_c }">${categoryVO.cat_name }</option>
@@ -69,23 +69,23 @@ scratch. This page gets rid of all links and provides the needed markup only.
 		</div>
 		
 		<div class="col-sm-3">
-	  		<select name="ad_boa_c" id="secondCategory" class="form-control">
+	  		<select name="cat_c" id="secondCategory" class="form-control">
 	  			<option value="">2차 카테고리 선택</option>
 	  		</select>
 	  	</div>
 	</div>
 	
 	<div class="form-group mb-3 mt-3 row">
-	    <label for="ad_boa_title" class="col-sm-2 col-form-label">제목</label>
+	    <label for="boa_title" class="col-sm-2 col-form-label">제목</label>
 	    <div class="col-sm-4">
-	      <input type="text" class="form-control" id="ad_boa_title" name="ad_boa_title">
+	      <input type="text" class="form-control" id="boa_title" name="boa_title">
 	    </div>
 	</div>
 	
 	<div class="form-group row">
-	    <label for="ad_boa_content" class="col-sm-2 col-form-label">내용</label>
+	    <label for="boa_content" class="col-sm-2 col-form-label">내용</label>
 	    <div class="col-sm-10">
-	      <textarea class="form-control" row="3" id="ad_boa_content" name="ad_boa_content"></textarea>
+	      <textarea class="form-control" row="3" id="boa_content" name="boa_content"></textarea>
 	    </div>
 	</div>
 
@@ -144,7 +144,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 			filebrowserUploadUrl: '/admin/board/imageUpload' //업로드 탭기능추가 속성. post 주소로 사용됨
 		}
 
-		CKEDITOR.replace("ad_boa_content", ckeditor_config);
+		CKEDITOR.replace("boa_content", ckeditor_config);
 		
 		
 		//1차 카테고리 선택

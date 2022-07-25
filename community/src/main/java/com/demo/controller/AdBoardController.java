@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.demo.domain.AdBoardVO;
+import com.demo.domain.BoardVO;
 import com.demo.domain.CategoryVO;
 import com.demo.dto.Criteria;
 import com.demo.dto.PageDTO;
@@ -128,7 +128,7 @@ public class AdBoardController {
 	}
 	
 	@PostMapping("/boardInsert")
-	public String boardInsert(AdBoardVO vo, RedirectAttributes rttr) {
+	public String boardInsert(BoardVO vo, RedirectAttributes rttr) {
 		
 		adBoardService.boardInsert(vo);
 		
@@ -139,12 +139,14 @@ public class AdBoardController {
 
 	//상품목록:페이징,검색추가
 	@GetMapping("/boardList")
-	public void boardList(@ModelAttribute("cri") Criteria cri, Model model) {
+	public void boardList(CategoryVO cat_c, @ModelAttribute("cri") Criteria cri, Model model) {
 		
 		// 1차 카테고리 정보 받아오기
 		model.addAttribute("cateList", adBoardService.getCateList());
 		
-		List<AdBoardVO> boardList = adBoardService.getBoardList(cri);
+		model.addAttribute("cat_name", adBoardService.getCate_name(cat_c));
+		
+		List<BoardVO> boardList = adBoardService.getBoardList(cri);
 		
 		// 페이징쿼리에 의한 상품목록
 		model.addAttribute("boardList", boardList);
@@ -158,30 +160,30 @@ public class AdBoardController {
 	
 	// 상품목록에서 수정폼
 	@GetMapping(value= {"/boardModify", "/boardCheck"})
-	public void boardModify(@RequestParam("ad_boa_num") Integer ad_boa_num, @ModelAttribute("cri") Criteria cri, Model model) {
+	public void boardModify(@RequestParam("boa_num") Integer boa_num, @ModelAttribute("cri") Criteria cri, Model model) {
 		
-		log.info("상품코드 : " + ad_boa_num);
+		log.info("상품코드 : " + boa_num);
 		log.info("페이지관련코드 : " + cri);
 		
 		// 1차 카테고리 선택
 		model.addAttribute("cateList", adBoardService.getCateList());
 		
 		// 상품정보 - 1차카테고리를 참조한 정보 들어있음
-		AdBoardVO vo = adBoardService.getBoardad_boa_num(ad_boa_num);
+		BoardVO vo = adBoardService.getBoardboa_num(boa_num);
 
 		model.addAttribute("boardVO", vo);
 		
 		// 상품정보에서 1차카테고리 코드를 참조해서 2차카테고리 가져오기.
-		Integer ad_boa_p = vo.getAd_boa_p();
+		Integer cat_p = vo.getCat_p();
 		// 1차를 부모로 하는 2차 카테고리 정보
-		model.addAttribute("subCateList", adBoardService.getsubCateList(ad_boa_p));
+		model.addAttribute("subCateList", adBoardService.getsubCateList(cat_p));
 		
 	}
 
 	
 	// 상품수정 업데이트
 	@PostMapping("/boardModify")
-	public String boardModify(AdBoardVO vo, Criteria cri, RedirectAttributes rttr) {
+	public String boardModify(BoardVO vo, Criteria cri, RedirectAttributes rttr) {
 		
 		log.info("상품 수정 정보 : " + vo);
 		
@@ -195,9 +197,9 @@ public class AdBoardController {
 	
 	// 상품삭제
 	@GetMapping("/boardDelete") // 상품코드, 페이지 및 검색 파라미터, 날짜폴더, 파일이름
-	public String productDelete(@RequestParam("ad_boa_num") Integer ad_boa_num, @ModelAttribute("cri") Criteria cri) {
+	public String productDelete(@RequestParam("boa_num") Integer boa_num, @ModelAttribute("cri") Criteria cri) {
 		
-		adBoardService.boardDelete(ad_boa_num);
+		adBoardService.boardDelete(boa_num);
 		
 		return "redirect:/admin/board/boardList" + cri.getListLink();
 	}

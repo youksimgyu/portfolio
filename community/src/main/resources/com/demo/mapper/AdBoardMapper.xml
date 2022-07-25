@@ -18,12 +18,22 @@
 	
 	</select>
 	
+	<select id="getCate_name" resultType="com.demo.domain.BoardVO" parameterType="com.demo.domain.CategoryVO">
+	
+		SELECT cat_c, cat_name, cat_p
+		FROM CATEGORY
+		WHERE CAT_C =  #{cat_c};
+	
+	</select>
+	
 	<insert id="boardInsert">
 	
-		INSERT INTO AD_BOARD
-					(ad_boa_num, ad_boa_c, ad_boa_p, ad_boa_title, ad_boa_content)
+		INSERT INTO BOARD
+					(boa_num, cat_c, cat_p, boa_title, boa_content,
+					 boa_date_reg, boa_date_up)
 		VALUES
-				(SEQ_AD_BOA_NUM.NEXTVAL, #{ad_boa_c}, #{ad_boa_p}, #{ad_boa_title}, #{ad_boa_content})
+				(SEQ_BOA_NUM.NEXTVAL, #{cat_c}, #{cat_p}, #{boa_title}, #{boa_content},
+				 SYSDATE, SYSDATE)
 	
 	</insert>
 	
@@ -49,13 +59,15 @@
 
 
 	<!-- 1)데이터 목록 데이터 가져오기 : 페이징쿼리(인덱스힌트 구문) -->
-	<select id="getBoardList" resultType="com.demo.domain.AdBoardVO">
+	<select id="getBoardList" resultType="com.demo.domain.BoardVO">
 		<![CDATA[
-		SELECT RN, ad_boa_num, ad_boa_c, ad_boa_p, ad_boa_title, ad_boa_content, ad_boa_date_reg, ad_boa_date_up
+		SELECT RN, boa_num, cat_c, cat_p, boa_title, boa_content,
+			   boa_date_reg, boa_date_up
 		FROM (
-		    SELECT  /*+ INDEX_DESC(AD_BOARD PK_BOA_NUM)*/
-		    ROWNUM RN, ad_boa_num, ad_boa_c, ad_boa_p, ad_boa_title, ad_boa_content, ad_boa_date_reg, ad_boa_date_up
-		    FROM AD_BOARD
+		    SELECT  /*+ INDEX_DESC(BOARD PK_BOA_NUM)*/
+		    ROWNUM RN, boa_num, cat_c, cat_p, boa_title, boa_content,
+			   	   boa_date_reg, boa_date_up
+		    FROM BOARD
 		    WHERE  
 		]]>
 		 <include refid="criteria"></include> 
@@ -72,41 +84,42 @@
 	
 	<!-- 2)테이블 데이타개수 : 페이징구현사용 -->
 	<select id="getBoardTotalCount" resultType="int">
-		SELECT COUNT(*) FROM AD_BOARD WHERE
+		SELECT COUNT(*) FROM BOARD WHERE
 		
 		<include refid="criteria"></include> 
 		
-		ad_boa_num > 0
+		boa_num > 0
 		
 	</select>
 	
 	
-	<select id="getBoardad_boa_num" parameterType="int" resultType="com.demo.domain.AdBoardVO">
+	<select id="getBoardboa_num" parameterType="int" resultType="com.demo.domain.BoardVO">
 	
-		SELECT ad_boa_num, ad_boa_c, ad_boa_p, ad_boa_title, ad_boa_content, ad_boa_date_reg, ad_boa_date_up
-		FROM AD_BOARD
-		WHERE ad_boa_num = #{ad_boa_num}
+		SELECT boa_num, cat_c, cat_p, boa_title, boa_content,
+			   boa_date_reg, boa_date_up
+		FROM BOARD
+		WHERE boa_num = #{boa_num}
 	
 	</select>
 	
 	
-	<update id="boardModify" parameterType="com.demo.domain.AdBoardVO">
+	<update id="boardModify" parameterType="com.demo.domain.BoardVO">
 	
-		UPDATE AD_BOARD
-		SET	AD_BOA_C = #{ad_boa_c},
-			AD_BOA_P = #{ad_boa_p},
-			AD_BOA_TITLE = #{ad_boa_title},
-			AD_BOA_CONTENT = #{ad_boa_content},
-			AD_BOA_DATE_UP = SYSDATE
-		WHERE AD_BOA_NUM = #{ad_boa_num}
+		UPDATE BOARD
+		SET	CAT_C = #{cat_c},
+			CAT_P = #{cat_p},
+			BOA_TITLE = #{boa_title},
+			BOA_CONTENT = #{boa_content},
+			BOA_DATE_UP = SYSDATE
+		WHERE BOA_NUM = #{boa_num}
 	
 	</update>
 	
 	
 	<delete id="boardDelete">
 	
-		DELETE AD_BOARD
-		WHERE AD_BOA_NUM = #{ad_boa_num}
+		DELETE BOARD
+		WHERE BOA_NUM = #{boa_num}
 	
 	</delete>
 	
