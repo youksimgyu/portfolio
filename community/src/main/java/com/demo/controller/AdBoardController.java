@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,8 +26,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.demo.domain.AdminVO;
 import com.demo.domain.BoardVO;
 import com.demo.domain.CategoryVO;
+import com.demo.domain.MemberVO;
 import com.demo.dto.Criteria;
 import com.demo.dto.PageDTO;
 import com.demo.service.AdBoardService;
@@ -128,7 +131,7 @@ public class AdBoardController {
 	}
 	
 	@PostMapping("/boardInsert")
-	public String boardInsert(BoardVO vo, RedirectAttributes rttr) {
+	public String boardInsert(BoardVO vo, RedirectAttributes rttr, HttpSession session) {
 		
 		adBoardService.boardInsert(vo);
 		
@@ -139,12 +142,10 @@ public class AdBoardController {
 
 	//상품목록:페이징,검색추가
 	@GetMapping("/boardList")
-	public void boardList(CategoryVO cat_c, @ModelAttribute("cri") Criteria cri, Model model) {
+	public void boardList(@ModelAttribute("cri") Criteria cri, Model model) {
 		
 		// 1차 카테고리 정보 받아오기
 		model.addAttribute("cateList", adBoardService.getCateList());
-		
-		model.addAttribute("cat_name", adBoardService.getCate_name(cat_c));
 		
 		List<BoardVO> boardList = adBoardService.getBoardList(cri);
 		

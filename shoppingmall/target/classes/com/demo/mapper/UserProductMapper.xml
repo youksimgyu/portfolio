@@ -71,5 +71,13 @@
 		
 	</select>
 	
+	<select id="getProductpdt_num" parameterType="int" resultType="com.demo.domain.ProductVO">
+	
+		SELECT PDT_NUM, CG_NUM_2, CG_NUM_1, PDT_NAME, PDT_PRICE, PDT_DISCOUNT, PDT_COMPANY, PDT_DETAIL, PDT_IMG, PDT_IMG_FOLDER, PDT_AMOUNT, PDT_BUY, PDT_DATE_SUB, PDT_DATE_UP
+		FROM TBL_PRODUCT
+		WHERE PDT_NUM = #{pdt_num}
+	
+	</select>
+	
 
 </mapper>

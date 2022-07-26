@@ -1,7 +1,5 @@
 package com.demo.util;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.file.Files;

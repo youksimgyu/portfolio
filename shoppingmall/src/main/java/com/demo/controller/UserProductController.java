@@ -2,6 +2,8 @@ package com.demo.controller;
 
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +20,11 @@ import com.demo.domain.ProductVO;
 import com.demo.dto.Criteria;
 import com.demo.dto.PageDTO;
 import com.demo.service.UserProductService;
+import com.demo.util.UploadFileUtils;
 
 import lombok.extern.log4j.Log4j;
 
-@RequestMapping("/product/*")
+@RequestMapping("/user/product/*")
 @Controller
 @Log4j
 public class UserProductController {
@@ -31,6 +34,10 @@ public class UserProductController {
 	
 	@Autowired
 	private UserProductService proService;
+	
+	// name이 servlet-context의  bean id와 같아야 함
+	@Resource(name = "uploadPath")
+	private String uploadPath; // "C:/Dev/upload"
 	
 	// 2차 카테고리 정보. ajax 사용
 	@GetMapping("/subCategoryList/{cg_code_c}")
@@ -68,7 +75,33 @@ public class UserProductController {
 		int totalCount = proService.getProductCountbysubCategory(cg_code_c, cri);
 		model.addAttribute("pageMaker", new PageDTO(cri, totalCount));
 		
-		return "/product/productList";
+		return "/user/product/productList";
 	}
 	
+	// 상품목록에서 이미지 보여주기
+	@ResponseBody
+	@GetMapping("/displayFile")
+	public ResponseEntity<byte[]> displayFile(String folderName, String fileName){
+		
+//		log.info("폴더이름: " + folderName);
+//		log.info("파일이름: " + fileName);
+		
+		// 이미지를 바이트배열로 읽어오는 작업
+		return UploadFileUtils.getFile(uploadPath, folderName + "\\" + fileName);
+	}
+	
+	
+	// 모달에서 사용할 상품 상세정보
+	@ResponseBody
+	@GetMapping("/productDetail/{pdt_num}")
+	public ResponseEntity<ProductVO> productDetail(@PathVariable("pdt_num") Integer pdt_num) {
+		ResponseEntity<ProductVO> entity = null;
+		
+		ProductVO vo = proService.getProductpdt_num(pdt_num);
+		vo.setPdt_img_folder(vo.getPdt_img_folder().replace("\\", "/"));
+		
+		entity = new ResponseEntity<ProductVO>(vo, HttpStatus.OK);
+		
+		return entity;
+	}
 }

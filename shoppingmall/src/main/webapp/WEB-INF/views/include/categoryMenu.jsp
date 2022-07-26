@@ -55,7 +55,7 @@
 
       // ajax 구문 사용시 이전에 필요한 선택자의 정보를 변수에 넣어둔다
       let selectedCategory = $(this);
-      let url = "/product/subCategoryList/" + $(this).attr("href");
+      let url = "/user/product/subCategoryList/" + $(this).attr("href");
 
       // console.log("2차 카테고리 : " + url);
 
@@ -88,7 +88,7 @@
       e.preventDefault(); // <a href=""></a>, <input type="submit"> 기능 제거
       
       let cg_code_c = $(this).attr("href");
-      location.href = "/product/productList/" + cg_code_c;
+      location.href = "/user/product/productList/" + cg_code_c;
 
     });
 

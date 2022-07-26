@@ -21,4 +21,7 @@ public interface UserProductMapper {
 	
 	// 2차 카테고리별 상품개수
 	int getProductCountbysubCategory(@Param("cg_code_c") Integer cg_code_c, @Param("cri") Criteria cri);
+	
+	// 상품 상세정보
+	ProductVO getProductpdt_num(Integer pdt_num);
 }

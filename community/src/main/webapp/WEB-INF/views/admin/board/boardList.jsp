@@ -73,6 +73,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 							<option value="${categoryVO.cat_c }">${categoryVO.cat_name }</option>
 						</c:forEach>
 				  	  </select>
+				  	  
+	  	   	  		<input type="hidden" id="cat_name" name="cat_name">
+					<input type="hidden" id="cat_name_c" name="cat_name_c">
+						
 					</div>
 					
 					<div class="col-sm-3">
@@ -108,6 +112,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				      <th scope="col">1차</th>
 				      <th scope="col">2차</th>
 				      <th scope="col">제목</th>
+				      <th scope="col">작성자</th>
 				      <th scope="col">업데이트 날짜</th>
 				      <th scope="col">수정</th>
 				      <th scope="col">삭제</th>
@@ -120,9 +125,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				      <th scope="row"><c:out value="${boardVO.boa_num }" /></th>
 				      
 				      <!-- 카테고리 값 넣어야 함 -->
-				      <th scope="row"><c:out value="${boardVO.boa_num }" /></th>
-				      <th scope="row"><c:out value="${boardVO.boa_num }" /></th>
+				      <td scope="row" style="width: 250px;"><c:out value="${boardVO.cat_name }" /></td>
+				      <td scope="row" style="width: 250px;"><c:out value="${boardVO.cat_name_c }" /></td>
 				      
+				      <td scope="row"><c:out value="${boardVO.adm_id }" /></td>
 				      <td>
 				      	<a class="move" href="#" data-boa_num="${boardVO.boa_num }"><c:out value="${boardVO.boa_title }" escapeXml="true" /></a>
 				      </td>
@@ -274,8 +280,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 		$("#firstCategory").on("change", function(){
 
 			let firstCategory = $(this).val();
-
-			console.log("1차 카테 : " + firstCategory);
 
 			let url = "/admin/board/subCategoryList/" + firstCategory;
 

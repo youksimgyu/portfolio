@@ -65,10 +65,5 @@ public class AdBoardServiceImpl implements AdBoardService {
 		adBoardMapper.boardDelete(boa_num);
 	}
 
-	@Override
-	public BoardVO getCate_name(CategoryVO cat_c) {
-		// TODO Auto-generated method stub
-		return adBoardMapper.getCate_name(cat_c);
-	}
 
 }

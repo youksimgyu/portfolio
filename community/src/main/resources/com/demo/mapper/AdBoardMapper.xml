@@ -18,21 +18,13 @@
 	
 	</select>
 	
-	<select id="getCate_name" resultType="com.demo.domain.BoardVO" parameterType="com.demo.domain.CategoryVO">
-	
-		SELECT cat_c, cat_name, cat_p
-		FROM CATEGORY
-		WHERE CAT_C =  #{cat_c};
-	
-	</select>
-	
 	<insert id="boardInsert">
 	
 		INSERT INTO BOARD
-					(boa_num, cat_c, cat_p, boa_title, boa_content,
+					(boa_num, cat_c, cat_name, cat_name_c, cat_p, boa_title, boa_content,
 					 boa_date_reg, boa_date_up)
 		VALUES
-				(SEQ_BOA_NUM.NEXTVAL, #{cat_c}, #{cat_p}, #{boa_title}, #{boa_content},
+				(SEQ_BOA_NUM.NEXTVAL, #{cat_c}, #{cat_name}, #{cat_name_c}, #{cat_p}, #{boa_title}, #{boa_content},
 				 SYSDATE, SYSDATE)
 	
 	</insert>
@@ -61,11 +53,11 @@
 	<!-- 1)데이터 목록 데이터 가져오기 : 페이징쿼리(인덱스힌트 구문) -->
 	<select id="getBoardList" resultType="com.demo.domain.BoardVO">
 		<![CDATA[
-		SELECT RN, boa_num, cat_c, cat_p, boa_title, boa_content,
+		SELECT RN, boa_num, cat_c, cat_name, cat_name_c, cat_p, boa_title, boa_content,
 			   boa_date_reg, boa_date_up
 		FROM (
 		    SELECT  /*+ INDEX_DESC(BOARD PK_BOA_NUM)*/
-		    ROWNUM RN, boa_num, cat_c, cat_p, boa_title, boa_content,
+		    ROWNUM RN, boa_num, cat_c, cat_name, cat_name_c, cat_p, boa_title, boa_content,
 			   	   boa_date_reg, boa_date_up
 		    FROM BOARD
 		    WHERE  

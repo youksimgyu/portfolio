@@ -12,8 +12,6 @@ public interface AdBoardService {
 	
 	List<CategoryVO> getsubCateList(Integer categoryCode); // 2차 카테고리
 	
-	BoardVO getCate_name(CategoryVO cat_c);
-	
 	void boardInsert(BoardVO vo);
 	
 	List<BoardVO> getBoardList(Criteria cri);

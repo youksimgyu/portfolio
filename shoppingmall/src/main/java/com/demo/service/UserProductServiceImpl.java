@@ -12,7 +12,6 @@ import com.demo.mapper.UserProductMapper;
 
 import lombok.extern.log4j.Log4j;
 
-@Log4j
 @Service
 public class UserProductServiceImpl implements UserProductService {
 	
@@ -41,6 +40,12 @@ public class UserProductServiceImpl implements UserProductService {
 	public int getProductCountbysubCategory(Integer cg_code_c, Criteria cri) {
 		// TODO Auto-generated method stub
 		return proMapper.getProductCountbysubCategory(cg_code_c, cri);
+	}
+
+	@Override
+	public ProductVO getProductpdt_num(Integer pdt_num) {
+		// TODO Auto-generated method stub
+		return proMapper.getProductpdt_num(pdt_num);
 	}
 
 	

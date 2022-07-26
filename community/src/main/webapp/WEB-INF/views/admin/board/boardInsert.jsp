@@ -63,9 +63,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
 		  <select name="cat_p" id="firstCategory" class="form-control">
   			<option>1차 카테고리 선택</option>
 			<c:forEach items="${cateList }" var="categoryVO">
-				<option value="${categoryVO.cat_c }">${categoryVO.cat_name }</option>
+				<option value="${categoryVO.cat_c }" id="cat_name">${categoryVO.cat_name }</option>
 			</c:forEach>
 	  	  </select>
+	  	  
+ 	  	<input type="hidden" id="cat_name" name="cat_name">
+	  	<input type="hidden" id="cat_name_c" name="cat_name_c">
+	  	  
 		</div>
 		
 		<div class="col-sm-3">
@@ -105,7 +109,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 	
 
 </form>
-    
     
   </div>
   <!-- /.content-wrapper -->
@@ -150,9 +153,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
 		//1차 카테고리 선택
 		$("#firstCategory").on("change", function(){
 
+			// 1차 카테고리 이름 작업
+			let cat_name = $("#firstCategory option:selected").text();
+			console.log("cat_name : " + cat_name);
+			$("input[name='cat_name']").val(cat_name);
+			
 			let firstCategory = $(this).val();
-
-			console.log("1차 카테 : " + firstCategory);
 
 			let url = "/admin/board/subCategoryList/" + firstCategory;
 
@@ -167,15 +173,21 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				let secondCategory = $("#secondCategory");
 
 				secondCategory.find("option").remove(); // 기존 카테고리에 의해 출력되는 요소 제거
-				secondCategory.append("<option value=''>2차 카테고리 선택</option>");
+				secondCategory.append("<option value='' name''>2차 카테고리 선택</option>");
 
 				for(let i=0; i<subCategoryList.length; i++){
 					optionStr += "<option value='" + subCategoryList[i].cat_c + "'>" + subCategoryList[i].cat_name + "</option>";
 
 				}
 				secondCategory.append(optionStr);
+				
+				
+				
 			});
+
+
 		});
+		
 	});
 
 </script>
