@@ -1,5 +1,6 @@
 package com.demo.controller;
 
+import javax.mail.Session;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.demo.domain.AdminVO;
+import com.demo.domain.MemberVO;
 import com.demo.dto.AdminLoginDTO;
 import com.demo.service.AdminService;
 
@@ -71,8 +73,10 @@ public class AdminController {
 	}
 	
 	@GetMapping("/main")
-	public void main() {
+	public void main(HttpSession session, AdminVO vo) {
 		
+		String adm_id = ((AdminVO) session.getAttribute("adLoginStatus")).getAdmin_id();
+		vo.setAdmin_id(adm_id);
 	}
 	
 	//로그아웃

@@ -88,7 +88,9 @@
       e.preventDefault(); // <a href=""></a>, <input type="submit"> 기능 제거
       
       let cg_code_c = $(this).attr("href");
-      location.href = "/user/product/productList/" + cg_code_c;
+      let cg_name = $(this).html();
+      // get방식으로 특수문자 데이터가 서버로 보내질 때 문제되는 경우 : 인코딩 할 것! 검색어 : mdn url 인코딩
+      location.href = "/user/product/productList/" + cg_code_c + "/" + encodeURIComponent(cg_name) + "?amount=9";
 
     });
 

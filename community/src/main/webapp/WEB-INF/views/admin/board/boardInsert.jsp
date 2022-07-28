@@ -64,6 +64,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   			<option>1차 카테고리 선택</option>
 			<c:forEach items="${cateList }" var="categoryVO">
 				<option value="${categoryVO.cat_c }" id="cat_name">${categoryVO.cat_name }</option>
+			<c:set var="cat_name" value=""></c:set>
 			</c:forEach>
 	  	  </select>
 	  	  
@@ -155,7 +156,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 			// 1차 카테고리 이름 작업
 			let cat_name = $("#firstCategory option:selected").text();
-			console.log("cat_name : " + cat_name);
+			// console.log("cat_name : " + cat_name);
 			$("input[name='cat_name']").val(cat_name);
 			
 			let firstCategory = $(this).val();
@@ -173,7 +174,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				let secondCategory = $("#secondCategory");
 
 				secondCategory.find("option").remove(); // 기존 카테고리에 의해 출력되는 요소 제거
-				secondCategory.append("<option value='' name''>2차 카테고리 선택</option>");
+				secondCategory.append("<option>2차 카테고리 선택</option>");
 
 				for(let i=0; i<subCategoryList.length; i++){
 					optionStr += "<option value='" + subCategoryList[i].cat_c + "'>" + subCategoryList[i].cat_name + "</option>";
@@ -181,11 +182,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				}
 				secondCategory.append(optionStr);
 				
-				
-				
 			});
 
 
+		});
+		
+		$("#secondCategory").on("change", function(){
+			
+			// 2차 카테고리 이름 작업
+			let cat_name_c = $("#secondCategory option:selected").text();
+			// console.log("cat_name_c : " + cat_name_c);
+			$("input[name='cat_name_c']").val(cat_name_c);
+			
+			
 		});
 		
 	});

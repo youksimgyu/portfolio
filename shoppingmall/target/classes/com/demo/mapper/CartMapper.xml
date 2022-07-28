@@ -4,12 +4,49 @@
 
 	<insert id="cart_add" parameterType="com.demo.domain.CartVO">
 	
-		insert into tbl_cart
-					(CART_CODE, PDT_NUM, MEM_ID, CART_AMOUNT)
-		VALUES
-			(SEQ_CART_CODE.NEXTVAL, #{pdt_num}, #{mem_id}, #{cart_amount})
+		MERGE INTO TBL_CART
+		USING DUAL
+		ON (MEM_ID = #{mem_id} AND PDT_NUM = #{pdt_num})
+		WHEN MATCHED THEN
+		    UPDATE SET CART_AMOUNT = CART_AMOUNT + #{cart_amount}
+		WHEN NOT MATCHED THEN
+		    INSERT (CART_CODE, PDT_NUM, MEM_ID, CART_AMOUNT)
+		    VALUES (SEQ_CART_CODE.NEXTVAL, #{pdt_num}, #{mem_id}, #{cart_amount})
 	
 	</insert>
 
+	<select id="cart_list" resultType="com.demo.domain.CartVOList" parameterType="String">
+	
+		SELECT C.CART_CODE, C.PDT_NUM, C.MEM_ID, C.CART_AMOUNT, P.PDT_IMG_FOLDER, P.PDT_IMG, P.PDT_NAME, P.PDT_PRICE, M.MEM_POINT
+		FROM TBL_CART
+			 C INNER JOIN TBL_PRODUCT P
+			 ON C.PDT_NUM = P.PDT_NUM
+			 INNER JOIN TBL_MEMBER M
+			 ON C.MEM_ID = M.MEM_ID
+		WHERE C.MEM_ID = #{mem_id}
+	
+	</select>
+	
+	<update id="cart_amount_update" parameterType="com.demo.domain.CartVO">
+	
+		update tbl_cart
+		set cart_amount = #{cart_amount}
+		where cart_code = #{cart_code}
+	
+	</update>
+
+	<delete id="cart_delete" parameterType="long">
+	
+		delete tbl_cart
+		where cart_code = #{cart_code}
+	
+	</delete>
+
+	<delete id="cart_total_delete" parameterType="String">
+	
+		delete tbl_cart
+		where MEM_ID = #{mem_id}
+	
+	</delete>
 
 </mapper>

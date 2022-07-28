@@ -27,16 +27,12 @@ public class AdminController {
 	
 	@Autowired
 	private AdminService service;
-	
-	@GetMapping("/main")
-	public void main() {
-		
-		log.info("main");
-	}
+
+
 	
 	@GetMapping("/adLogin")
 	public void adLogin() {
-		log.info("로그인 폼");
+
 	}
 	
 	@PostMapping("/adLogin")
@@ -69,7 +65,7 @@ public class AdminController {
 		
 		rttr.addFlashAttribute("msg", msg);
 		
-		return "redirect:" + url;
+		return url;
 	}
 	
 	// 로그아웃

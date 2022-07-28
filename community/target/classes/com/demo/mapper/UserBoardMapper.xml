@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.mapper.UserBoardMapper">
+
+	<select id="getCategoryList" resultType="com.demo.domain.CategoryVO">
+	
+		SELECT cat_c, cat_name, cat_p
+		FROM category
+		WHERE cat_p IS NULL
+	
+	</select>
+
+
+
+</mapper>

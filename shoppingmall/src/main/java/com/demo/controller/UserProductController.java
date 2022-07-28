@@ -53,8 +53,8 @@ public class UserProductController {
 	}
 	
 	//상품리스트. 페이징기능추가.(검색기능 제외)
-	@GetMapping("/productList/{cg_code_c}")
-	public String productList(@PathVariable("cg_code_c") Integer cg_code_c, @ModelAttribute("cri") Criteria cri, Model model) {
+	@GetMapping("/productList/{cg_code_c}/{cg_name}")
+	public String productList(@PathVariable("cg_code_c") Integer cg_code_c, @PathVariable("cg_name") String cg_name, @ModelAttribute("cri") Criteria cri, Model model) {
 		log.info("2차 카테고리 코드 : " + cg_code_c);
 		
 		List<ProductVO> productList = proService.getProductListbysubCategory(cg_code_c, cri);
@@ -103,5 +103,21 @@ public class UserProductController {
 		entity = new ResponseEntity<ProductVO>(vo, HttpStatus.OK);
 		
 		return entity;
+	}
+	
+	
+	// 상품 상세주소. 클라이언트에서 actionForm으로 전송되어 옴
+	@GetMapping("/productDetail")
+	public String productDetail(Integer pdt_num, @ModelAttribute("cg_code_c") Integer cg_code_c, @ModelAttribute("cg_name") String cg_name, @ModelAttribute("cri") Criteria cri, Model model) {
+
+		ProductVO vo = proService.getProductpdt_num(pdt_num);
+		vo.setPdt_img_folder(vo.getPdt_img_folder().replace("\\", "/"));
+		
+		log.info("상품코드 : " + pdt_num);
+		log.info("페이지 : " + cri);
+		
+		model.addAttribute("productVO", vo);
+		
+		return "/user/product/productDetail";
 	}
 }

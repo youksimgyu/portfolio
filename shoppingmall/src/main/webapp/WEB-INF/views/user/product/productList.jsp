@@ -45,7 +45,7 @@
 <%@include file="/WEB-INF/views/include/categoryMenu.jsp" %>
 
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-  <h1 class="display-4">Pricing</h1>
+  <h1 class="display-4">${cg_name }</h1>
   <p class="lead">Quickly build an effective pricing table for your potential customers with this Bootstrap example. It’s built with default Bootstrap components and utilities with little customization.</p>
 </div>
 
@@ -59,8 +59,10 @@
             <!-- <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>  -->
 
 			<!-- 상품이미지 -->
-			<img src="/user/product/displayFile?folderName=${productVO.pdt_img_folder }&fileName=s_${productVO.pdt_img }"
-				 class="bd-placeholder-img card-img-top" width="100%" height="225" onerror="this.onerror=null; this.src='/image/no_client.png'">
+			<a class="move" href="${productVO.pdt_num }">
+				<img src="/user/product/displayFile?folderName=${productVO.pdt_img_folder }&fileName=s_${productVO.pdt_img }"
+					 class="bd-placeholder-img card-img-top" width="100%" height="225" onerror="this.onerror=null; this.src='/image/no_client.png'">
+			</a>
 				 
             <div class="card-body">
               <p class="card-text">${productVO.pdt_name }<br>
@@ -78,6 +80,50 @@
         </div>
         </c:forEach>
         
+      </div>
+      
+      <div class="row">
+      	<div class="col-12">
+     		<nav aria-label="...">
+			  <ul class="pagination">
+			    <!-- 이전표시 -->
+			    <c:if test="${pageMaker.prev }">
+				    <li class="page-item">
+				      <a class="page-link" href="${pageMaker.startPage - 1 }">Previous</a>
+				    </li>
+			    </c:if>
+			    
+			    <!-- 페이지번호 표시.  1  2  3  4  5 -->
+			    
+			    <c:forEach begin="${pageMaker.startPage }" end="${pageMaker.endPage }" var="num" >
+			    	<li class='page-item ${pageMaker.cri.pageNum == num ? "active": "" }'><a class="page-link" href="${num}">${num}</a></li>
+			    </c:forEach>
+			    <!-- 
+			    <li class="page-item active" aria-current="page">
+			      <span class="page-link">2</span>
+			    </li>
+			    <li class="page-item"><a class="page-link" href="#">3</a></li>
+			     -->
+			    <!-- 다음표시 -->
+			    <c:if test="${pageMaker.next }">
+				    <li class="page-item">
+				      <a class="page-link" href="${pageMaker.endPage + 1 }">Next</a>
+				    </li>
+			    </c:if>
+				
+			  </ul>
+			  
+			  	<!--페이지 번호 클릭시 list주소로 보낼 파라미터 작업-->
+				<form id="actionForm" action="/board/list" method="get">
+					<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}">
+					<input type="hidden" name="amount" value="${pageMaker.cri.amount}">
+					<input type="hidden" name="type" value="${pageMaker.cri.type}">
+					<input type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
+					<input type="hidden" name="cg_code_c" value="${cg_code_c }">
+					<input type="hidden" name="cg_name" value="${cg_name }">
+				</form>
+			</nav>
+      	</div>
       </div>
       
 <!--  footer.jsp -->
@@ -187,7 +233,7 @@
         	if(result == "success"){
         		alert("장바구니에 추가되었습니다");
         		if(confirm("장바구니로 이동하시겠습니까?")){
-              		location.href="장바구니 주소";
+              		location.href="/user/cart/cart_list";
             }
         	}
         	
@@ -196,7 +242,50 @@
 
     });
 
+    let actionForm = $("#actionForm");
+    
+	// 3) 페이지 번호 클릭
+	$("ul.pagination li a.page-link").on("click", function(e){
+		e.preventDefault(); // <a>태그의 링크기능 무력화
+		
+		let pageNum = $(this).attr("href");
+
+		actionForm.find("input[name='pageNum']").val(pageNum);
+
+		let url = "/user/product/productList/${cg_code_c}/" + encodeURIComponent("${cg_name}");
+		
+		actionForm.attr("method", "get");
+		actionForm.attr("action", url);
+		actionForm.submit();
+	});
+  
+  let searchForm = $("#searchForm");
+
+  // 검색버튼 클릭시 pageNum 초기화
+  $("#btnSearch").on("click", function(){
+
+    searchForm.find("input[name='pageNum']").val(1);
+    searchForm.submit();
   });
+
+  // 상품이미지, 상품제목 클릭
+  $("div.container a.move").on("click", function(e){
+    e.preventDefault();
+
+    let pdt_num = $(this).attr("href");
+
+    actionForm.attr("method", "get");
+    actionForm.attr("action", "/user/product/productDetail");
+	
+    actionForm.append("<input type='hidden' name='pdt_num' value='" + pdt_num + "'>");
+
+    // 2차 카테고리 코드, 
+
+    actionForm.submit();
+
+  });
+    
+}); // ready이벤트 끝
 
 
 </script>

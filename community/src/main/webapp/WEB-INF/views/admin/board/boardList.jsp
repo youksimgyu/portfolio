@@ -128,10 +128,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				      <td scope="row" style="width: 250px;"><c:out value="${boardVO.cat_name }" /></td>
 				      <td scope="row" style="width: 250px;"><c:out value="${boardVO.cat_name_c }" /></td>
 				      
-				      <td scope="row"><c:out value="${boardVO.adm_id }" /></td>
 				      <td>
 				      	<a class="move" href="#" data-boa_num="${boardVO.boa_num }"><c:out value="${boardVO.boa_title }" escapeXml="true" /></a>
 				      </td>
+				      <td scope="row"><c:out value="관리자" /></td>
 				      <td><fmt:formatDate value="${boardVO.boa_date_up }" pattern="yyyy-MM-dd hh:mm" /></td>
 				      <td><button type="button" name="btnBoardEdit" data-boa_num="${boardVO.boa_num }" class="btn btn-link">Edit</button></td>
 				      <td><button type="button" name="btnBoardDelete" data-boa_num="${boardVO.boa_num }" class="btn btn-link">Delete</button></td>
