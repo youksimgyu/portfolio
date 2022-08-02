@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.demo.domain.BoardVO;
 import com.demo.domain.CategoryVO;
+import com.demo.dto.Criteria;
 import com.demo.mapper.UserBoardMapper;
 
 @Service
@@ -21,9 +23,15 @@ public class UserBoardServiceImpl implements UserBoardService {
 	}
 
 	@Override
-	public List<CategoryVO> getSubCagegoryList(Integer cat_c) {
+	public List<BoardVO> getMainBoardList(Integer cat_c, Criteria cri) {
 		// TODO Auto-generated method stub
-		return userBoardMapper.getSubCagegoryList(cat_c);
+		return userBoardMapper.getMainBoardList(cat_c, cri);
+	}
+
+	@Override
+	public int getBoardTotalCount(Criteria cri) {
+		// TODO Auto-generated method stub
+		return userBoardMapper.getBoardTotalCount(cri);
 	}
 
 }

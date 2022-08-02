@@ -11,7 +11,6 @@ public class BoardVO {
 	// eve_name, boa_hit, boa_rep_num, rep_up, rep_down
 	
 	private Integer boa_num;
-	private String adm_id;
 	private String mem_id;
 	private Integer cat_c;
 	private String cat_name;

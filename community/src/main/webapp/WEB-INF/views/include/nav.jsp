@@ -20,10 +20,12 @@
 $(document).ready(function(){
 
     //1차 카테고리 클릭
-    $("div.nav-scroller nav a").on("click", function(){
+    $("div.nav-scroller nav a").on("click", function(e){
 
-      location.href="/user/board/boardList" + "/" + cat_c
+      e.preventDefault();
       
+      location.href = "/user/board/boardList" + "/" + $(this).attr("href");
+
   });
 });
 
