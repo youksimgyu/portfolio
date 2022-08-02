@@ -29,9 +29,9 @@ public class UserBoardServiceImpl implements UserBoardService {
 	}
 
 	@Override
-	public int getBoardTotalCount(Criteria cri) {
+	public int getBoardTotalCount(Integer cat_c, Criteria cri) {
 		// TODO Auto-generated method stub
-		return userBoardMapper.getBoardTotalCount(cri);
+		return userBoardMapper.getBoardTotalCount(cat_c, cri);
 	}
 
 }

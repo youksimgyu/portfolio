@@ -15,6 +15,6 @@ public interface UserBoardService {
 	List<BoardVO> getMainBoardList(Integer cat_c, Criteria cri);
 	
 	// 데이터 개수
-	int getBoardTotalCount(Criteria cri);
+	int getBoardTotalCount(Integer cat_c, Criteria cri);
 
 }

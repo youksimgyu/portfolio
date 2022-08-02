@@ -17,6 +17,6 @@ public interface UserBoardMapper {
 	List<BoardVO> getMainBoardList(@Param("cat_c") Integer cat_c, @Param("cri") Criteria cri);
 	
 	// 데이터 개수
-	int getBoardTotalCount(Criteria cri);
+	int getBoardTotalCount(@Param("cat_c") Integer cat_c, @Param("cri") Criteria cri);
 
 }

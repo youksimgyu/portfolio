@@ -38,7 +38,10 @@
 
 <main class="container">
 
+
+
 <div class="p-5 my-5 border row">
+<h1><a href="/user/board/boardList/${cat_c }">${cat_name }</a></h1>
 	<div class="col-md-12">
 		<div class="box box-primary">
 			
@@ -47,29 +50,26 @@
 			  <table class="table table-hover">
 				  <thead>
 				    <tr>
-				      <th scope="col">번호</th>
-				      <th scope="col">1차</th>
-				      <th scope="col">2차</th>
+				      <th scope="col">탭</th>
 				      <th scope="col">제목</th>
-				      <th scope="col">작성자</th>
-				      <th scope="col">업데이트 날짜</th>
+				      <th scope="col">글쓴이</th>
+				      <th scope="col">날짜</th>
+				      <th scope="col">조회</th>
+				      <th scope="col">추천</th>
 				    </tr>
 				  </thead>
 				  <tbody>
 				    <c:forEach items="${getMainList }" var="boardVO">
 				    <!-- BoardVO클래스의 필드명으로 코딩했지만, 호출은 getter메서드가 사용됨. -->
 				    <tr>
-				      <th scope="row"><c:out value="${boardVO.boa_num }" /></th>
-				      
-				      <!-- 카테고리 값 넣어야 함 -->
-				      <td scope="row" style="width: 250px;"><c:out value="${boardVO.cat_name }" /></td>
-				      <td scope="row" style="width: 250px;"><c:out value="${boardVO.cat_name_c }" /></td>
-				      
+				      <th scope="row"><c:out value="${boardVO.cat_name_c }" /></th>
 				      <td>
 				      	<a class="move" href="#" data-boa_num="${boardVO.boa_num }"><c:out value="${boardVO.boa_title }" escapeXml="true" /></a>
 				      </td>
 				      <td scope="row"><c:out value="사용자" /></td>
-				      <td><fmt:formatDate value="${boardVO.boa_date_up }" pattern="yyyy-MM-dd hh:mm" /></td>
+				      <td><fmt:formatDate value="${boardVO.boa_date_up }" pattern="yyyy-MM-dd" /></td>
+				      <td scope="row"><c:out value="${boardVO.cat_name_c }" /></td>
+				      <td scope="row"><c:out value="${boardVO.cat_name_c }" /></td>
 				    </tr>
 				    </c:forEach>
 				    
@@ -110,6 +110,7 @@
 						<input type="hidden" name="amount" value="${pageMaker.cri.amount}">
 						<input type="hidden" name="type" value="${pageMaker.cri.type}">
 						<input type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
+												
 					</form>
 					
 				</nav>
@@ -131,6 +132,8 @@
 
 $(document).ready(function(){
 
+	let actionForm = $("#actionForm");
+	
 	// 페이지 번호 클릭
 	$("ul.pagination li a.page-link").on("click", function(e){
 		e.preventDefault(); // <a>태그의 링크기능 무력화
@@ -140,7 +143,7 @@ $(document).ready(function(){
 		actionForm.find("input[name='pageNum']").val(pageNum);
 	
 		actionForm.attr("method", "get");
-		actionForm.attr("action", "/user/board/boardList");
+		actionForm.attr("action", "/user/board/boardList/${cat_c}");
 		actionForm.submit();
 	});
 	

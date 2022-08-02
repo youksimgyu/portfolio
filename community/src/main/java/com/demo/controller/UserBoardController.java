@@ -38,7 +38,7 @@ public class UserBoardController {
 		model.addAttribute("getMainList", getMainList);
 		
 		// [prev] 1  2  3  4  5  [next]
-		int totalCount = userBoardService.getBoardTotalCount(cri);
+		int totalCount = userBoardService.getBoardTotalCount(cat_c, cri);
 		model.addAttribute("pageMaker", new PageDTO(cri, totalCount));
 		
 		return "/user/board/boardList";
