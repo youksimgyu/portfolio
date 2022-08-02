@@ -34,5 +34,13 @@
 	</select>
 
 
+	<update id="modify">
+	
+		UPDATE TBL_REVIEW
+		SET RV_CONTENT = #{rv_content}, RV_SCORE = #{rv_score}, RV_DATE_REG = SYSDATE
+		WHERE RV_NUM = #{rv_num}
+	
+	</update>
+
 
 </mapper>

@@ -18,4 +18,7 @@ public interface ReviewMapper {
 	// 리뷰 리스트 가져오기
 	List<ReviewVO> list(@Param("pdt_num") Integer pdt_num, @Param("cri") Criteria cri);
 	
+	// 리뷰 수정
+	void modify(ReviewVO vo);
+	
 }

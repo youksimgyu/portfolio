@@ -4,12 +4,19 @@
 
 	<select id="getCategoryList" resultType="com.demo.domain.CategoryVO">
 	
-		SELECT cat_c, cat_name, cat_p
-		FROM category
-		WHERE cat_p IS NULL
+		SELECT CAT_C, CAT_NAME, CAT_P
+		FROM CATEGORY
+		WHERE CAT_P IS NULL
 	
 	</select>
 
+	<select id="getmainBoard" resultType="com.demo.domain.BoardVO">
+	
+		SELECT BOA_NUM, CAT_C, CAT_NAME, CAT_NAME_C, CAT_P, BOA_TITLE, BOA_
+		FROM BOARD
+		WHERE CAT_P = #{cat_c}
+	
+	</select>
 
 
 </mapper>

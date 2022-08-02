@@ -33,4 +33,10 @@ public class ReviewServiceImpl implements ReviewService {
 		return reviewMapper.getReviewTotalCount(pdt_num);
 	}
 
+	@Override
+	public void modify(ReviewVO vo) {
+		// TODO Auto-generated method stub
+		reviewMapper.modify(vo);
+	}
+
 }

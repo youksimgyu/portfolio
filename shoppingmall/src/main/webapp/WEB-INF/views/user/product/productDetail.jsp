@@ -49,6 +49,30 @@
     
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+
+<script id="reviewTemplate" type="text/x-handlebars-template">
+    {{#each .}}
+    <div class="list-group">    
+      <div class="d-flex w-100 justify-content-between">
+          <h6 class="mb-1">{{idfourdisplay mem_id}}</h6>
+          <p>
+          <small>평점: {{displayStar rv_score}}</small>
+		      {{modifyview mem_id rv_num}}
+          <input type="hidden" name="rv_score" value="{{rv_score}}">
+          </p>
+      </div>
+      <div class="d-flex w-100 justify-content-between">
+          <p class="mb-1"><span class="rv_content">{{rv_content}}</span></p>
+          <p>
+          <small>{{prettifyDate rv_date_reg}}</small>
+          {{deleteview mem_id rv_num}}
+          </p>
+      </div>
+    </div>
+    <hr>
+  {{/each}}
+</script>
 
   </head>
   <body>
@@ -98,16 +122,25 @@
 			    		<button type="button" id="btnReview" class="btn btn-info" style="float: right;">상품리뷰 쓰기</button>
 			    	</div>
 			    </div>
+			    
+			    <!--상품후기 출력위치-->
+				<div id="reviewListResult">
+			    </div>
+			    
+				<!--상품후기 페이징 출력위치-->
+		        <div>
+		          <nav aria-label="Page navigation example">
+		            <ul class="pagination" id="reviewPagingResult">
+		            </ul>
+		          </nav>
+		        </div>  
+			    
 			  </div>
 			</div>
       	</div>
       </div>
       
-      <form id="actionForm" action="/board/list" method="get">
-			<input type="hidden" name="cg_code_c" value="${productVO.cg_num_2 }">
-			<input type="hidden" name="cg_name" value="${productVO.pdt_name }">
-      </form>
-      
+
 <!--  footer.jsp -->
 <%@include file="/WEB-INF/views/include/footer.jsp" %>
     </div>
@@ -194,8 +227,48 @@
   // 상품후기 팝업대화상자
   $("div#productDetailReview button#btnReview").on("click", function() {
 	
-	  $("#reviewModal").modal("show");
-	  
+      $("button.btnReview").hide();
+      $("button#btnReviewWrite").show();
+  	  $("#reviewModal").modal('show')
+  
+  });
+
+  // 상품후기 수정 팝업대화상자
+  $("div#reviewListResult").on("click", "p a.modify", function(e) {
+   
+	  e.preventDefault();
+    
+    $("button.btnReview").hide();
+    $("button#btnReviewModify").show();
+  
+    
+    // 1)리뷰내용 표시
+    let rv_num = $(this).attr("href");
+    let rv_content = $(this).parents("div.list-group").find("p span.rv_content").text();
+
+    $("textarea#rv_content").val(rv_content);
+    $("input#rv_num").val(rv_num);
+
+    // 2)별명점표시
+    let rv_score = $(this).parents("div.list-group").find("p input[name='rv_score']").val();
+
+    // 별 a태그 5개
+    $("#star_rv_score a").each(function(index, item){
+
+      if(index < rv_score){
+        $(item).addClass('on');
+      }else{
+        $(item).removeClass('on');
+      }
+
+
+
+    });
+
+
+    $("#reviewModal").modal('show');
+
+
   });
   
   // 평점 및 클릭시 색상변경
@@ -248,14 +321,12 @@
         if(result == "success"){
           alert("상품후기가 등록되었습니다");
           
-          // 상품후기 목록
-          $.getJSON("/user/review/list/4149/1", function(data){
-            
-            // console.log("목록 : " + data.list[0].rv_num);
-            // console.log("페이지 : " + data.pageMaker.cri.amount);
+          //상품후기 목록
+          reviewPage = 1;
+          // "/user/review/list/상품코드/첫번째 페이지"
+          url = "/user/review/list/" + $("#pdt_num").val() + "/" + reviewPage;
 
-
-          });
+          getPage(url);
 
           // 상품후기 대화상자 숨기기
           $("#reviewModal").modal("hide");
@@ -266,8 +337,220 @@
     });
 
   });
+
+  // 상품후기 수정버튼
+  $("#btnReviewModify").on("click", function(){
+  
+    let rv_num = $("#rv_num").val();
+    let rv_score = 0;
+    let rv_content = $("#rv_content").val();
+
+    // 별평점이 5개
+    $("#star_rv_score a.rv_score").each(function(index, item){
+
+      if($(this).attr('class') == 'rv_score on'){
+        rv_score += 1;
+      }
+
+    });
+
+    // console.log("별 갯수 : " + rv_score);
+
+    if(rv_score == 0){
+      alert("별 평점을 선택해주세요");
+      return;
+    }
+
+    if(rv_content == ""){
+      alert("상품후기를 입력해주세요");
+      return;
+    }
+
+    // 자바스크립트 Object객체 구문
+    let data = { rv_num : rv_num, rv_content : rv_content, rv_score : rv_score}
+    
+    $.ajax({
+      url: '/user/review/modify',
+      headers: { "Content-Type" : "application/json", "X-HTTP-Method-Override" : "PATCH"},
+      type: 'PATCH',
+      dataType: 'text',
+      data: JSON.stringify(data),
+      success: function(result){
+        if(result == "success"){
+          alert("상품후기가 수정되었습니다");
+          
+          //상품후기 목록
+          // reviewPage = 1;
+          // "/user/review/list/상품코드/첫번째 페이지"
+          url = "/user/review/list/" + $("#pdt_num").val() + "/" + reviewPage;
+
+          getPage(url);
+
+          // 상품후기 대화상자 숨기기
+          $("#reviewModal").modal("hide");
+          $("#star_rv_score a.rv_score").parent().children().removeClass("on");
+          $("#rv_content").val("");
+        }
+      }
+    });
+
+  });
+
   
 }); // ready이벤트 끝
+
+let reviewPage = 1;
+let url = "/user/review/list/" + ${productVO.pdt_num } + "/" + reviewPage;
+
+console.log("상품후기요청주소: " + url);
+
+getPage(url);
+
+function getPage(pageInfo) {
+
+  $.getJSON(pageInfo, function(data) {
+    // console.log("목록: " + data.list[0].rv_num);
+    // console.log("페이지정보: " + data.pageMaker.startPage);
+
+    if(data.list.length > 0) {
+
+      //함수 : 상품후기목록
+      printReviewList(data.list, $("#reviewListResult"), $("#reviewTemplate"));
+      
+      //함수 : 페이징기능
+      printReviewPaging(data.pageMaker, $("#reviewPagingResult"));
+    }
+        	  
+  });
+}
+
+
+//상품후기 출력하는 함수
+let printReviewList = function(reviewArrData, target, templateObj) {
+
+  //핸들바 코드가 존재하는 상품후기 디자인코드를 컴파일 함.
+  let template = Handlebars.compile(templateObj.html());
+
+  let html = template(reviewArrData); // 상품후기목록 데이타 + 상품후기UI템플릿 결합된 결과소스
+
+  target.children().remove();
+  target.append(html);
+}
+
+//상품후기 등록일 : 사용자정의 Helper함수.  템플릿에서 사용함.
+Handlebars.registerHelper("prettifyDate", function(timeValue) {
+
+  let dateObj = new Date(timeValue);
+  let year = dateObj.getFullYear();
+  let month = dateObj.getMonth() + 1;
+  let date = dateObj.getDate();
+  let hour = dateObj.getHours();
+  let minute = dateObj.getMinutes();
+
+  return year + "/" + month + "/" + date + " " + hour + ":" + minute;
+});
+
+//별평점 표시하기
+Handlebars.registerHelper("displayStar", function(rating){
+
+  let stars = "";
+  switch(rating) {
+    case 1:
+      stars = "★☆☆☆☆";
+      break;
+    case 2:
+      stars = "★★☆☆☆";
+      break;
+    case 3:
+      stars = "★★★☆☆";
+      break;
+    case 4:
+      stars = "★★★★☆";
+      break;
+    case 5:
+      stars = "★★★★★";
+      break;
+      
+  }
+
+  return stars;
+
+});
+
+// 아이디 4글자만 보여주기
+Handlebars.registerHelper("idfourdisplay", function(userid){
+
+    return userid.substring(0, 4) + "*****";
+});
+
+// 로그인 사용자와 댓글작성자가 일치할 경우 수정버튼 표시
+Handlebars.registerHelper("modifyview", function(review_mem_id, rv_num){
+
+  let result = "";
+  let login_mem_id = "${sessionScope.loginStatus.mem_id}";
+  if(review_mem_id == login_mem_id){
+    result = "<a href='" + rv_num + "' class='modify'>[modify]</a>";
+  }
+
+  return new Handlebars.SafeString(result);
+
+});
+
+// 로그인 사용자와 댓글작성자가 일치할 경우 삭제버튼 표시
+Handlebars.registerHelper("deleteview", function(review_mem_id, rv_num){
+
+  let result = "";
+  let login_mem_id = "${sessionScope.loginStatus.mem_id}";
+  if(review_mem_id == login_mem_id){
+    result = "<a href='" + rv_num + "' class='delete'>[delete]</a>";
+  }
+
+  return new Handlebars.SafeString(result);
+
+});
+
+
+
+
+//상품후기 페이징 함수
+let printReviewPaging = function(pageMaker, target) {
+
+  let pagingStr = "";
+
+  // 이전표시
+  if(pageMaker.prev) {
+    pagingStr += "<li class='page-item'><a class='page-link' href='" + (pageMaker.startPage - 1) + "'> << </a></li>";
+  }
+
+  //페이지번호 표시
+  for(let i= pageMaker.startPage; i <= pageMaker.endPage; i++) {
+    let classStr = pageMaker.cri.pageNum == i ? "active'" : "";
+    pagingStr += "<li  class='page-item " + classStr + "'><a  class='page-link' href='" + i + "'>" + i + "</a></i>";
+  }
+
+  // 다음표시
+  if(pageMaker.next) {
+    pagingStr += "<li class='page-item'><a class='page-link' href='" + (pageMaker.endPage + 1) + "'> >> </a></li>";
+  }
+
+  //console.log("페이지문자열: " + pagingStr);
+  target.children().remove();
+  target.append(pagingStr);
+}
+
+// 이전, 페이지번호, 다음 클릭
+$("nav ul#reviewPagingResult").on("click", "li a.page-link", function(e){
+  e.preventDefault();
+  //console.log("페이지번호 클릭");
+
+  //상품후기 목록
+  reviewPage = $(this).attr("href");
+  // "/user/review/list/상품코드/첫번째 페이지"
+  url = "/user/review/list/" + $("#pdt_num").val() + "/" + reviewPage;
+
+  getPage(url);
+
+});
 
 
 </script>
@@ -298,11 +581,14 @@
           <div class="form-group">
             <label for="rv_content-text" class="col-form-label">리뷰내용:</label>
             <textarea class="form-control" id="rv_content"></textarea>
+            <input type="hidden" name="rv_num" id="rv_num">
           </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" id="btnReviewWrite" class="btn btn-primary">리뷰쓰기</button>
+        <button type="button" id="btnReviewWrite" class="btn btn-primary btnReview">리뷰쓰기</button>
+        <button type="button" id="btnReviewModify" class="btn btn-primary btnReview">리뷰수정</button>
+        <button type="button" id="btnReviewDelete" class="btn btn-primary btnReview">리뷰삭제</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
       </div>
     </div>

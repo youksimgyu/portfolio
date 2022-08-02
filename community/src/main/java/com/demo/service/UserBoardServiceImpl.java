@@ -20,4 +20,10 @@ public class UserBoardServiceImpl implements UserBoardService {
 		return userBoardMapper.getCategoryList();
 	}
 
+	@Override
+	public List<CategoryVO> getSubCagegoryList(Integer cat_c) {
+		// TODO Auto-generated method stub
+		return userBoardMapper.getSubCagegoryList(cat_c);
+	}
+
 }

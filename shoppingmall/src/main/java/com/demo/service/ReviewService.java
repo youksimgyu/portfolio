@@ -15,4 +15,7 @@ public interface ReviewService {
 	
 	// 리뷰 리스트 가져오기
 	List<ReviewVO> list(Integer pdt_num,Criteria cri);
+	
+	// 리뷰 수정
+	void modify(ReviewVO vo);
 }
