@@ -41,64 +41,13 @@
 
 
 <div class="p-5 my-5 border row">
-<h1><a href="/user/board/boardList/${cat_c }/${cat_name}">${cat_name }</a></h1>
-
-<nav class="navbar navbar-expand-lg bg-light my-3">
-  <div class="container-fluid m-1">
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-      	<c:forEach items="${getSubList }" var="categoryVO">
-        <li class="nav-item">
-          <a class="nav-link" href="#">${categoryVO.cat_name }</a>
-        </li>
-        </c:forEach>
-      </ul>
-    </div>
-  </div>
-</nav>
 
 	<div class="col-md-12">
 		<div class="box box-primary">
-			
+			<h5><c:out value="${boardGet.boa_title }" /></h5>
 			<div class="content-body">
 			  
-			  <table class="table table-hover">
-				  <thead>
-				    <tr>
-				      <th scope="col">탭</th>
-				      <th scope="col">제목</th>
-				      <th scope="col">글쓴이</th>
-				      <th scope="col">날짜</th>
-				      <th scope="col">조회</th>
-				      <th scope="col">추천</th>
-				    </tr>
-				  </thead>
-				  <tbody>
-				    <c:forEach items="${getMainList }" var="boardNameVO">
-				    <!-- BoardVO클래스의 필드명으로 코딩했지만, 호출은 getter메서드가 사용됨. -->
-				    <tr>
-				      <th scope="row"><c:out value="${boardNameVO.cat_name_c }" /></th>
-				      <td>
-				      	<a class="move" href="#" data-boa_num="${boardNameVO.boa_num }"><c:out value="${boardNameVO.boa_title }" escapeXml="true" /></a>
-				      </td>
-				      	<c:if test="${!empty boardNameVO.mem_name }">
-				      	<td scope="row">
-						<c:out value="${boardNameVO.mem_name }" />
-				      	</td>
-				      	</c:if>
-				      	<c:if test="${empty boardNameVO.mem_name }">
-				      	<td scope="row">
-						<c:out value="관리자" />
-				      	</td>
-				      	</c:if>
-				      <td><fmt:formatDate value="${boardNameVO.boa_date_up }" pattern="yyyy-MM-dd" /></td>
-				      <td scope="row"><c:out value="${boardNameVO.boa_hit }" /></td>
-				      <td scope="row"><c:out value="${boardNameVO.rep_up }" /></td>
-				    </tr>
-				    </c:forEach>
-				    
-				  </tbody>
-				</table>
+			  
 				<nav aria-label="...">
 				  <ul class="pagination">
 				    <!-- 이전표시 -->
@@ -155,34 +104,7 @@
 
 $(document).ready(function(){
 
-	let actionForm = $("#actionForm");
-	
-	// 페이지 번호 클릭
-	$("ul.pagination li a.page-link").on("click", function(e){
-		e.preventDefault(); // <a>태그의 링크기능 무력화
-		
-		let pageNum = $(this).attr("href");
-	
-		actionForm.find("input[name='pageNum']").val(pageNum);
-	
-		actionForm.attr("method", "get");
-		actionForm.attr("action", "/user/board/boardList/${cat_c}/${cat_name}");
-		actionForm.submit();
-	});
-	
-	
-	$("a.move").on("click", function(e){
-		e.preventDefault();
-	
-		//상품코드를 자식으로 추가
-		actionForm.append("<input type='hidden' name='boa_num' value='" + $(this).data("boa_num") + "'>");
-		
-		actionForm.attr("method", "get");
-		actionForm.attr("action", "/user/board/boardGet");
-		actionForm.submit();
-	
-	
-	});
+
 });
 </script>
     

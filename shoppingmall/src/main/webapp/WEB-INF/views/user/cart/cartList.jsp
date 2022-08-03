@@ -120,7 +120,7 @@
       <div class="box-footer text-center">
         <button type="button" class="btn btn-primary" name="btncarttotaldelete">장바구니 비우기</button>
         <button type="button" class="btn btn-primary">계속 쇼핑하기</button>
-        <button type="button" class="btn btn-primary">주문하기</button>
+        <button type="button" class="btn btn-primary" id="btnOrder">주문하기</button>
       </div>
 
       <form id="actionForm" action="/board/list" method="get">
@@ -239,6 +239,13 @@
 
     actionForm.submit();
 
+  });
+  
+  // 주문하기 버튼클릭
+  $("#btnOrder").on("click", function() {
+	
+	  location.href = "/user/order/orderListInfo";
+  
   });
 
 

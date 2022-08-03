@@ -15,16 +15,21 @@
   </div>
 </div>
 
+
 <script>
 
 $(document).ready(function(){
-
+	
     //1차 카테고리 클릭
     $("div.nav-scroller nav a").on("click", function(e){
 
       e.preventDefault();
       
-      location.href = "/user/board/boardList" + "/" + $(this).attr("href");
+      let cat_name = $(this).text();
+
+      
+      location.href = "/user/board/boardList/" + $(this).attr("href") + "/" + cat_name;
+
 
   });
 });
