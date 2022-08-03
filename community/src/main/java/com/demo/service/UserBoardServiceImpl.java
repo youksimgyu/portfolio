@@ -41,7 +41,7 @@ public class UserBoardServiceImpl implements UserBoardService {
 	}
 
 	@Override
-	public List<BoardNameVO> boardGet(Integer boa_num) {
+	public BoardNameVO boardGet(Integer boa_num) {
 		// TODO Auto-generated method stub
 		return userBoardMapper.boardGet(boa_num);
 	}

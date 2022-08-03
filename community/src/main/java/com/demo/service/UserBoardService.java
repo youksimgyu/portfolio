@@ -21,6 +21,6 @@ public interface UserBoardService {
 	int getBoardTotalCount(Integer cat_c, Criteria cri);
 	
 	// 글 가져오기
-	List<BoardNameVO> boardGet(Integer boa_num);
+	BoardNameVO boardGet(Integer boa_num);
 	
 }

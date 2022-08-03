@@ -93,7 +93,7 @@
 				      	</c:if>
 				      <td><fmt:formatDate value="${boardNameVO.boa_date_up }" pattern="yyyy-MM-dd" /></td>
 				      <td scope="row"><c:out value="${boardNameVO.boa_hit }" /></td>
-				      <td scope="row"><c:out value="${boardNameVO.rep_up }" /></td>
+				      <td scope="row"><c:out value="${boardNameVO.boa_up }" /></td>
 				    </tr>
 				    </c:forEach>
 				    
@@ -133,7 +133,9 @@
 						<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}">
 						<input type="hidden" name="amount" value="${pageMaker.cri.amount}">
 						<input type="hidden" name="type" value="${pageMaker.cri.type}">
-						<input type="hidden" name="keyword" value="${pageMaker.cri.keyword}">				
+						<input type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
+						<input type="hidden" name="cat_c" value="${cat_c }">
+						<input type="hidden" name="cat_name" value="${cat_name }">				
 					</form>
 					
 				</nav>

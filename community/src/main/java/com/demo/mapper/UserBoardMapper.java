@@ -23,6 +23,6 @@ public interface UserBoardMapper {
 	int getBoardTotalCount(@Param("cat_c") Integer cat_c, @Param("cri") Criteria cri);
 	
 	// 글 가져오기
-	List<BoardNameVO> boardGet(Integer boa_num);
+	BoardNameVO boardGet(Integer boa_num);
 
 }

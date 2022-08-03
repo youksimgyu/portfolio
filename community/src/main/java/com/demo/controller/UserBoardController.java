@@ -54,7 +54,9 @@ public class UserBoardController {
 	@GetMapping("/boardGet")
 	public void boardGet(Integer boa_num, @ModelAttribute("cat_name") String cat_name, @ModelAttribute("cri") Criteria cri, Model model) {
 		
-		List<BoardNameVO> boardGet = userBoardService.boardGet(boa_num);
+		BoardNameVO boardGet = userBoardService.boardGet(boa_num);
+		
+		log.info(boardGet);
 		
 		model.addAttribute("boardGet", boardGet);
 		

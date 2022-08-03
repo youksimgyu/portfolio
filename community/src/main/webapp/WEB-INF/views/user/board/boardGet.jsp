@@ -44,11 +44,51 @@
 
 	<div class="col-md-12">
 		<div class="box box-primary">
-			<h5><c:out value="${boardGet.boa_title }" /></h5>
+			<h3>${cat_name }</h3>
+			<hr>
+			<div class="row">
+				<div class="col-10">
+				 	<span>${boardGet.boa_title }</span>
+				</div>
+				<div class="col-2">
+				 	<span><fmt:formatDate value="${boardGet.boa_date_up }" pattern="yyyy.MM.dd hh:mm" /></span>
+				</div>
+			</div>
+			<hr>
+			<div class="row">
+				<div class="col">
+					<span>${boardGet.mem_name }</span>
+				</div>
+				<div class="col-2">
+					<span>조회수 ${boardGet.boa_hit }</span>
+				</div>
+				<div class="col-1">
+					<span>추천수 ${boardGet.boa_up }</span>
+				</div>
+				<div class="col-1">
+					<span>댓글 ${boardGet.boa_rep_num }</span>
+				</div>
+			</div>
+			<hr>
 			<div class="content-body">
-			  
-			  
-				<nav aria-label="...">
+			  <div class="row">
+				<div class="col">
+					<p>${boardGet.boa_content }</p>
+				</div>
+			  </div>
+			</div>
+			
+			<div class="content-footer">
+
+			</div>
+			
+				
+			
+		</div>
+	</div>
+</div>
+
+			<nav aria-label="...">
 				  <ul class="pagination">
 				    <!-- 이전표시 -->
 				    <c:if test="${pageMaker.prev }">
@@ -86,13 +126,6 @@
 					</form>
 					
 				</nav>
-			</div>
-			
-
-			
-		</div>
-	</div>
-</div>
 
 
 </main>
