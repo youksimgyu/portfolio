@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.demo.domain.BoardNameVO;
+import com.demo.domain.BoardVO;
 import com.demo.domain.CategoryVO;
 import com.demo.dto.Criteria;
 import com.demo.mapper.UserBoardMapper;
@@ -44,6 +45,12 @@ public class UserBoardServiceImpl implements UserBoardService {
 	public BoardNameVO boardGet(Integer boa_num) {
 		// TODO Auto-generated method stub
 		return userBoardMapper.boardGet(boa_num);
+	}
+
+	@Override
+	public int boa_hit(Integer boa_num) {
+		// TODO Auto-generated method stub
+		return userBoardMapper.boa_hit(boa_num);
 	}
 
 }

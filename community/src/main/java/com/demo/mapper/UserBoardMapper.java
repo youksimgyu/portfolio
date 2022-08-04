@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.demo.domain.BoardNameVO;
+import com.demo.domain.BoardVO;
 import com.demo.domain.CategoryVO;
 import com.demo.dto.Criteria;
 
@@ -24,5 +25,8 @@ public interface UserBoardMapper {
 	
 	// 글 가져오기
 	BoardNameVO boardGet(Integer boa_num);
+	
+	// 게시물 조회수 올리기
+	int boa_hit(Integer boa_num);
 
 }

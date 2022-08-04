@@ -108,78 +108,90 @@
 				  	</tr>
 				  </tfoot>
 				</table>
-				
 				<div>
-		<form id="joinForm" action="join" method="post">
+				
+		<form id="orderForm" action="join" method="post">
 		<h5>주문자 정보</h5>
 		<hr>
 		  <div class="form-group row">
 		    <label for="mem_name" class="col-sm-2 col-form-label">이름</label>
 		    <div class="col-sm-10">
-		      <input type="text" class="form-control" id="mem_name" name="mem_name">
+		      <input type="text" class="form-control" value="${sessionScope.loginStatus.mem_name }" id="s_mem_name" name="mem_name" readonly>
 		    </div>
 		  </div>
 		  <div class="form-group row">
 		    <label for="mem_email" class="col-sm-2 col-form-label">전자우편</label>
 		    <div class="col-sm-10">
-		      <input type="text" class="form-control" id="mem_email" name="mem_email">
+		      <input type="text" class="form-control" value="${sessionScope.loginStatus.mem_email }" id="s_mem_email" name="mem_email" readonly>
 		    </div>
 		  </div>
 		  <div class="form-group row">
 		    <label for="mem_phone" class="col-sm-2 col-form-label">휴대폰 번호</label>
 		    <div class="col-sm-10">
-		      <input type="text" class="form-control" id="mem_phone" name="mem_phone">
+		      <input type="text" class="form-control" value="${sessionScope.loginStatus.mem_phone }" id="s_mem_phone" name="mem_phone" readonly>
+		      <input type="hidden" id="s_mem_zipcode" value="${sessionScope.loginStatus.mem_zipcode }">
+		      <input type="hidden" id="s_mem_addr" value="${sessionScope.loginStatus.mem_addr }">
+		      <input type="hidden" id="s_mem_addr_d" value="${sessionScope.loginStatus.mem_addr_d }">
 		    </div>
 		  </div>
+		  <input type="checkbox" id="same"><label for="same">위 정보와 같음</label>
 		  <h5>배송 정보</h5>
 		  <hr>
 		  <div class="form-group row">
 		    <label for="mem_name" class="col-sm-2 col-form-label">이름</label>
 		    <div class="col-sm-10">
-		      <input type="text" class="form-control" id="mem_name" name="mem_name">
+		      <input type="text" class="form-control" id="mem_name" name="odr_name">
 		    </div>
 		  </div>
   		  <div class="form-group row">
 		    <label for="mem_phone" class="col-sm-2 col-form-label">휴대폰 번호</label>
 		    <div class="col-sm-10">
-		      <input type="text" class="form-control" id="mem_phone" name="mem_phone">
+		      <input type="text" class="form-control" id="mem_phone" name="odr_phone">
 		    </div>
 		  </div>
 		  <div class="form-group row">
 		    <label for="mem_phone" class="col-sm-2 col-form-label">배송지 선택</label>
 		    <div class="col-sm-10">
-		      배송지 작업
+		      <div class="form-check form-check-inline">
+		      	<input type="radio" class="form-check-input" name="receiveAddr" id="receiveAddr1" value="1" checked>
+		      	<label class="form-check-label" for="inlineRadio1">자택</label>
+		      </div>
+		      <div class="form-check form-check-inline">
+		      	<input type="radio" class="form-check-input" name="receiveAddr" id="receiveAddr2" value="2">
+		      	<label class="form-check-label" for="inlineRadio2">타지역</label>
+		      </div>
 		    </div>
 		  </div>
 		  <div class="form-group row">
 		    <label for="sample2_postcode" class="col-sm-2 col-form-label">우편번호</label>
 		    <div class="col-sm-10">
-		      <input type="text" class="form-control" id="sample2_postcode" name="mem_zipcode">
+		      <input type="text" class="form-control" id="mem_zipcode" name="odr_zipcode" value="${sessionScope.loginStatus.mem_zipcode }">
 		      <input type="button" onclick="sample2_execDaumPostcode()" value="우편번호 찾기">
 		    </div>
 		  </div>
 		  <div class="form-group row">
 		    <label for="sample2_address" class="col-sm-2 col-form-label">주소</label>
 		    <div class="col-sm-10">
-		      <input type="text" class="form-control" id="sample2_address" name="mem_addr">
+		      <input type="text" class="form-control" id="mem_addr" name="odr_addr" value="${sessionScope.loginStatus.mem_addr }">
 		    </div>
 		  </div>
 		  <div class="form-group row">
 		    <label for="sample2_detailAddress" class="col-sm-2 col-form-label">상세주소</label>
 		    <div class="col-sm-10">
-		      <input type="text" class="form-control" id="sample2_detailAddress" name="mem_addr_d">
+		      <input type="text" class="form-control" id="mem_addr_d" name="odr_addr_d" value="${sessionScope.loginStatus.mem_addr_d }">
 		      <input type="hidden" id="sample2_extraAddress" placeholder="참고항목">
 		    </div>
 		  </div>
 		  <div class="form-group row">
 		    <label for="mem_phone" class="col-sm-2 col-form-label">배송지 메시지(100자 이내)</label>
 		    <div class="col-sm-10">
-		      배송 참고내용
+		       <textarea class="form-control" style="resize: none;" name="odr_message"></textarea>
+		       <input type="hidden" value="${sum }" name="odr_total_price">
 		    </div>
 		  </div>
 		  <div class="box-footer text-center">
-	        <button type="button" class="btn btn-primary">주문하기</button>
-	        <button type="button" class="btn btn-primary">주문취소</button>
+	        <button type="button" id="btnOrder" class="btn btn-primary">주문하기</button>
+	        <button type="button" id="btnCancel" class="btn btn-primary">주문취소</button>
 	      </div>
 
 	 </form>
@@ -299,9 +311,46 @@
 	
     actionForm.append("<input type='hidden' name='pdt_num' value='" + pdt_num + "'>");
 
-    // 2차 카테고리 코드, 
+    // 2차 카테고리 코드
 
     actionForm.submit();
+
+  });
+
+  // 위정보와 동일 체크박스 이벤트
+  $("#same").on("change", function(){
+
+    if($("#same").is(":checked") == true){
+      $("#mem_name").val($("#s_mem_name").val());
+      $("#mem_phone").val($("#s_mem_phone").val());
+    }else {
+      $("#mem_name").val("");
+      $("#mem_phone").val("");
+    }
+
+  });
+
+  // 자택 또는 타지역 선택시 라디오버튼 이벤트
+  $("input[name='receiveAddr']").on("click", function(){
+
+    if($("input[name='receiveAddr']:checked").val() == 1){ //자택
+      $("#mem_zipcode").val($("#s_mem_zipcode").val());
+      $("#mem_addr").val($("#s_mem_addr").val());
+      $("#mem_addr_d").val($("#s_mem_addr_d").val());
+
+    } else if ($("input[name='receiveAddr']:checked").val() == 2) { //타지역
+      $("#mem_zipcode").val("");
+      $("#mem_addr").val("");
+      $("#mem_addr_d").val("");
+    }
+
+  });
+
+  // 주문하기 버튼클릭
+  $("#btnOrder").on("click", function(){
+
+    $("#orderForm").attr("action", "/user/order/orderSave");
+    $("#orderForm").submit();
 
   });
 

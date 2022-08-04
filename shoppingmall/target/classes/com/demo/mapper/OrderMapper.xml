@@ -11,7 +11,29 @@
 		WHERE C.MEM_ID = #{mem_id}
 	
 	</select>
+	
+	<insert id="orderSave" parameterType="com.demo.domain.OrderVO">
+	
+		<selectKey keyProperty="odr_code" order="BEFORE" resultType="Long">
+			SELECT SEQ_ODR_CODE.NEXTVAL FROM DUAL
+		</selectKey>
+		
+		INSERT INTO TBL_ORDER
+			(ODR_CODE, MEM_ID, ODR_NAME, ODR_ZIPCODE, ODR_ADDR, ODR_ADDR_D, ODR_PHONE, ODR_TOTAL_PRICE, ODR_MESSAGE)
+		VALUES (#{odr_code}, #{mem_id}, #{odr_name}, #{odr_zipcode}, #{odr_addr}, #{odr_addr_d}, #{odr_phone}, #{odr_total_price}, #{odr_message})
+	
+	</insert>
 
+	<insert id="orderDetailSave">
+	
+		INSERT INTO TBL_ORDER_DETAIL
+			(ODR_CODE, PDT_NUM, ODR_AMOUNT, ODR_PRICE)
+		SELECT #{odr_code}, C.PDT_NUM, C.CART_AMOUNT, C.CART_AMOUNT * P.PDT_PRICE
+		FROM TBL_CART C INNER JOIN TBL_PRODUCT P
+		ON C.PDT_NUM = P.PDT_NUM
+		WHERE MEM_ID = #{mem_id}
+	
+	</insert>
 
 
 </mapper>

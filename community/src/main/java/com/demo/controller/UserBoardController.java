@@ -3,12 +3,15 @@ package com.demo.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.demo.domain.BoardNameVO;
 import com.demo.domain.BoardVO;
@@ -54,13 +57,26 @@ public class UserBoardController {
 	@GetMapping("/boardGet")
 	public void boardGet(Integer boa_num, @ModelAttribute("cat_name") String cat_name, @ModelAttribute("cri") Criteria cri, Model model) {
 		
+		// 게시물 조회수 올리기
+		userBoardService.boa_hit(boa_num);
+		
+		// 글 가져오기
 		BoardNameVO boardGet = userBoardService.boardGet(boa_num);
-		
-		log.info(boardGet);
-		
 		model.addAttribute("boardGet", boardGet);
 		
+		log.info(boardGet);
+			
 		
 	}
-
+	
+	@ResponseBody
+	@GetMapping("/recommend")
+	public ResponseEntity<Integer> recommend(@PathVariable("boa_num") Integer boa_num){
+		ResponseEntity<Integer> entity = null;
+		
+		
+		
+		return entity;
+	}
+	
 }

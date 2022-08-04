@@ -56,9 +56,16 @@
 			</div>
 			<hr>
 			<div class="row">
+				<c:if test="${!empty boardGet.mem_name }">
 				<div class="col">
 					<span>${boardGet.mem_name }</span>
 				</div>
+				</c:if>
+				<c:if test="${empty boardGet.mem_name }">
+				<div class="col">
+					<span>관리자</span>
+				</div>
+				</c:if>
 				<div class="col-2">
 					<span>조회수 ${boardGet.boa_hit }</span>
 				</div>
@@ -79,7 +86,14 @@
 			</div>
 			
 			<div class="content-footer">
-
+				<div class="row">
+					<div class="col" style="text-align: center;">
+					<span>추천수 값</span>
+					<button type="button" class="btn btn-outline-success" name="btnboa" data-type="1">추천</button>
+					<button type="button" class="btn btn-outline-danger" name="btnboa" data-type="2">비추천</button>
+					<span>비추천수 값</span>
+					</div>
+				</div>
 			</div>
 			
 				
@@ -137,8 +151,16 @@
 
 $(document).ready(function(){
 
+	$("input[name='btnboa']").on("click", function(){
+
+		let type = $(this).data("type").val();
+		let boa_num = ${boardGet.boa_num};
+		let btnboa = $(this);
+
+	});
 
 });
+
 </script>
     
   

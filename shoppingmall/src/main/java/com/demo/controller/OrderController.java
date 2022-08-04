@@ -10,11 +10,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.demo.domain.CartOrderInfo;
 import com.demo.domain.MemberVO;
+import com.demo.domain.OrderVO;
 import com.demo.service.OrderService;
 import com.demo.util.UploadFileUtils;
 
@@ -47,6 +49,20 @@ public class OrderController {
 		}
 		
 		model.addAttribute("cartOrderList", cartOrderList);
+	}
+	
+	// 주문저장하기
+	@PostMapping("/orderSave")
+	public String orderSave(OrderVO vo, HttpSession session) {
+		
+		String mem_id = ((MemberVO) session.getAttribute("loginStatus")).getMem_id();
+		vo.setMem_id(mem_id);
+		
+		log.info("주문정보 : " + vo);
+		
+		orderService.orderbuy(vo);
+		
+		return "/";
 	}
 	
 	// 상품목록에서 이미지 보여주기

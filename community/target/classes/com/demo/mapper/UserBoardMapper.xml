@@ -83,6 +83,14 @@
 		     WHERE B.BOA_NUM = #{boa_num}
 	
 	</select>
+	
+	<update id="boa_hit" parameterType="int">
+	
+		UPDATE BOARD
+		SET BOA_HIT = NVL(BOA_HIT,0) + 1
+		WHERE BOA_NUM = #{boa_num}
+	
+	</update>
 
 
 </mapper>

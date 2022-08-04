@@ -25,7 +25,7 @@
     </c:if>	
     </a> |
     
-    <a class="p-2 text-dark" href="#">ORDER</a> |
+    <a class="p-2 text-dark" href="/user/order/orderListInfo">ORDER</a> |
     <a class="p-2 text-dark" href="/user/cart/cart_list">CART</a>
   </nav>
 </div>
