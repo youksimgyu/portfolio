@@ -45,6 +45,7 @@
 	<div class="col-md-12">
 		<div class="box box-primary">
 			<h3>${cat_name }</h3>
+			<input type="hidden" name="boa_num" value="${boardGet.boa_num }">
 			<hr>
 			<div class="row">
 				<div class="col-10">
@@ -89,8 +90,8 @@
 				<div class="row">
 					<div class="col" style="text-align: center;">
 					<span>추천수 값</span>
-					<button type="button" class="btn btn-outline-success" name="btnboa" data-type="1">추천</button>
-					<button type="button" class="btn btn-outline-danger" name="btnboa" data-type="2">비추천</button>
+					<button type="button" class="btn btn-outline-success" name="btn_boa_up_down" data-type="1">추천</button>
+					<button type="button" class="btn btn-outline-danger" name="btn_boa_up_down" data-type="2">비추천</button>
 					<span>비추천수 값</span>
 					</div>
 				</div>
@@ -151,11 +152,26 @@
 
 $(document).ready(function(){
 
-	$("input[name='btnboa']").on("click", function(){
+	$("button[name='btn_boa_up_down']").on("click", function(){
 
-		let type = $(this).data("type").val();
-		let boa_num = ${boardGet.boa_num};
-		let btnboa = $(this);
+		let type = $(this).data("type");
+		let boa_num = $("input[name='boa_num']").val();
+		let btn_boa_up_down = $(this);
+
+		// 자바스크립트 Object객체 구문
+		let data = { type : type, boa_num : boa_num}
+		
+		$.ajax({
+			url: '/user/recommend/boa_up_down',
+			type: 'get',
+			data: data,
+			success: function(result){
+				if(result == "success"){
+				alert("선택완료");
+				
+				}
+			}
+		});
 
 	});
 

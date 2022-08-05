@@ -69,14 +69,5 @@ public class UserBoardController {
 		
 	}
 	
-	@ResponseBody
-	@GetMapping("/recommend")
-	public ResponseEntity<Integer> recommend(@PathVariable("boa_num") Integer boa_num){
-		ResponseEntity<Integer> entity = null;
-		
-		
-		
-		return entity;
-	}
 	
 }
