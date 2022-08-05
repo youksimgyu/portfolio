@@ -44,4 +44,10 @@ public class OrderServiceImpl implements OrderService {
 		
 	}
 
+	@Override
+	public List<CartOrderInfo> directOrderList(Integer pdt_num, int odr_amount) {
+		// TODO Auto-generated method stub
+		return orderMapper.directOrderList(pdt_num, odr_amount);
+	}
+
 }

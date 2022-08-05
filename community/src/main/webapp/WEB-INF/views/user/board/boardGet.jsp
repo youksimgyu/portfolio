@@ -89,10 +89,12 @@
 			<div class="content-footer">
 				<div class="row">
 					<div class="col" style="text-align: center;">
-					<span>추천수 값</span>
+					<span id="boa_up">${boardGet.boa_up }</span>
+					<input type="hidden" name="boa_up" value="${boardGet.boa_up }">
 					<button type="button" class="btn btn-outline-success" name="btn_boa_up_down" data-type="1">추천</button>
 					<button type="button" class="btn btn-outline-danger" name="btn_boa_up_down" data-type="2">비추천</button>
-					<span>비추천수 값</span>
+					<span id="boa_down">${boardGet.boa_down }</span>
+					<input type="hidden" name="boa_down" value="${boardGet.boa_down }">
 					</div>
 				</div>
 			</div>
@@ -165,11 +167,12 @@ $(document).ready(function(){
 			url: '/user/recommend/boa_up_down',
 			type: 'get',
 			data: data,
+			dataType : 'json',
 			success: function(result){
-				if(result == "success"){
-				alert("선택완료");
-				
-				}
+
+				 console.log("result : " + result.boa_up);
+				 
+
 			}
 		});
 

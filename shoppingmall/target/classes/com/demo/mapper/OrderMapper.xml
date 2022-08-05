@@ -34,6 +34,15 @@
 		WHERE MEM_ID = #{mem_id}
 	
 	</insert>
+	
+	
+	<select id="directOrderList" resultType="com.demo.domain.CartOrderInfo">
+	
+		SELECT PDT_NUM, PDT_NAME, PDT_IMG, PDT_IMG_FOLDER, PDT_PRICE, #{odr_amount} as CART_AMOUNT, PDT_DISCOUNT, PDT_COMPANY
+		FROM TBL_PRODUCT
+		WHERE PDT_NUM = #{pdt_num}
+	
+	</select>
 
 
 </mapper>

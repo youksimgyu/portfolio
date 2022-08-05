@@ -201,6 +201,18 @@
       })
 
     });
+    
+    
+    // 직접구매 버튼 클릭시
+    $("#btnOrder").on("click", function(){
+
+      let pdt_num = $("#pdt_num").val(); // 구매 상품코드
+      let odr_amount = $("#pdt_amount").val(); // 구매수량
+
+      location.href = "/user/order/orderListInfo?pdt_num=" + pdt_num + "&odr_amount=" + odr_amount + "&type=direct";
+
+    });
+    
 
   let actionForm = $("#actionForm");
     

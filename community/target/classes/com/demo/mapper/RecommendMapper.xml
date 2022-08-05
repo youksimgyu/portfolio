@@ -9,16 +9,8 @@
 		WHERE BOA_NUM = #{boa_num}
 	
 	</update>
-	
-	<select id="select1" resultType="int">
-	
-		SELECT BOA_UP
-		FROM BOARD
-		WHERE BOA_NUM = #{boa_num}
-	
-	</select>
-	
-		<update id="update2">
+		
+	<update id="update2">
 	
 		UPDATE BOARD
 		SET BOA_DOWN = NVL(BOA_DOWN,0) + 1
@@ -26,13 +18,20 @@
 	
 	</update>
 	
-	<select id="select2" resultType="int">
+	<resultMap type="HashMap" id="up_down">
 	
-		SELECT BOA_DOWN
+		<result column="BOA_UP" property="boa_up"/>
+		<result column="BOA_DOWN" property="boa_down"/>
+	
+	</resultMap>
+	
+	
+	<select id="select" resultMap="up_down">
+	
+		SELECT BOA_UP, BOA_DOWN
 		FROM BOARD
 		WHERE BOA_NUM = #{boa_num}
 	
 	</select>
-
 
 </mapper>

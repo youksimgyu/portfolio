@@ -238,9 +238,20 @@
         	}
         	
         }
-      })
+      });
 
     });
+
+    // 직접구매 버튼 클릭시
+    $("button[name='btnModalBuy']").on("click", function(){
+
+      let pdt_num = $("div#Modal_productDetail input#pdt_num").val(); // 구매 상품코드
+      let odr_amount = $("div#Modal_productDetail input#pdt_amount").val(); // 구매수량
+
+      location.href = "/user/order/orderListInfo?pdt_num=" + pdt_num + "&odr_amount=" + odr_amount + "&type=direct";
+
+    });
+    
 
     let actionForm = $("#actionForm");
     

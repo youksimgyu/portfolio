@@ -221,6 +221,14 @@
     }
 
   });
+  
+  // 주문하기 버튼클릭
+   $("#btnOrder").on("click", function(){
+
+	   let type = "cartOrder";
+	   location.href = "/user/order/orderListInfo?type=" + type;
+	
+  });
 
   let actionForm = $("#actionForm");
   
@@ -244,7 +252,8 @@
   // 주문하기 버튼클릭
   $("#btnOrder").on("click", function() {
 	
-	  location.href = "/user/order/orderListInfo";
+	  let type = "cartOrder";
+	  location.href = "/user/order/orderListInfo?type=" + type;
   
   });
 

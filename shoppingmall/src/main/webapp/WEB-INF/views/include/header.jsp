@@ -25,7 +25,9 @@
     </c:if>	
     </a> |
     
-    <a class="p-2 text-dark" href="/user/order/orderListInfo">ORDER</a> |
+    <c:if test="${sessionScope.loginStatus != null }">
+    <a class="p-2 text-dark" href="/user/order/orderListInfo?type=cartOrder">ORDER</a> |
     <a class="p-2 text-dark" href="/user/cart/cart_list">CART</a>
+    </c:if>
   </nav>
 </div>
