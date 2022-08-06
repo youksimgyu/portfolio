@@ -40,14 +40,14 @@
 
 
 	<!-- 1)데이터 목록 데이터 가져오기 : 페이징쿼리(인덱스힌트 구문) -->
-	<select id="getMainBoardList" resultType="com.demo.domain.BoardNameVO">
+	<select id="getMainBoardList" parameterType="com.demo.dto.Criteria" resultType="com.demo.domain.BoardNameVO">
 		<![CDATA[
-		SELECT RN, B.BOA_NUM, M.MEM_NAME, B.CAT_C, B.CAT_NAME, B.CAT_NAME_C, B.CAT_P, B.BOA_TITLE,
-			   B.BOA_CONTENT, B.BOA_DATE_REG, B.BOA_DATE_UP,
-			   B.EVE_NAME, B.BOA_HIT, B.BOA_REP_NUM, B.REP_UP, B.REP_DOWN, B.BOA_UP, B.BOA_DOWN
+		SELECT RN, BOA_NUM, MEM_NAME, CAT_C, CAT_NAME, CAT_NAME_C, CAT_P, BOA_TITLE,
+			   BOA_CONTENT, BOA_DATE_REG, BOA_DATE_UP,
+			   EVE_NAME, BOA_HIT, BOA_REP_NUM, REP_UP, REP_DOWN, BOA_UP, BOA_DOWN
 		FROM (
 			    SELECT  /*+ INDEX_DESC(BOARD PK_BOA_NUM)*/
-			    ROWNUM RN, B.BOA_NUM, M.MEM_ID, M.MEM_NAME, B.CAT_C, B.CAT_NAME, B.CAT_NAME_C, B.CAT_P, B.BOA_TITLE,
+			    	   ROWNUM RN, B.BOA_NUM, M.MEM_ID, M.MEM_NAME, B.CAT_C, B.CAT_NAME, B.CAT_NAME_C, B.CAT_P, B.BOA_TITLE,
 				   	   B.BOA_CONTENT, B.BOA_DATE_REG, B.BOA_DATE_UP,
 				   	   B.EVE_NAME, B.BOA_HIT, B.BOA_REP_NUM, B.REP_UP, B.REP_DOWN, B.BOA_UP, B.BOA_DOWN
 			    FROM BOARD B LEFT JOIN MEMBER M
@@ -57,8 +57,7 @@
 		<![CDATA[ 
 		   
 		        ROWNUM <= #{cri.pageNum} * #{cri.amount}
-			)   B LEFT JOIN MEMBER M
-		ON B.MEM_ID = M.MEM_ID
+			)
 		WHERE RN > (#{cri.pageNum}-1) * #{cri.amount}
 		]]>
 	
@@ -68,7 +67,8 @@
 	<!-- 2)테이블 데이타개수 : 페이징구현사용 -->
 	<select id="getBoardTotalCount" resultType="int">
 	
-		SELECT COUNT(*) FROM BOARD WHERE CAT_P = #{cat_c} AND
+		SELECT COUNT(*) FROM BOARD
+		WHERE CAT_P = #{cat_c} AND
 		boa_num > 0
 		
 	</select>
@@ -91,6 +91,51 @@
 		WHERE BOA_NUM = #{boa_num}
 	
 	</update>
+	
+	<insert id="boardInsert">
+	
+		INSERT INTO BOARD
+					(boa_num, mem_id, cat_c, cat_name, cat_name_c, cat_p, boa_title, boa_content,
+					 boa_date_reg, boa_date_up)
+		VALUES
+				(SEQ_BOA_NUM.NEXTVAL, #{mem_id}, #{cat_c}, #{cat_name}, #{cat_name_c}, #{cat_p}, #{boa_title}, #{boa_content},
+				 SYSDATE, SYSDATE)
+	
+	</insert>
+	
+	<!-- 전체 페이지 가져오기 -->
+	<select id="getBoardList" parameterType="com.demo.dto.Criteria" resultType="com.demo.domain.BoardNameVO">
+	
+		<![CDATA[
+		SELECT RN, BOA_NUM, MEM_NAME, CAT_C, CAT_NAME, CAT_NAME_C, CAT_P, BOA_TITLE,
+			   BOA_CONTENT, BOA_DATE_REG, BOA_DATE_UP,
+			   EVE_NAME, BOA_HIT, BOA_REP_NUM, REP_UP, REP_DOWN, BOA_UP, BOA_DOWN
+		FROM (
+			    SELECT /*+ INDEX_DESC(BOARD PK_BOA_NUM)*/
+			    	   ROWNUM RN, B.BOA_NUM, M.MEM_ID, M.MEM_NAME, B.CAT_C, B.CAT_NAME, B.CAT_NAME_C, B.CAT_P, B.BOA_TITLE,
+				   	   B.BOA_CONTENT, B.BOA_DATE_REG, B.BOA_DATE_UP,
+				   	   B.EVE_NAME, B.BOA_HIT, B.BOA_REP_NUM, B.REP_UP, B.REP_DOWN, B.BOA_UP, B.BOA_DOWN
+			    FROM BOARD B LEFT JOIN MEMBER M
+			    ON B.MEM_ID = M.MEM_ID
+			    WHERE
+		]]>
+		<![CDATA[ 
+		   
+		        ROWNUM <= #{pageNum} * #{amount}
+			)
+		WHERE RN > (#{pageNum}-1) * #{amount}
+		]]>
+	
+	</select>
+	
+	<!-- 전체 게시글 수 : 페이징구현사용 -->
+	<select id="getTotalBoardTotalCount" resultType="int">
+	
+		SELECT COUNT(*)
+		FROM BOARD
+		WHERE boa_num > 0
+		
+	</select>
 
 
 </mapper>

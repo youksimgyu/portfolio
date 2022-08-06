@@ -28,5 +28,14 @@ public interface UserBoardMapper {
 	
 	// 게시물 조회수 올리기
 	int boa_hit(Integer boa_num);
+	
+	// 게시물 쓰기
+	void boardInsert(BoardVO vo);
+	
+	// 전체 글 가져오기
+	List<BoardNameVO> getBoardList(Criteria cri);
+	
+	// 전체 글 카운트
+	int getTotalBoardTotalCount(Criteria cri);
 
 }

@@ -127,6 +127,9 @@
 				    </c:if>
 					
 				  </ul>
+				<div style="text-align: center;">
+					<button type="button" class="btn btn-primary" id="btnInsert">글 쓰기</button>
+				</div>
 				  
 				  	<!--페이지 번호 클릭시 list주소로 보낼 파라미터 작업-->
 					<form id="actionForm" action="/board/list" method="get">
@@ -184,6 +187,16 @@ $(document).ready(function(){
 		actionForm.submit();
 	
 	
+	});
+	
+	$("#btnInsert").on("click", function(){
+		
+		if(${sessionScope.loginStatus == null }){
+			alert("로그인 해주세요");
+		} else if(${sessionScope.loginStatus != null }){
+			location.href = "/user/board/boardInsert";	
+		}
+		
 	});
 });
 </script>

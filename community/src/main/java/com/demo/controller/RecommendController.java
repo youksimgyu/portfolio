@@ -1,6 +1,5 @@
 package com.demo.controller;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -12,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.demo.domain.BoardVO;
+import com.demo.domain.MemberVO;
 import com.demo.service.RecommendService;
 
 import lombok.extern.log4j.Log4j;
@@ -25,9 +26,12 @@ public class RecommendController {
 	private RecommendService recomendService;
 	
 	@GetMapping("/boa_up_down")
-	public ResponseEntity<Map<String, Object>> recommend(Integer boa_num, Integer type, HttpSession session){
+	public ResponseEntity<Map<String, Object>> recommend(Integer boa_num, Integer type, BoardVO vo, HttpSession session){
 		ResponseEntity<Map<String, Object>> entity = null;
-
+		
+		String mem_id = ((MemberVO) session.getAttribute("loginStatus")).getMem_id();
+		vo.setMem_id(mem_id);
+				
 		// 추천,비추천일 때에 따라 update
 		if(type == 1) {
 			recomendService.boa_up(boa_num);

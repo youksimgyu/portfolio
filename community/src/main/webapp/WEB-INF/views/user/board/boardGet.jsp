@@ -44,10 +44,9 @@
 
 	<div class="col-md-12">
 		<div class="box box-primary">
-			<h3>${cat_name }</h3>
+			<h2 style="display: inline; margin-right: 30px;">${boardGet.cat_name }</h2><span>${boardGet.cat_name_c }</span>
 			<input type="hidden" name="boa_num" value="${boardGet.boa_num }">
-			<hr>
-			<div class="row">
+			<div class="row" style="margin-top: 20px; margin-bottom: 20px; padding: 11px; border-top: 1px solid #ccc; border-bottom: 1px solid #ccc; background: #fcfcfc; line-height: 1.5em;">
 				<div class="col-10">
 				 	<span>${boardGet.boa_title }</span>
 				</div>
@@ -55,8 +54,7 @@
 				 	<span><fmt:formatDate value="${boardGet.boa_date_up }" pattern="yyyy.MM.dd hh:mm" /></span>
 				</div>
 			</div>
-			<hr>
-			<div class="row">
+			<div class="row" style="margin-top: 20px; margin-bottom: 20px; padding: 11px; padding-bottom: 25px; border-bottom: 1px solid #ccc; line-height: 1.5em;">
 				<c:if test="${!empty boardGet.mem_name }">
 				<div class="col">
 					<span>${boardGet.mem_name }</span>
@@ -77,7 +75,6 @@
 					<span>댓글 ${boardGet.boa_rep_num }</span>
 				</div>
 			</div>
-			<hr>
 			<div class="content-body">
 			  <div class="row">
 				<div class="col">
@@ -156,6 +153,9 @@ $(document).ready(function(){
 
 	$("button[name='btn_boa_up_down']").on("click", function(){
 
+		if(${sessionScope.loginStatus == null }){
+			alert("로그인 해주세요");
+		}
 		let type = $(this).data("type");
 		let boa_num = $("input[name='boa_num']").val();
 		let btn_boa_up_down = $(this);
@@ -170,8 +170,9 @@ $(document).ready(function(){
 			dataType : 'json',
 			success: function(result){
 
-				 console.log("result : " + result.boa_up);
-				 
+				 // console.log("result : " + result.boa_up);
+				 $("#boa_up").text(result.boa_up);
+				 $("#boa_down").text(result.boa_down);
 
 			}
 		});

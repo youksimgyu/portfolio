@@ -24,7 +24,7 @@ public class PageDTO {
 		this.total = total;
 		
 		//데이터수 42
-		int pageSize = 20; //블록에 표시될 페이지 개수
+		int pageSize = 10; //블록에 표시될 페이지 개수
 		int endPageInfo = pageSize - 1; // 5 - 1 = 4
 		
 		// pageNum 이 1~5범위에 해당되면, endPage변수의 값이 동일하게된다.  1   2	3	4	5

@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
     
 <html>
 <head>
@@ -37,209 +39,154 @@
 <main class="container">
 
 
-  <div class="row mb-2">
-    <div class="col-md-6">
-      <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-        <div class="col p-4 d-flex flex-column position-static">
-          <strong class="d-inline-block mb-2 text-primary">World</strong>
-          <h3 class="mb-0">Featured post</h3>
-          <div class="mb-1 text-muted">Nov 12</div>
-          <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-          <a href="#" class="stretched-link">Continue reading</a>
-        </div>
-        <div class="col-auto d-none d-lg-block">
-          <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
 
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-        <div class="col p-4 d-flex flex-column position-static">
-          <strong class="d-inline-block mb-2 text-success">Design</strong>
-          <h3 class="mb-0">Post title</h3>
-          <div class="mb-1 text-muted">Nov 11</div>
-          <p class="mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-          <a href="#" class="stretched-link">Continue reading</a>
-        </div>
-        <div class="col-auto d-none d-lg-block">
-          <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+<div class="p-5 my-5 border row">
+<h1>전체 게시판</h1>
 
-        </div>
-      </div>
-    </div>
-  </div>
+	<div class="col-md-12">
+		<div class="box box-primary">
+			
+			<div class="content-body">
+			  
+			  <table class="table table-hover">
+				  <thead>
+				    <tr>
+				      <th scope="col">탭</th>
+				      <th scope="col">제목</th>
+				      <th scope="col">글쓴이</th>
+				      <th scope="col">날짜</th>
+				      <th scope="col">조회</th>
+				      <th scope="col">추천</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+				    <c:forEach items="${boardList }" var="boardNameVO">
+				    <!-- BoardVO클래스의 필드명으로 코딩했지만, 호출은 getter메서드가 사용됨. -->
+				    <tr>
+				      <th scope="row"><c:out value="${boardNameVO.cat_name_c }" /></th>
+				      <td>
+				      	<a class="move" href="#" data-boa_num="${boardNameVO.boa_num }"><c:out value="${boardNameVO.boa_title }" escapeXml="true" /></a>
+				      </td>
+				      	<c:if test="${!empty boardNameVO.mem_name }">
+				      	<td scope="row">
+						<c:out value="${boardNameVO.mem_name }" />
+				      	</td>
+				      	</c:if>
+				      	<c:if test="${empty boardNameVO.mem_name }">
+				      	<td scope="row">
+						<c:out value="관리자" />
+				      	</td>
+				      	</c:if>
+				      <td><fmt:formatDate value="${boardNameVO.boa_date_up }" pattern="yyyy-MM-dd" /></td>
+				      <td scope="row"><c:out value="${boardNameVO.boa_hit }" /></td>
+				      <td scope="row"><c:out value="${boardNameVO.boa_up }" /></td>
+				    </tr>
+				    </c:forEach>
+				    
+				  </tbody>
+				</table>
+				<nav aria-label="...">
+				  <ul class="pagination">
+				    <!-- 이전표시 -->
+				    <c:if test="${pageMaker.prev }">
+					    <li class="page-item">
+					      <a class="page-link" href="${pageMaker.startPage - 1 }">Previous</a>
+					    </li>
+				    </c:if>
+				    
+				    <!-- 페이지번호 표시.  1  2  3  4  5 -->
+				    
+				    <c:forEach begin="${pageMaker.startPage }" end="${pageMaker.endPage }" var="num" >
+				    	<li class='page-item ${pageMaker.cri.pageNum == num ? "active": "" }'><a class="page-link" href="${num}">${num}</a></li>
+				    </c:forEach>
+				    <!-- 
+				    <li class="page-item active" aria-current="page">
+				      <span class="page-link">2</span>
+				    </li>
+				    <li class="page-item"><a class="page-link" href="#">3</a></li>
+				     -->
+				    <!-- 다음표시 -->
+				    <c:if test="${pageMaker.next }">
+					    <li class="page-item">
+					      <a class="page-link" href="${pageMaker.endPage + 1 }">Next</a>
+					    </li>
+				    </c:if>
+					
+				  </ul>
+				<div style="text-align: center;">
+					<button type="button" class="btn btn-primary" id="btnInsert">글 쓰기</button>
+				</div>
+				  
+				  	<!--페이지 번호 클릭시 list주소로 보낼 파라미터 작업-->
+					<form id="actionForm" action="/board/list" method="get">
+						<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}">
+						<input type="hidden" name="amount" value="${pageMaker.cri.amount}">
+						<input type="hidden" name="type" value="${pageMaker.cri.type}">
+						<input type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
+						<input type="hidden" name="cat_c" value="${cat_c }">
+						<input type="hidden" name="cat_name" value="${cat_name }">				
+					</form>
+					
+				</nav>
+			</div>
+			
 
-  <div class="row g-5">
-    <div class="col-md-8">
-      <h3 class="pb-4 mb-4 fst-italic border-bottom">
-        From the Firehose
-      </h3>
+			
+		</div>
+	</div>
+</div>
 
-      <article class="blog-post">
-        <h2 class="blog-post-title mb-1">Sample blog post</h2>
-        <p class="blog-post-meta">January 1, 2021 by <a href="#">Mark</a></p>
-
-        <p>This blog post shows a few different types of content that’s supported and styled with Bootstrap. Basic typography, lists, tables, images, code, and more are all supported as expected.</p>
-        <hr>
-        <p>This is some additional paragraph placeholder content. It has been written to fill the available space and show how a longer snippet of text affects the surrounding content. We'll repeat it often to keep the demonstration flowing, so be on the lookout for this exact same string of text.</p>
-        <h2>Blockquotes</h2>
-        <p>This is an example blockquote in action:</p>
-        <blockquote class="blockquote">
-          <p>Quoted text goes here.</p>
-        </blockquote>
-        <p>This is some additional paragraph placeholder content. It has been written to fill the available space and show how a longer snippet of text affects the surrounding content. We'll repeat it often to keep the demonstration flowing, so be on the lookout for this exact same string of text.</p>
-        <h3>Example lists</h3>
-        <p>This is some additional paragraph placeholder content. It's a slightly shorter version of the other highly repetitive body text used throughout. This is an example unordered list:</p>
-        <ul>
-          <li>First list item</li>
-          <li>Second list item with a longer description</li>
-          <li>Third list item to close it out</li>
-        </ul>
-        <p>And this is an ordered list:</p>
-        <ol>
-          <li>First list item</li>
-          <li>Second list item with a longer description</li>
-          <li>Third list item to close it out</li>
-        </ol>
-        <p>And this is a definition list:</p>
-        <dl>
-          <dt>HyperText Markup Language (HTML)</dt>
-          <dd>The language used to describe and define the content of a Web page</dd>
-          <dt>Cascading Style Sheets (CSS)</dt>
-          <dd>Used to describe the appearance of Web content</dd>
-          <dt>JavaScript (JS)</dt>
-          <dd>The programming language used to build advanced Web sites and applications</dd>
-        </dl>
-        <h2>Inline HTML elements</h2>
-        <p>HTML defines a long list of available inline tags, a complete list of which can be found on the <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element">Mozilla Developer Network</a>.</p>
-        <ul>
-          <li><strong>To bold text</strong>, use <code class="language-plaintext highlighter-rouge">&lt;strong&gt;</code>.</li>
-          <li><em>To italicize text</em>, use <code class="language-plaintext highlighter-rouge">&lt;em&gt;</code>.</li>
-          <li>Abbreviations, like <abbr title="HyperText Markup Language">HTML</abbr> should use <code class="language-plaintext highlighter-rouge">&lt;abbr&gt;</code>, with an optional <code class="language-plaintext highlighter-rouge">title</code> attribute for the full phrase.</li>
-          <li>Citations, like <cite>— Mark Otto</cite>, should use <code class="language-plaintext highlighter-rouge">&lt;cite&gt;</code>.</li>
-          <li><del>Deleted</del> text should use <code class="language-plaintext highlighter-rouge">&lt;del&gt;</code> and <ins>inserted</ins> text should use <code class="language-plaintext highlighter-rouge">&lt;ins&gt;</code>.</li>
-          <li>Superscript <sup>text</sup> uses <code class="language-plaintext highlighter-rouge">&lt;sup&gt;</code> and subscript <sub>text</sub> uses <code class="language-plaintext highlighter-rouge">&lt;sub&gt;</code>.</li>
-        </ul>
-        <p>Most of these elements are styled by browsers with few modifications on our part.</p>
-        <h2>Heading</h2>
-        <p>This is some additional paragraph placeholder content. It has been written to fill the available space and show how a longer snippet of text affects the surrounding content. We'll repeat it often to keep the demonstration flowing, so be on the lookout for this exact same string of text.</p>
-        <h3>Sub-heading</h3>
-        <p>This is some additional paragraph placeholder content. It has been written to fill the available space and show how a longer snippet of text affects the surrounding content. We'll repeat it often to keep the demonstration flowing, so be on the lookout for this exact same string of text.</p>
-        <pre><code>Example code block</code></pre>
-        <p>This is some additional paragraph placeholder content. It's a slightly shorter version of the other highly repetitive body text used throughout.</p>
-      </article>
-
-      <article class="blog-post">
-        <h2 class="blog-post-title mb-1">Another blog post</h2>
-        <p class="blog-post-meta">December 23, 2020 by <a href="#">Jacob</a></p>
-
-        <p>This is some additional paragraph placeholder content. It has been written to fill the available space and show how a longer snippet of text affects the surrounding content. We'll repeat it often to keep the demonstration flowing, so be on the lookout for this exact same string of text.</p>
-        <blockquote>
-          <p>Longer quote goes here, maybe with some <strong>emphasized text</strong> in the middle of it.</p>
-        </blockquote>
-        <p>This is some additional paragraph placeholder content. It has been written to fill the available space and show how a longer snippet of text affects the surrounding content. We'll repeat it often to keep the demonstration flowing, so be on the lookout for this exact same string of text.</p>
-        <h3>Example table</h3>
-        <p>And don't forget about tables in these posts:</p>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Upvotes</th>
-              <th>Downvotes</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Alice</td>
-              <td>10</td>
-              <td>11</td>
-            </tr>
-            <tr>
-              <td>Bob</td>
-              <td>4</td>
-              <td>3</td>
-            </tr>
-            <tr>
-              <td>Charlie</td>
-              <td>7</td>
-              <td>9</td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr>
-              <td>Totals</td>
-              <td>21</td>
-              <td>23</td>
-            </tr>
-          </tfoot>
-        </table>
-
-        <p>This is some additional paragraph placeholder content. It's a slightly shorter version of the other highly repetitive body text used throughout.</p>
-      </article>
-
-      <article class="blog-post">
-        <h2 class="blog-post-title mb-1">New feature</h2>
-        <p class="blog-post-meta">December 14, 2020 by <a href="#">Chris</a></p>
-
-        <p>This is some additional paragraph placeholder content. It has been written to fill the available space and show how a longer snippet of text affects the surrounding content. We'll repeat it often to keep the demonstration flowing, so be on the lookout for this exact same string of text.</p>
-        <ul>
-          <li>First list item</li>
-          <li>Second list item with a longer description</li>
-          <li>Third list item to close it out</li>
-        </ul>
-        <p>This is some additional paragraph placeholder content. It's a slightly shorter version of the other highly repetitive body text used throughout.</p>
-      </article>
-
-      <nav class="blog-pagination" aria-label="Pagination">
-        <a class="btn btn-outline-primary rounded-pill" href="#">Older</a>
-        <a class="btn btn-outline-secondary rounded-pill disabled">Newer</a>
-      </nav>
-
-    </div>
-
-    <div class="col-md-4">
-      <div class="position-sticky" style="top: 2rem;">
-        <div class="p-4 mb-3 bg-light rounded">
-          <h4 class="fst-italic">About</h4>
-          <p class="mb-0">Customize this section to tell your visitors a little bit about your publication, writers, content, or something else entirely. Totally up to you.</p>
-        </div>
-
-        <div class="p-4">
-          <h4 class="fst-italic">Archives</h4>
-          <ol class="list-unstyled mb-0">
-            <li><a href="#">March 2021</a></li>
-            <li><a href="#">February 2021</a></li>
-            <li><a href="#">January 2021</a></li>
-            <li><a href="#">December 2020</a></li>
-            <li><a href="#">November 2020</a></li>
-            <li><a href="#">October 2020</a></li>
-            <li><a href="#">September 2020</a></li>
-            <li><a href="#">August 2020</a></li>
-            <li><a href="#">July 2020</a></li>
-            <li><a href="#">June 2020</a></li>
-            <li><a href="#">May 2020</a></li>
-            <li><a href="#">April 2020</a></li>
-          </ol>
-        </div>
-
-        <div class="p-4">
-          <h4 class="fst-italic">Elsewhere</h4>
-          <ol class="list-unstyled">
-            <li><a href="#">GitHub</a></li>
-            <li><a href="#">Twitter</a></li>
-            <li><a href="#">Facebook</a></li>
-          </ol>
-        </div>
-      </div>
-    </div>
-  </div>
 
 </main>
 
 <!-- footer -->
 <%@include file="/WEB-INF/views/include/footer.jsp" %>
 
+<script>
+
+	$(document).ready(function(){
+		
+		let actionForm = $("#actionForm");
+		
+		// 페이지 번호 클릭
+		$("ul.pagination li a.page-link").on("click", function(e){
+			e.preventDefault(); // <a>태그의 링크기능 무력화
+			
+			let pageNum = $(this).attr("href");
+		
+			actionForm.find("input[name='pageNum']").val(pageNum);
+		
+			actionForm.attr("method", "get");
+			actionForm.attr("action", "/");
+			actionForm.submit();
+		});
+		
+		
+		$("a.move").on("click", function(e){
+			e.preventDefault();
+		
+			//상품코드를 자식으로 추가
+			actionForm.append("<input type='hidden' name='boa_num' value='" + $(this).data("boa_num") + "'>");
+			
+			actionForm.attr("method", "get");
+			actionForm.attr("action", "/user/board/boardGet");
+			actionForm.submit();
+		
+		
+		});
+
+		$("#btnInsert").on("click", function(){
+	
+			if(${sessionScope.loginStatus == null }){
+				alert("로그인 해주세요");
+			} else if(${sessionScope.loginStatus != null }){
+				location.href = "/user/board/boardInsert";	
+			}
+			
+		});
+
+	});
+</script>
 
     
   

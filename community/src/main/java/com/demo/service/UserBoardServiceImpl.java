@@ -53,4 +53,22 @@ public class UserBoardServiceImpl implements UserBoardService {
 		return userBoardMapper.boa_hit(boa_num);
 	}
 
+	@Override
+	public void boardInsert(BoardVO vo) {
+		// TODO Auto-generated method stub
+		userBoardMapper.boardInsert(vo);
+	}
+
+	@Override
+	public List<BoardNameVO> getBoardList(Criteria cri) {
+		// TODO Auto-generated method stub
+		return userBoardMapper.getBoardList(cri);
+	}
+
+	@Override
+	public int getTotalBoardTotalCount(Criteria cri) {
+		// TODO Auto-generated method stub
+		return userBoardMapper.getTotalBoardTotalCount(cri);
+	}
+
 }
