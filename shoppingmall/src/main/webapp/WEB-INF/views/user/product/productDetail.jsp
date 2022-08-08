@@ -282,6 +282,40 @@
 
 
   });
+
+        //상품후기 목록에서 delete 버튼 클릭
+        $("div#reviewListResult").on("click", "p a.delete", function(e){
+
+          e.preventDefault();
+
+          let rv_num = $(this).attr("href"); // 상품후기번호
+
+          console.log("상품후기 번호: " + rv_num);
+
+          if(!confirm('상품후기' + rv_num + ' 번을 삭제하시겠습니까?')) return;
+
+
+          $.ajax({
+            url: '/user/review/delete/' + rv_num, // 주소를 경로형식을 사용한다.
+            headers: {
+                "Content-Type" : "application/json", "X-HTTP-Method-Override" : "DELETE"
+              },
+            type: 'delete',
+            dataType: 'text',
+            success : function(result) {
+              if(result == "success") {
+                alert("상품후기가 삭제됨.");
+                
+                //상품후기 목록
+                url = "/user/review/list/" + $("#pdt_num").val() + "/" + reviewPage;
+
+                getPage(url);
+
+              }
+            }
+          });
+
+        });
   
   // 평점 및 클릭시 색상변경
   $("#star_rv_score a.rv_score").on("click", function(e) {

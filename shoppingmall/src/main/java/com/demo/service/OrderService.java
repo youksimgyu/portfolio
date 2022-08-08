@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.demo.domain.CartOrderInfo;
 import com.demo.domain.OrderVO;
+import com.demo.domain.PaymentVO;
 
 public interface OrderService {
 
@@ -12,6 +13,6 @@ public interface OrderService {
 	// 직접 주문목록
 	List<CartOrderInfo> directOrderList(Integer pdt_num, int odr_amount);
 	
-	void orderbuy(OrderVO vo);
+	void orderbuy(OrderVO o_vo, PaymentVO p_vo);
 	
 }

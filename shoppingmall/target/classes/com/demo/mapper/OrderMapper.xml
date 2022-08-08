@@ -19,8 +19,10 @@
 		</selectKey>
 		
 		INSERT INTO TBL_ORDER
-			(ODR_CODE, MEM_ID, ODR_NAME, ODR_ZIPCODE, ODR_ADDR, ODR_ADDR_D, ODR_PHONE, ODR_TOTAL_PRICE, ODR_MESSAGE)
-		VALUES (#{odr_code}, #{mem_id}, #{odr_name}, #{odr_zipcode}, #{odr_addr}, #{odr_addr_d}, #{odr_phone}, #{odr_total_price}, #{odr_message})
+			(ODR_CODE, MEM_ID, ODR_NAME, ODR_ZIPCODE, ODR_ADDR, ODR_ADDR_D, ODR_PHONE, ODR_TOTAL_PRICE, ODR_MESSAGE,
+			 PAYMENT_STATUS)
+		VALUES (#{odr_code}, #{mem_id}, #{odr_name}, #{odr_zipcode}, #{odr_addr}, #{odr_addr_d}, #{odr_phone}, #{odr_total_price}, #{odr_message},
+				#{payment_status})
 	
 	</insert>
 
@@ -44,5 +46,14 @@
 	
 	</select>
 
+	<insert id="paymentSave" parameterType="com.demo.domain.PaymentVO">
+	
+		INSERT INTO TBL_PAYMENT
+			(PAY_CODE, ODR_CODE, PAY_METHOD, PAY_DATE, PAY_TOT_PRICE,
+			 PAY_REST_PRICE, PAY_NOBANK_PRICE, PAY_NOBANK_USER, PAY_NOBANK)
+		VALUES (SEQ_ODR_CODE.NEXTVAL, #{odr_code}, #{pay_method}, SYSDATE, #{pay_tot_price},
+				#{pay_rest_price}, #{pay_nobank_price}, #{pay_nobank_user}, #{pay_nobank})
+	
+	</insert>
 
 </mapper>

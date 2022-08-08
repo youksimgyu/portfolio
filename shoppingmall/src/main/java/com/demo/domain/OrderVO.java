@@ -20,4 +20,8 @@ public class OrderVO {
 	private int odr_total_price; // 입력데이터
 	private Date odr_date; // 기본값
 	private String odr_message; // 입력데이터
+	
+	private String odr_status; // 주문상태 : 배송상태
+	private String payment_status; // 결제상태 : 입금상태
+	private String cs_status; // cs상태 : 
 }

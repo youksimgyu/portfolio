@@ -19,6 +19,7 @@ import com.demo.domain.CartOrderInfo;
 import com.demo.domain.CartVO;
 import com.demo.domain.MemberVO;
 import com.demo.domain.OrderVO;
+import com.demo.domain.PaymentVO;
 import com.demo.service.CartService;
 import com.demo.service.OrderService;
 import com.demo.util.UploadFileUtils;
@@ -76,16 +77,31 @@ public class OrderController {
 	
 	// 주문저장하기
 	@PostMapping("/orderSave")
-	public String orderSave(OrderVO vo, HttpSession session) {
+	public String orderSave(OrderVO o_vo, PaymentVO p_vo, HttpSession session) {
 		
 		String mem_id = ((MemberVO) session.getAttribute("loginStatus")).getMem_id();
-		vo.setMem_id(mem_id);
+		o_vo.setMem_id(mem_id);
 		
-		log.info("주문정보 : " + vo);
+		log.info("주문정보 : " + o_vo);
+		log.info("결제정보 : " + p_vo);
 		
-		orderService.orderbuy(vo);
+		// 무통장입금일 경우
+		if(p_vo.getPay_nobank() != null) {
+			
+			o_vo.setPayment_status("입금전");
+			
+			p_vo.setPay_tot_price(o_vo.getOdr_total_price()); // 총 실 결제금액
+			p_vo.setPay_rest_price(0); // 추가 입금금액
+		}
 		
-		return "/";
+		orderService.orderbuy(o_vo, p_vo);
+		
+		return "redirect:/user/order/orderComplete";
+	}
+	
+	@GetMapping("/orderComplete")
+	public void orderComplete() {
+		
 	}
 	
 	// 상품목록에서 이미지 보여주기

@@ -1,6 +1,5 @@
 package com.demo.controller;
 
-import javax.mail.Session;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.demo.domain.AdminVO;
-import com.demo.domain.MemberVO;
 import com.demo.dto.AdminLoginDTO;
 import com.demo.service.AdminService;
 

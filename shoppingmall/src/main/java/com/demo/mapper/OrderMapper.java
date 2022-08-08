@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.demo.domain.CartOrderInfo;
 import com.demo.domain.OrderVO;
+import com.demo.domain.PaymentVO;
 
 public interface OrderMapper {
 
@@ -23,5 +24,8 @@ public interface OrderMapper {
 	void orderDetailSave(@Param("odr_code") Long odr_code, @Param("mem_id") String mem_id);
 	
 	// 3) 장바구니 테이블 삭제는 CartMapper에서 가져와서 이용
+	
+	// 4) 결제하기 저장하기
+	void paymentSave(PaymentVO p_vo);
 	
 }

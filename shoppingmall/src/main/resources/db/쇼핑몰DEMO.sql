@@ -114,6 +114,9 @@ CREATE TABLE TBL_ORDER(
 	ODR_TOTAL_PRICE		    NUMBER								NOT NULL,
 	ODR_DATE				DATE        DEFAULT SYSDATE			NOT NULL
     ODR_MESSAGE             VARCHAR2(100),
+    ODR_STATUS              VARCHAR2(20) DEFAULT '상품준비중'    NOT NULL,
+    PAYMENT_STATUS          VARCHAR2(20) NOT NULL,
+    CS_STATUS               VARCHAR2(20) NULL
 );
 
 CREATE SEQUENCE SEQ_ODR_CODE;
@@ -162,6 +165,29 @@ CREATE TABLE TBL_ADMIN(
 );
 
 
+-- 주문테이블
+-- 주문상태 컬럼 : 상품준비중 / 배송준비중 / 배송보류 / 배송대기 /배송중 / 배송완료
+-- 결제상태 컬럼 : 입금전 / 추가입금대기 / 입금완료(수동) / 입금완료(자동) / 결제완료
+-- CS상태 : 취소 / 교환 / 반품 / 환불
+
+
+--10. 결제 테이블
+CREATE TABLE TBL_PAYMENT
+(
+    PAY_CODE            NUMBER  CONSTRAINT PK_PAYMENT_CODE PRIMARY KEY,  -- 결제코드
+    ODR_CODE            NUMBER  NOT NULL,  -- 주문코드(FK)
+    PAY_METHOD          VARCHAR2(20)    NOT NULL,  -- 결제수단 -> 무통장 / 신용카드 / 페이코 / 휴대폰 / 카카오페이 등
+    PAY_DATE            DATE    NOT NULL,  -- 결제(입금)일자
+    PAY_TOT_PRICE       NUMBER NOT NULL,  -- 총 실 결제금액
+    PAY_REST_PRICE      NUMBER NOT NULL,  -- 추가 입금금액
+    PAY_NOBANK_PRICE    NUMBER NULL,  -- 무통장 입금액
+    PAY_NOBANK_USER     VARCHAR2(20)    NULL, -- 무통장 입금자명
+    PAY_NOBANK          VARCHAR2(20)    NULL   -- 무통장 입금은행
+);
+
+pay_code, odr_code, pay_method, pay_date, pay_tot_price, pay_rest_price, pay_nobank_price, pay_nobank_user, pay_nobank
+
+
 /* 테이블 조회 */
 SELECT * FROM TBL_MEMBER;
 SELECT * FROM TBL_CATEGORY;
@@ -205,6 +231,9 @@ FROM TBL_PRODUCT;
 
 CREATE SEQUENCE SEQ_TBL_PRODUCT_NUM;
 CREATE SEQUENCE SEQ_CART_CODE;
+CREATE SEQUENCE SEQ_ODR_CODE;
+CREATE SEQUENCE SEQ_PAY_CODE;
+
 
 -- 카트 리스트 불러오기 조인이용
 SELECT C.CART_CODE, C.PDT_NUM, C.MEM_ID, C.CART_AMOUNT, P.PDT_IMG_FOLDER, P.PDT_IMG, P.PDT_NAME, P.PDT_PRICE, M.MEM_POINT

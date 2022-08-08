@@ -179,4 +179,15 @@ public class UserBoardController {
 		
 		return "redirect:/"; // get주소로 이동
 	}
+	
+	
+	@GetMapping("/boardModify")
+	public String boardModify(Integer boa_num, @ModelAttribute("cat_name") String cat_name, @ModelAttribute("cri") Criteria cri, Model model) {
+		
+		// 글 가져오기
+		BoardNameVO boardGet = userBoardService.boardGet(boa_num);
+		model.addAttribute("boardGet", boardGet);
+		
+		return "redirect:/"; // get주소로 이동
+	}
 }

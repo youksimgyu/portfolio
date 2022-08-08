@@ -95,12 +95,6 @@
 					</div>
 				</div>
 			</div>
-			<div>
-
-				<button class="btn btn-primary" type="button" id="btnModify">수정</button>
-				<button class="btn btn-primary" type="button" id="btnDelete">삭제</button>
-
-			</div>
 			
 				
 			

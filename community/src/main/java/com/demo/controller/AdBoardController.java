@@ -26,11 +26,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.demo.domain.BoardNameVO;
 import com.demo.domain.BoardVO;
 import com.demo.domain.CategoryVO;
 import com.demo.dto.Criteria;
 import com.demo.dto.PageDTO;
 import com.demo.service.AdBoardService;
+import com.demo.service.UserBoardService;
 
 import lombok.extern.log4j.Log4j;
 
@@ -39,6 +41,9 @@ import lombok.extern.log4j.Log4j;
 @RequestMapping("/admin/board/*")
 public class AdBoardController {
 
+	@Autowired
+	private UserBoardService userBoardService;
+	
 	@Autowired
 	private AdBoardService adBoardService;
 	
@@ -145,13 +150,11 @@ public class AdBoardController {
 		// 1차 카테고리 정보 받아오기
 		model.addAttribute("cateList", adBoardService.getCateList());
 		
-		List<BoardVO> boardList = adBoardService.getBoardList(cri);
-		
-		// 페이징쿼리에 의한 상품목록
+		List<BoardNameVO> boardList = userBoardService.getBoardList(cri);
 		model.addAttribute("boardList", boardList);
 		
 		// [prev] 1  2  3  4  5  [next]
-		int totalCount = adBoardService.getBoardTotalCount(cri);
+		int totalCount = userBoardService.getTotalBoardTotalCount(cri);
 		model.addAttribute("pageMaker", new PageDTO(cri, totalCount));
 		
 	}
@@ -167,9 +170,8 @@ public class AdBoardController {
 		// 1차 카테고리 선택
 		model.addAttribute("cateList", adBoardService.getCateList());
 		
-		// 상품정보 - 1차카테고리를 참조한 정보 들어있음
-		BoardVO vo = adBoardService.getBoardboa_num(boa_num);
-
+		// 글 가져오기
+		BoardNameVO vo = userBoardService.boardGet(boa_num);
 		model.addAttribute("boardVO", vo);
 		
 		// 상품정보에서 1차카테고리 코드를 참조해서 2차카테고리 가져오기.

@@ -45,7 +45,7 @@
 <%@include file="/WEB-INF/views/include/categoryMenu.jsp" %>
 
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-  <h1 class="display-4">ORDER LIST</h1>
+  <h1 class="display-4">ORDER RESULT</h1>
   <!--  <p class="lead">Quickly build an effective pricing table for your potential customers with this Bootstrap example. It’s built with default Bootstrap components and utilities with little customization.</p> -->
 </div>
 
@@ -56,180 +56,13 @@
 		<div class="box box-primary">
 		
 			<div class="box-header">
-				LIST ORDER
+				RESULT ORDER
 			</div>
 			
 			<div class="box-body">
-			
-			  <table class="table table-hover" id="cartlistresult">
-				  <thead>
-				    <tr>
-				      <th scope="col">상품</th>
-				      <th scope="col">수량</th>
-				      <th scope="col">적립</th>
-				      <th scope="col">주문금액</th>
-				    </tr>
-				  </thead>
-				  <tbody>
-				  
-				    <c:forEach items="${cartOrderList }" var="cartOrderInfo">
-				    <c:set var="price" value="${cartOrderInfo.cart_amount * cartOrderInfo.pdt_price }"></c:set>
-				    <tr>
-				      <td scope="row">
-				      	<a class="move" href="${cartOrderInfo.pdt_num }">
-					      	<img src="/user/order/displayFile?folderName=${cartOrderInfo.pdt_img_folder }&fileName=s_${cartOrderInfo.pdt_img }"
-					      		 style="width: 80px;height: 80px;" onerror="this.onerror=null; this.src='/image/no_client.png'">
-					      	<c:out value="${cartOrderInfo.pdt_name }" />
-				      	</a>
-						<c:out value="${cartOrderInfo.pdt_price }" />
-				      </td>
-    				  <td>
-	    				  	<input type="hidden" name="pdt_price" value='<c:out value="${cartOrderInfo.pdt_price }" />'>
-	    				  	<input type="hidden" name="pdt_num" value='<c:out value="${cartOrderInfo.pdt_num }" />'>
-
-    				  	<c:out value="${cartOrderInfo.cart_amount }" /> 개
-    				  </td>
-    				  <td><c:out value="${sessionScope.loginStatus.mem_point }" /></td>
-    				  <td><span class="unitprice"><fmt:formatNumber type="number" maxFractionDigits="3" value="${price }"></fmt:formatNumber></span></td>
-				      <td>
-				      </td>
-				    </tr>
-				    <c:set var="sum" value="${sum + price }"></c:set>
-				    </c:forEach>
-				  </tbody>
-				  <tfoot>
-				  	<tr>
-				  		<c:if test="${!empty cartOrderList }">
-				  		<td colspan="6" style="text-align: right">총 구매금액 : <span id="cartTotalPrice"><fmt:formatNumber type="number" maxFractionDigits="3" value="${sum }"></fmt:formatNumber></span></td>
-				  		</c:if>
-				  		<c:if test="${empty cartOrderList }">
-				  		<td colspan="6" style="text-align: center">장바구니에 담긴 상품이 없습니다.</td>
-				  		</c:if>
-				  	</tr>
-				  </tfoot>
-				</table>
-				<div>
-				
-		<form id="orderForm" action="join" method="post">
-		<h5>주문자 정보</h5>
-		<hr>
-		  <div class="form-group row">
-		    <label for="mem_name" class="col-sm-2 col-form-label">이름</label>
-		    <div class="col-sm-10">
-		      <input type="text" class="form-control" value="${sessionScope.loginStatus.mem_name }" id="s_mem_name" name="mem_name" readonly>
-		    </div>
-		  </div>
-		  <div class="form-group row">
-		    <label for="mem_email" class="col-sm-2 col-form-label">전자우편</label>
-		    <div class="col-sm-10">
-		      <input type="text" class="form-control" value="${sessionScope.loginStatus.mem_email }" id="s_mem_email" name="mem_email" readonly>
-		    </div>
-		  </div>
-		  <div class="form-group row">
-		    <label for="mem_phone" class="col-sm-2 col-form-label">휴대폰 번호</label>
-		    <div class="col-sm-10">
-		      <input type="text" class="form-control" value="${sessionScope.loginStatus.mem_phone }" id="s_mem_phone" name="mem_phone" readonly>
-		      <input type="hidden" id="s_mem_zipcode" value="${sessionScope.loginStatus.mem_zipcode }">
-		      <input type="hidden" id="s_mem_addr" value="${sessionScope.loginStatus.mem_addr }">
-		      <input type="hidden" id="s_mem_addr_d" value="${sessionScope.loginStatus.mem_addr_d }">
-		    </div>
-		  </div>
-		  <input type="checkbox" id="same"><label for="same">위 정보와 같음</label>
-		  <h5>배송 정보</h5>
-		  <hr>
-		  <div class="form-group row">
-		    <label for="mem_name" class="col-sm-2 col-form-label">이름</label>
-		    <div class="col-sm-10">
-		      <input type="text" class="form-control" id="mem_name" name="odr_name">
-		    </div>
-		  </div>
-  		  <div class="form-group row">
-		    <label for="mem_phone" class="col-sm-2 col-form-label">휴대폰 번호</label>
-		    <div class="col-sm-10">
-		      <input type="text" class="form-control" id="mem_phone" name="odr_phone">
-		    </div>
-		  </div>
-		  <div class="form-group row">
-		    <label for="mem_phone" class="col-sm-2 col-form-label">배송지 선택</label>
-		    <div class="col-sm-10">
-		      <div class="form-check form-check-inline">
-		      	<input type="radio" class="form-check-input" name="receiveAddr" id="receiveAddr1" value="1" checked>
-		      	<label class="form-check-label" for="inlineRadio1">자택</label>
-		      </div>
-		      <div class="form-check form-check-inline">
-		      	<input type="radio" class="form-check-input" name="receiveAddr" id="receiveAddr2" value="2">
-		      	<label class="form-check-label" for="inlineRadio2">타지역</label>
-		      </div>
-		    </div>
-		  </div>
-		  <div class="form-group row">
-		    <label for="sample2_postcode" class="col-sm-2 col-form-label">우편번호</label>
-		    <div class="col-sm-10">
-		      <input type="text" class="form-control" id="mem_zipcode" name="odr_zipcode" value="${sessionScope.loginStatus.mem_zipcode }">
-		      <input type="button" onclick="sample2_execDaumPostcode()" value="우편번호 찾기">
-		    </div>
-		  </div>
-		  <div class="form-group row">
-		    <label for="sample2_address" class="col-sm-2 col-form-label">주소</label>
-		    <div class="col-sm-10">
-		      <input type="text" class="form-control" id="mem_addr" name="odr_addr" value="${sessionScope.loginStatus.mem_addr }">
-		    </div>
-		  </div>
-		  <div class="form-group row">
-		    <label for="sample2_detailAddress" class="col-sm-2 col-form-label">상세주소</label>
-		    <div class="col-sm-10">
-		      <input type="text" class="form-control" id="mem_addr_d" name="odr_addr_d" value="${sessionScope.loginStatus.mem_addr_d }">
-		      <input type="hidden" id="sample2_extraAddress" placeholder="참고항목">
-		    </div>
-		  </div>
-		  <div class="form-group row">
-		    <label for="mem_phone" class="col-sm-2 col-form-label">배송지 메시지(100자 이내)</label>
-		    <div class="col-sm-10">
-		       <textarea class="form-control" style="resize: none;" name="odr_message"></textarea>
-		       <input type="hidden" value="${sum }" name="odr_total_price">
-		    </div>
-		  </div>
-	      <div class="form-group">
-		    <label for="exampleFormControlSelect1">결제 방법</label>
-		    <select name="pay_method" class="form-control" id="exampleFormControlSelect1">
-		      <option value="">결제 방법을 선택하세요</option>
-		      <option value="무통장입금">무통장입금</option>
-		      <option value="카카오페이">카카오페이</option>
-		      <option value="휴대폰">휴대폰</option>
-		      <option value="신용카드">신용카드</option>
-		      <option value="페이코">페이코</option>
-		    </select>
-		    <select name="bank" class="form-control" id="bank">
-		      <option value="">입금은행을 선택하세요</option>
-		      <option value="000000000000000">국민은행(000000000000000)</option>
-		      <option value="111111111111111">하나은행(111111111111111)</option>
-		      <option value="222222222222222">신한은행(222222222222222)</option>
-		      <option value="333333333333333">우리은행(333333333333333)</option>
-		    </select>
-		    <input type="hidden" name="pay_nobank" id="pay_nobank" value="">
-		    <input type="hidden" name="pay_nobank_price" id="pay_nobank_price" value="${sum }">
-		  </div>
-		  <div class="form-group row">
-		    <label for="mem_name" class="col-sm-2 col-form-label">입금자명</label>
-		    <div class="col-sm-10">
-		      <input type="text" class="form-control" id="pay_nobank_user" name="pay_nobank_user">
-		    </div>
-		  </div>
-		  <div class="box-footer text-center">
-	        <button type="button" id="btnOrder" class="btn btn-primary">주문하기</button>
-	        <button type="button" id="btnCancel" class="btn btn-primary">주문취소</button>
-	      </div>
-	      
-
-	 </form>
-				
-				</div>
+				<h4>주문 접수 및 결제가 완료되었습니다</h4>
 			</div>
-
-      <form id="actionForm" action="/board/list" method="get">
-			<input type="hidden" name="cg_code_c" value="${cg_code_c }">
-			<input type="hidden" name="cg_name" value="${cg_name }">
-      </form>
+			  
 
 
 		</div>
