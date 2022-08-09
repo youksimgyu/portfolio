@@ -20,7 +20,9 @@ import com.demo.domain.CartVO;
 import com.demo.domain.MemberVO;
 import com.demo.domain.OrderVO;
 import com.demo.domain.PaymentVO;
+import com.demo.kakaopay.ReadyResponse;
 import com.demo.service.CartService;
+import com.demo.service.KakaopayServiceImpl;
 import com.demo.service.OrderService;
 import com.demo.util.UploadFileUtils;
 
@@ -77,7 +79,7 @@ public class OrderController {
 	
 	// 주문저장하기
 	@PostMapping("/orderSave")
-	public String orderSave(OrderVO o_vo, PaymentVO p_vo, HttpSession session) {
+	public String orderSave(OrderVO o_vo, PaymentVO p_vo, String type, HttpSession session) {
 		
 		String mem_id = ((MemberVO) session.getAttribute("loginStatus")).getMem_id();
 		o_vo.setMem_id(mem_id);
@@ -85,8 +87,8 @@ public class OrderController {
 		log.info("주문정보 : " + o_vo);
 		log.info("결제정보 : " + p_vo);
 		
-		// 무통장입금일 경우
-		if(p_vo.getPay_nobank() != null) {
+		// 1) 무통장입금일 경우
+		if(type.equals("무통장입금")) {
 			
 			o_vo.setPayment_status("입금전");
 			
@@ -98,6 +100,16 @@ public class OrderController {
 		
 		return "redirect:/user/order/orderComplete";
 	}
+	
+	// 카카오페이 결제요청
+	@GetMapping("/orderPay")
+	public @ResponseBody ReadyResponse payReady(int totalAmount) {
+		
+		ReadyResponse readyResponse = KakaopayServiceImpl.payReady(int totalAmount);
+		
+		return readyResponse;
+	}
+	
 	
 	@GetMapping("/orderComplete")
 	public void orderComplete() {
