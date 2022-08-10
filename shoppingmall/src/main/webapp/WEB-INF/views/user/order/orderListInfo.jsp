@@ -191,7 +191,7 @@
 		  </div>
 	      <div class="form-group">
 		    <label for="exampleFormControlSelect1">결제 방법</label>
-		    <select name="pay_method" class="form-control" id="exampleFormControlSelect1">
+		    <select name="pay_method" class="form-control" id="pay_method">
 		      <option value="">결제 방법을 선택하세요</option>
 		      <option value="무통장입금">무통장입금</option>
 		      <option value="카카오페이">카카오페이</option>
@@ -199,6 +199,7 @@
 		      <option value="신용카드">신용카드</option>
 		      <option value="페이코">페이코</option>
 		    </select>
+		    <img id="Kakao_pay" alt="Kakaopay" src="/image/payment_icon_yellow_medium.png" style="display: none">
 		    <select name="bank" class="form-control" id="bank">
 		      <option value="">입금은행을 선택하세요</option>
 		      <option value="000000000000000">국민은행(000000000000000)</option>
@@ -217,7 +218,6 @@
 		  </div>
 		  <div class="box-footer text-center">
 	        <button type="button" id="btnOrder" class="btn btn-primary">주문하기</button>
-	        <img id="Kakao_pay" alt="Kakaopay" src="/image/payment_icon_yellow_medium.png" style="display: none">
 	        <button type="button" id="btnCancel" class="btn btn-primary">주문취소</button>
 	      </div>
 	      
@@ -377,30 +377,55 @@
   // 결제방법 선택
   $("#pay_method").on("change", function(){
 
-    if($("#pay_method:selected").val() == ""){
+    if($("#pay_method option:selected").val() == ""){
       alert("결제 방법을 선택하세요");
       return;
     }
 
-    if($("#pay_method:selected").val() == "카카오페이"){
-      alert("카카오페이 이미지를 선택하세요");
-      $("#Kakao_pay").style("display", "inline");
+    if($("#pay_method option:selected").val() == "카카오페이"){
+      alert("카카오페이 이미지를 선택해주세요");
+      $("img#Kakao_pay").css("display", "inline");
       return;
     }
 
   });
-
-  // 카카오페이 버튼클릭. (ajax구문 사용해야 함)
-  $("img#Kakao_pay").on("click", function(){
-
-    // kakao pay에서 요청하는 필수 입력값 작업.
-
-  });
+  
+	 //카카오페이 버튼클릭.(ajax구문 사용해야 함.)
+	 $("img#Kakao_pay").on("click", function(){
+		
+		//kakao pay에서 요청하는 필수 입력값 작업.
+		//주문자
+		let odr_name = $("input[name='odr_name']").val();
+		//연락처 
+		let odr_phone = $("input[name='odr_phone']").val();
+		//전자우편
+		let odr_email = $("#s_mem_email").val();
+		//전체금액 odr_total_price
+		let odr_total_price = $("input[name='odr_total_price']").val();
+	
+		//단위금액
+		//할인이 적용된 금액
+		//적립금
+		//쿠폰
+	
+		$.ajax({
+			url: '/user/order/orderPay',
+			type: 'get',
+			data: {
+				totalAmount : odr_total_price
+			},
+			success: function(response) {
+				//alert(response.next_redirect_pc_url);
+				location.href = response.next_redirect_pc_url;
+			}
+	
+		});
+	});
 
   // 무통장 입금시 은행선택
   $("#bank").on("change", function(){
 
-    if($("#bank").val() == ""){
+    if($("#bank option:selected").val() == ""){
       alert("입금 은행을 선택하세요");
       return;
     }
