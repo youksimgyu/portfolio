@@ -30,16 +30,16 @@ public class KakaopayServiceImpl {
 		// 컬렉션의 Map인터페이스의 특징은 key, value 구성.  key 1개당 value 1개라는 특징. ex> map.put("key","value")
 		// MultiValueMap : key1개당 여러개의 value를 갖는 구조의 스프링프레임워크에서 제공하는 map.
 		MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>();
-		parameters.add("cid", "TC0ONETIME");
-		parameters.add("partner_order_id", order_id);
-		parameters.add("partner_user_id", mem_id);
-		parameters.add("item_name", itemName);
-		parameters.add("quantity", String.valueOf(quantity));
-		parameters.add("total_amount", String.valueOf(totalAmount));
-		parameters.add("tax_free_amount", "0");
-		parameters.add("approval_url", "http://localhost:9090/user/order/orderApproval");
-		parameters.add("cancel_url", "http://localhost:9090/user/order/orderCancel");
-		parameters.add("fail_url", "http://localhost:9090/user/order/orderFail");
+		parameters.add("cid", "TC0ONETIME"); // 테스트 가맹점ID
+		parameters.add("partner_order_id", order_id); // 가맹점 주문번호.
+		parameters.add("partner_user_id", mem_id); // 가맹점 회원Id
+		parameters.add("item_name", itemName); // 상품명  체크  예>땡땡땡상품외 2건
+		parameters.add("quantity", String.valueOf(quantity)); // 상품수량  체크
+		parameters.add("total_amount", String.valueOf(totalAmount)); // 상품총액
+		parameters.add("tax_free_amount", "0"); // 상품비과세금액
+		parameters.add("approval_url", "http://localhost:9090/user/order/orderApproval");  // 결제요청 성공시 redirect url
+		parameters.add("cancel_url", "http://localhost:9090/user/order/orderCancel"); // 결제 최소시 redirect url
+		parameters.add("fail_url", "http://localhost:9090/user/order/orderFail"); // 결제 실패시 redirect url
 		
 		
 		// HttpEntity<T> 클래스 : HttpHeader와HttpBody를 포함하는 클래스.
@@ -80,7 +80,7 @@ public class KakaopayServiceImpl {
 		parameters.add("cid", "TC0ONETIME"); // 테스트 가맹점ID
 		parameters.add("tid", tid); // 카카오 페이에서 보내준 결재고유 ID
 		parameters.add("partner_order_id", order_id); // 주문번호
-		parameters.add("partner_user_id", "doccomsa"); // 주문자
+		parameters.add("partner_user_id", "dbrtlarb"); // 주문자
 		parameters.add("pg_token", pgToken); // 
 		
 		HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());

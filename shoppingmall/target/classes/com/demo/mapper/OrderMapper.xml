@@ -50,10 +50,17 @@
 	
 		INSERT INTO TBL_PAYMENT
 			(PAY_CODE, ODR_CODE, PAY_METHOD, PAY_DATE, PAY_TOT_PRICE,
-			 PAY_REST_PRICE, PAY_NOBANK_PRICE, PAY_NOBANK_USER, PAY_NOBANK)
+			 PAY_REST_PRICE
+			 <if test="pay_nobank_user != null and !pay_nobank_user.equals('')">
+			 , PAY_NOBANK_PRICE, PAY_NOBANK_USER, PAY_NOBANK
+			 </if>
+			 )
 		VALUES (SEQ_ODR_CODE.NEXTVAL, #{odr_code}, #{pay_method}, SYSDATE, #{pay_tot_price},
-				#{pay_rest_price}, #{pay_nobank_price}, #{pay_nobank_user}, #{pay_nobank})
-	
+				#{pay_rest_price}
+				<if test="pay_nobank_user != null and !pay_nobank_user.equals('')">
+				, #{pay_nobank_price}, #{pay_nobank_user}, #{pay_nobank}
+				</if>
+				)
 	</insert>
 
 </mapper>

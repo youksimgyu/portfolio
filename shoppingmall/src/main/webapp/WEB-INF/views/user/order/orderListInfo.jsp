@@ -382,8 +382,13 @@
       return;
     }
 
+    $("#btnOrder").attr("disabled", false);
+    $("img#Kakao_pay").css("display", "none");
+
     if($("#pay_method option:selected").val() == "카카오페이"){
       alert("카카오페이 이미지를 선택해주세요");
+      pay_method = $("#pay_method option:selected").val();
+      $("#btnOrder").attr("disabled", true);
       $("img#Kakao_pay").css("display", "inline");
       return;
     }
@@ -412,8 +417,21 @@
 			url: '/user/order/orderPay',
 			type: 'get',
 			data: {
-				totalAmount : odr_total_price
+				totalAmount : odr_total_price,
+
+        odr_name : $("input[name='odr_name']").val(),
+        odr_zipcode : $("input[name='odr_zipcode']").val(),
+        odr_addr : $("input[name='odr_addr']").val(),
+        odr_addr_d : $("input[name='odr_addr_d']").val(),
+        odr_phone : $("input[name='odr_phone']").val(),
+        odr_total_price : odr_total_price,
+        odr_message : $("textarea[name='odr_message']").val(),
+        payment_status : '결제완료',
+
+        pay_method : $("#pay_method option:selected").val(),
+        pay_tot_price : odr_total_price
 			},
+
 			success: function(response) {
 				//alert(response.next_redirect_pc_url);
 				location.href = response.next_redirect_pc_url;
