@@ -1,7 +1,5 @@
 package com.demo.controller;
 
-import java.util.Map;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.demo.domain.BoardVO;
 import com.demo.domain.MemberVO;
+import com.demo.domain.RecommendVO;
 import com.demo.service.RecommendService;
 
 import lombok.extern.log4j.Log4j;
@@ -26,31 +24,23 @@ public class RecommendController {
 	private RecommendService recomendService;
 	
 	@GetMapping("/boa_up_down")
-	public ResponseEntity<Map<String, Object>> recommend(Integer boa_num, Integer type, BoardVO vo, HttpSession session){
-		ResponseEntity<Map<String, Object>> entity = null;
+	public ResponseEntity<RecommendVO> recommend(Integer boa_num, Integer type, RecommendVO vo, HttpSession session){
+		ResponseEntity<RecommendVO> entity = null;
 		
-		String mem_id = ((MemberVO) session.getAttribute("loginStatus")).getMem_id();
-		vo.setMem_id(mem_id);
-				
-		// 추천,비추천일 때에 따라 update
+		// 로그인한 세션 아이디 게시물 아이디에 넣기
+		String rec_id = ((MemberVO) session.getAttribute("loginStatus")).getMem_id();
+		vo.setRec_id(rec_id);
+		vo.setBoa_num(boa_num);
+		
+		// 추천,비추천일 때에 따라 insert
 		if(type == 1) {
-			recomendService.boa_up(boa_num);
+			recomendService.insert1(vo);
 		} else if(type == 2) {
-			recomendService.boa_down(boa_num);
+			recomendService.insert2(vo);
 		}
 		
 		
-//		Map<String, Object> a = recomendService.select(boa_num);
-		
-		
-//		Map<String, Object> b = new HashMap<String, Object>();
-//		b.put("boa_up", Integer.parseInt(String.valueOf(a.get("boa_up"))));
-//		b.put("boa_down", Integer.parseInt(String.valueOf(a.get("boa_down"))));
-//		
-//		log.info(b);
-		
-		
-		entity = new ResponseEntity<Map<String,Object>>(recomendService.select(boa_num), HttpStatus.OK);
+		entity = new ResponseEntity<RecommendVO>(recomendService.select(boa_num), HttpStatus.OK);
 		
 		return entity;
 	}

@@ -18,8 +18,8 @@
 <style>
 <!--
 	.container-log{
-		padding-left: 600px;
-		padding-right: 600px;
+		padding-left: 30%;
+		padding-right: 30%;
 	}
 	
 	h1 {

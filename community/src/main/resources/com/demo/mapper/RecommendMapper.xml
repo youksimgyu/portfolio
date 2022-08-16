@@ -1,35 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.demo.mapper.RecommendMapper">
-
-	<update id="update1">
 	
-		UPDATE BOARD
-		SET BOA_UP = NVL(BOA_UP,0) + 1
-		WHERE BOA_NUM = #{boa_num}
+	<insert id="insert1">
 	
-	</update>
+		INSERT INTO RECOMMEND (rec_num, boa_num, rec_id, rec_up)
+		VALUES (SEQ_REC_NUM.NEXTVAL, #{boa_num}, #{rec_id}, 1)
 		
-	<update id="update2">
+	</insert>
 	
-		UPDATE BOARD
-		SET BOA_DOWN = NVL(BOA_DOWN,0) + 1
-		WHERE BOA_NUM = #{boa_num}
+	<insert id="insert2">
 	
-	</update>
-	
-	<resultMap type="HashMap" id="up_down">
-	
-		<result column="BOA_UP" property="boa_up"/>
-		<result column="BOA_DOWN" property="boa_down"/>
-	
-	</resultMap>
+		INSERT INTO RECOMMEND (rec_num, boa_num, rec_id, rec_down)
+		VALUES (SEQ_REC_NUM.NEXTVAL, #{boa_num}, #{rec_id}, 2)
+		
+	</insert>
 	
 	
-	<select id="select" resultMap="up_down">
+	<select id="select" resultType="com.demo.domain.RecommendVO">
 	
-		SELECT BOA_UP, BOA_DOWN
-		FROM BOARD
+		SELECT COUNT(REC_UP) AS REC_UP, COUNT(REC_DOWN) AS REC_DOWN
+		FROM RECOMMEND
 		WHERE BOA_NUM = #{boa_num}
 	
 	</select>

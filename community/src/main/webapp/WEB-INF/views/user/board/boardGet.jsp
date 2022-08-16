@@ -69,7 +69,7 @@
 					<span>조회수 ${boardGet.boa_hit }</span>
 				</div>
 				<div class="col-1">
-					<span>추천수 ${boardGet.boa_up }</span>
+					<span>추천수 ${rec_get.rec_up }</span>
 				</div>
 				<div class="col-1">
 					<span>댓글 ${boardGet.boa_rep_num }</span>
@@ -86,12 +86,12 @@
 			<div class="content-footer">
 				<div class="row">
 					<div class="col" style="text-align: center;">
-					<span id="boa_up">${boardGet.boa_up }</span>
-					<input type="hidden" name="boa_up" value="${boardGet.boa_up }">
-					<button type="button" class="btn btn-outline-success" name="btn_boa_up_down" data-type="1">추천</button>
-					<button type="button" class="btn btn-outline-danger" name="btn_boa_up_down" data-type="2">비추천</button>
-					<span id="boa_down">${boardGet.boa_down }</span>
-					<input type="hidden" name="boa_down" value="${boardGet.boa_down }">
+					<span id="rec_up">${rec_get.rec_up }</span>
+					<input type="hidden" name="rec_up" value="${rec_get.rec_up }">
+					<button type="button" class="btn btn-outline-success" name="btn_rec_up_down" data-type="1">추천</button>
+					<button type="button" class="btn btn-outline-danger" name="btn_rec_up_down" data-type="2">비추천</button>
+					<span id="rec_down">${rec_get.rec_down }</span>
+					<input type="hidden" name="rec_down" value="${rec_get.rec_down }">
 					</div>
 				</div>
 			</div>
@@ -157,28 +157,26 @@
 
 $(document).ready(function(){
 
-	$("button[name='btn_boa_up_down']").on("click", function(){
+	$("button[name='btn_rec_up_down']").on("click", function(){
 
 		if(${sessionScope.loginStatus == null }){
 			alert("로그인 해주세요");
 		}
+		
 		let type = $(this).data("type");
 		let boa_num = $("input[name='boa_num']").val();
-		let btn_boa_up_down = $(this);
 
 		// 자바스크립트 Object객체 구문
-		let data = { type : type, boa_num : boa_num}
+		let data = { type : type, boa_num : boa_num};
 		
 		$.ajax({
 			url: '/user/recommend/boa_up_down',
 			type: 'get',
 			data: data,
-			dataType : 'json',
 			success: function(result){
 
-				 // console.log("result : " + result.boa_up);
-				 $("#boa_up").text(result.boa_up);
-				 $("#boa_down").text(result.boa_down);
+				 $("#rec_up").text(result.rec_up);
+				 $("#rec_down").text(result.rec_down);
 
 			}
 		});

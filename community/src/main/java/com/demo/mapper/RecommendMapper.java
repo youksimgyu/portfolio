@@ -1,19 +1,17 @@
 package com.demo.mapper;
 
-import java.util.Map;
+import com.demo.domain.RecommendVO;
 
 public interface RecommendMapper {
-
-	// type=1일 때 추천수 업데이트
-	void update1(Integer boa_num);
-	
-	// type=2일 때 추천수 업데이트
-	void update2(Integer boa_num);
 	
 	// select
-	Map<String, Object> select(Integer boa_num);
+	RecommendVO select(Integer boa_num);
 	
+	// type=1일떄 up
+	void insert1(RecommendVO vo);
 	
+	// type=1일떄 down
+	void insert2(RecommendVO vo);
 
 	
 }

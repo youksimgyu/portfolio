@@ -93,7 +93,7 @@
 				      	</c:if>
 				      <td><fmt:formatDate value="${boardNameVO.boa_date_up }" pattern="yyyy-MM-dd" /></td>
 				      <td scope="row"><c:out value="${boardNameVO.boa_hit }" /></td>
-				      <td scope="row"><c:out value="${boardNameVO.boa_up }" /></td>
+				      <td scope="row"><c:out value="${boardNameVO.rec_up }" /></td>
 				    </tr>
 				    </c:forEach>
 				    

@@ -29,8 +29,10 @@ import com.demo.domain.BoardNameVO;
 import com.demo.domain.BoardVO;
 import com.demo.domain.CategoryVO;
 import com.demo.domain.MemberVO;
+import com.demo.domain.RecommendVO;
 import com.demo.dto.Criteria;
 import com.demo.dto.PageDTO;
+import com.demo.service.RecommendService;
 import com.demo.service.UserBoardService;
 
 import lombok.extern.log4j.Log4j;
@@ -43,6 +45,9 @@ public class UserBoardController {
 	@Autowired
 	private UserBoardService userBoardService;
 
+	@Autowired
+	private RecommendService recomendService;
+	
 	// 1차 카테고리 기준 전체 글
 	@GetMapping("/boardList/{cat_c}/{cat_name}")
 	public String boardList(@PathVariable("cat_c") Integer cat_c, @PathVariable("cat_name") String cat_name, @ModelAttribute("cri") Criteria cri, Model model) {
@@ -76,9 +81,10 @@ public class UserBoardController {
 		BoardNameVO boardGet = userBoardService.boardGet(boa_num);
 		model.addAttribute("boardGet", boardGet);
 		
-		log.info(boardGet);
+		// 추천 데이터 가져오기
+		RecommendVO rec_get = recomendService.select(boa_num);
+		model.addAttribute("rec_get", rec_get);
 			
-		
 	}
 	
 	@GetMapping("/boardInsert")

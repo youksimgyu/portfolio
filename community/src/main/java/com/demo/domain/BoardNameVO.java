@@ -24,7 +24,7 @@ public class BoardNameVO {
 	private Integer boa_rep_num;
 	private Integer rep_up;
 	private Integer rep_down;
-	private Integer boa_up;
-	private Integer boa_down;
+	private Integer rec_up;
+	private Integer rec_down;
 	
 }
