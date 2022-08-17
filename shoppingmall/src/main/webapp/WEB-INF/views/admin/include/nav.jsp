@@ -54,7 +54,7 @@
 						class="fa fa-angle-left pull-right"></i>
 				</span> </a>
 				<ul class="treeview-menu">
-					<li><a href="#">주문목록</a></li>
+					<li><a href="/admin/order/orderList">주문목록</a></li>
 				</ul></li>
 
 			<li class="treeview"><a href="#"><i class="fa fa-link"></i>

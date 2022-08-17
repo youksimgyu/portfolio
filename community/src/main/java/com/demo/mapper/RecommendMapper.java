@@ -1,11 +1,12 @@
 package com.demo.mapper;
 
+import java.util.List;
+
 import com.demo.domain.RecommendVO;
 
 public interface RecommendMapper {
 	
-	// select
-	RecommendVO select(Integer boa_num);
+	RecommendVO getRecommend(Integer boa_num);
 	
 	// type=1일떄 up
 	void insert1(RecommendVO vo);
@@ -13,5 +14,5 @@ public interface RecommendMapper {
 	// type=1일떄 down
 	void insert2(RecommendVO vo);
 
-	
+	List<RecommendVO> select();
 }

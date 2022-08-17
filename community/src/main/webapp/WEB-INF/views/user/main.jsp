@@ -60,7 +60,7 @@
 				    </tr>
 				  </thead>
 				  <tbody>
-				    <c:forEach items="${boardList }" var="boardNameVO">
+				    <c:forEach var="boardNameVO" items="${boardList }" varStatus="status">
 				    <!-- BoardVO클래스의 필드명으로 코딩했지만, 호출은 getter메서드가 사용됨. -->
 				    <tr>
 				      <th scope="row"><c:out value="${boardNameVO.cat_name_c }" /></th>
@@ -79,7 +79,7 @@
 				      	</c:if>
 				      <td><fmt:formatDate value="${boardNameVO.boa_date_up }" pattern="yyyy-MM-dd" /></td>
 				      <td scope="row"><c:out value="${boardNameVO.boa_hit }" /></td>
-				      <td scope="row"><c:out value="${boardNameVO.rec_up }" /></td>
+				      <td scope="row"><c:out value="${getRecommendList[status.index].rec_up }" /></td>
 				    </tr>
 				    </c:forEach>
 				    

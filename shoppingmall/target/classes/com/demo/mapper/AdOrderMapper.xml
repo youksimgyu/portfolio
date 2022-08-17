@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.mapper.AdOrderMapper">
+
+	<!-- 1)데이터 목록 데이터 가져오기 : 페이징쿼리(인덱스힌트 구문) -->
+	<select id="getOrderList" resultType="com.demo.domain.OrderVO">
+		<![CDATA[
+		SELECT RN, ODR_CODE, MEM_ID, ODR_NAME, ODR_ZIPCODE,
+		       ODR_ADDR, ODR_ADDR_D, ODR_PHONE, ODR_TOTAL_PRICE, ODR_DATE, ODR_MESSAGE, ODR_STATUS, PAYMENT_STATUS, CS_STATUS
+		FROM (
+		    SELECT  /*+ INDEX_DESC(TBL_ORDER PK_ODR_CODE)*/
+		    		ROWNUM RN, ODR_CODE, MEM_ID, ODR_NAME, ODR_ZIPCODE,
+		    		ODR_ADDR, ODR_ADDR_D, ODR_PHONE, ODR_TOTAL_PRICE, ODR_DATE, ODR_MESSAGE, ODR_STATUS, PAYMENT_STATUS, CS_STATUS
+		    FROM TBL_ORDER
+		    WHERE  
+		]]>
+		 <include refid="criteria"></include>
+		 
+		<![CDATA[ 
+		   
+		         ROWNUM <= #{pageNum} * #{amount}
+		)
+		WHERE RN > (#{pageNum}-1) * #{amount}
+		]]>
+	
+	</select>
+	
+	
+	<!-- 2)테이블 데이타개수 : 페이징구현사용 -->
+	<select id="getOrderTotalCount" resultType="int">
+		SELECT COUNT(*) FROM TBL_ORDER WHERE
+		
+		<include refid="criteria"></include> 
+		
+		ODR_CODE > 0
+		
+	</select>
+
+	<!-- 검색조건 쿼리. [제목 or 작성자]선택.  value="TW" -->
+	<!-- typeArr: 파라미터타입의 Criteria클래스의 메서드를 가리킴. 검색종류(타입)의 값을 참조하게 됨. [제목 or 작성자]선택.  value="TW"  -->
+	<sql id="criteria">
+		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+			<foreach collection="typeArr" item="type">
+				<trim prefix="OR">
+					<choose>
+						<when test="type == 'O'.toString()">
+							ODR_CODE like '%' || #{keyword} || '%'
+						</when>
+						<when test="type == 'M'.toString()">
+							MEM_ID like '%' || #{keyword} || '%'
+						</when>
+					</choose>
+				</trim>
+			</foreach>
+		</trim>
+	</sql>
+	
+	<update id="orderStatusChange">
+	
+		UPDATE TBL_ORDER
+		SET ODR_STATUS = #{odr_status}
+		WHERE ODR_CODE = #{odr_code}
+	
+	</update>
+	
+	<delete id="orderDelete">
+	
+		DELETE TBL_ORDER
+		WHERE ODR_CODE = #{odr_code}
+	
+	</delete>
+
+
+</mapper>

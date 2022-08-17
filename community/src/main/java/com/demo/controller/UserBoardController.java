@@ -62,6 +62,9 @@ public class UserBoardController {
 		List<CategoryVO> getSubList = userBoardService.getSubCategoryList(cat_c);
 		model.addAttribute("getSubList", getSubList);
 		
+		List<RecommendVO> getRecommendList = recomendService.select();
+		model.addAttribute("getRecommendList", getRecommendList);
+		
 		// [prev] 1  2  3  4  5  [next]
 		int totalCount = userBoardService.getBoardTotalCount(cat_c, cri);
 		model.addAttribute("pageMaker", new PageDTO(cri, totalCount));
@@ -82,7 +85,7 @@ public class UserBoardController {
 		model.addAttribute("boardGet", boardGet);
 		
 		// 추천 데이터 가져오기
-		RecommendVO rec_get = recomendService.select(boa_num);
+		RecommendVO rec_get = recomendService.getRecommend(boa_num);
 		model.addAttribute("rec_get", rec_get);
 			
 	}

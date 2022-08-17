@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.demo.domain.BoardNameVO;
+import com.demo.domain.RecommendVO;
 import com.demo.dto.Criteria;
 import com.demo.dto.PageDTO;
+import com.demo.service.RecommendService;
 import com.demo.service.UserBoardService;
 
 /**
@@ -24,6 +26,9 @@ public class HomeController {
 	
 	@Autowired
 	private UserBoardService userBoardService;
+	
+	@Autowired
+	private RecommendService recomendService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
@@ -38,10 +43,12 @@ public class HomeController {
 		List<BoardNameVO> boardList = userBoardService.getBoardList(cri);
 		model.addAttribute("boardList", boardList);
 		
+		List<RecommendVO> getRecommendList = recomendService.select();
+		model.addAttribute("getRecommendList", getRecommendList);
+		
 		// [prev] 1  2  3  4  5  [next]
 		int totalCount = userBoardService.getTotalBoardTotalCount(cri);
 		model.addAttribute("pageMaker", new PageDTO(cri, totalCount));
-		
 		
 		return "/user/main";
 	}
