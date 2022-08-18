@@ -14,13 +14,13 @@
 		    FROM TBL_ORDER
 		    WHERE  
 		]]>
+		 <include refid="period"></include>
 		 <include refid="criteria"></include>
-		 
 		<![CDATA[ 
 		   
-		         ROWNUM <= #{pageNum} * #{amount}
+		         ROWNUM <= #{cri.pageNum} * #{cri.amount}
 		)
-		WHERE RN > (#{pageNum}-1) * #{amount}
+		WHERE RN > (#{cri.pageNum}-1) * #{cri.amount}
 		]]>
 	
 	</select>
@@ -30,7 +30,8 @@
 	<select id="getOrderTotalCount" resultType="int">
 		SELECT COUNT(*) FROM TBL_ORDER WHERE
 		
-		<include refid="criteria"></include> 
+		<include refid="period"></include>
+		<include refid="criteria"></include>
 		
 		ODR_CODE > 0
 		
@@ -40,19 +41,38 @@
 	<!-- typeArr: 파라미터타입의 Criteria클래스의 메서드를 가리킴. 검색종류(타입)의 값을 참조하게 됨. [제목 or 작성자]선택.  value="TW"  -->
 	<sql id="criteria">
 		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
-			<foreach collection="typeArr" item="type">
+			<foreach collection="cri.typeArr" item="type">
 				<trim prefix="OR">
 					<choose>
 						<when test="type == 'O'.toString()">
-							ODR_CODE like '%' || #{keyword} || '%'
+							ODR_CODE like '%' || #{cri.keyword} || '%'
 						</when>
 						<when test="type == 'M'.toString()">
-							MEM_ID like '%' || #{keyword} || '%'
+							MEM_ID like '%' || #{cri.keyword} || '%'
 						</when>
 					</choose>
 				</trim>
 			</foreach>
 		</trim>
+	</sql>
+	
+	<!-- 날짜 조건 검색 -->
+	<sql id="period">
+	
+		<if test="startDate != null and !startDate.equals('') and endDate != null and !endDate.equals('')">
+			
+			<![CDATA[
+			ODR_DATE >= TO_DATE(#{startDate}, 'YYYY-MM-DD')
+			
+			AND
+			
+			ODR_DATE < TO_DATE(#{endDate}, 'YYYY-MM-DD') + 1
+			
+			AND
+			]]>
+			
+		</if>
+	
 	</sql>
 	
 	<update id="orderStatusChange">
@@ -69,6 +89,34 @@
 		WHERE ODR_CODE = #{odr_code}
 	
 	</delete>
+	
+	<!-- 
+	<delete id="orderListDelete">
+	
+		DELETE FROM TBL_ORDER
+		
+	
+	</delete>
+	 -->
+
+	<select id="getOrderInfo" resultType="com.demo.domain.OrderVO">
+	
+		SELECT ODR_CODE, MEM_ID, ODR_NAME, ODR_ZIPCODE,
+			   ODR_ADDR, ODR_ADDR_D, ODR_PHONE, ODR_TOTAL_PRICE, ODR_DATE, ODR_MESSAGE,
+			   ODR_STATUS, PAYMENT_STATUS, CS_STATUS
+		FROM TBL_ORDER
+		WHERE ODR_CODE = #{odr_code}
+	
+	</select>
+	
+	<select id="getPaymentInfo" resultType="com.demo.domain.PaymentVO">
+	
+		SELECT PAY_CODE, ODR_CODE, PAY_METHOD, PAY_DATE, PAY_TOT_PRICE,
+			   PAY_REST_PRICE, PAY_NOBANK_PRICE, PAY_NOBANK_USER, PAY_NOBANK
+		FROM TBL_PAYMENT
+		WHERE ODR_CODE = #{odr_code}
+	
+	</select>
 
 
 </mapper>

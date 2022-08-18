@@ -73,112 +73,85 @@ desired effect
 		<div class="box box-primary">
 		
 			<div class="box-header">
-				LIST ORDER
+				ORDER DETAIL
 			</div>
 			
 			<div class="box body">
-			
-				<!-- 검색기능 -->
-				<form id="searchForm" action="/admin/order/orderList" method="get">
-				  <select name="type" style="width: 100px; height: 26px;">
-					  <option value="OM" <c:out value="${pageMaker.cri.type eq null ? 'selected' : '' }" />>전체</option>
-					  <option value="O" <c:out value="${pageMaker.cri.type eq 'O' ? 'selected' : '' }" />>주문번호</option><!-- Title -->
-					  <option value="M" <c:out value="${pageMaker.cri.type eq 'M' ? 'selected' : '' }" />>주문자ID</option><!-- Content -->
-				  </select>
-				  <input type="text" name="keyword" value="${pageMaker.cri.keyword }">
-				  <input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum }">
-				  <input type="hidden" name="amount" value="${pageMaker.cri.amount }">
-				  
-				  	  주문일자 <input type="date" name="startDate" value="${startDate }"> ~ <input type="date" name="endDate" value="${endDate }">
-				  
-				  <button type="submit" id="btnSearch" class="btn btn-link">Search</button>
-			  	</form>
-			  	<button type="button" name="btnCheckedOrderDelete" class="btn btn-link">선택삭제</button>
-			  
-			  <table class="table table-hover">
+				<h3>주문상세조회</h3>
+				<h5>주문정보</h5>
+			  	<table class="table table-bordered">
 				  <thead>
 				    <tr>
-				      <th scope="col"><input type="checkbox" name="checkAll" id="checkAll"></th>
-				      <th scope="col">주문일시</th>
 				      <th scope="col">주문번호</th>
-				      <th scope="col">주문자ID/수령인</th>
-				      <th scope="col">주문금액/배송비</th>
-				      <th scope="col">결제방식</th>
-				      <th scope="col">배송상태</th>
-				      <th scope="col">주문관리</th>
+				      <td scope="col">${orderVO.odr_code }</td>
 				    </tr>
 				  </thead>
 				  <tbody>
-				    <c:forEach items="${orderList }" var="orderVO">
-				    <!-- BoardVO클래스의 필드명으로 코딩했지만, 호출은 getter메서드가 사용됨. -->
 				    <tr>
-				      <th scope="row"><input type="checkbox" class="check" value="${orderVO.odr_code }"></th>
-				      <td><fmt:formatDate value="${orderVO.odr_date }" pattern="yyyy-MM-dd hh:mm" /></td>
-    				  <td><c:out value="${orderVO.odr_code }" /></td>
-				      <td><c:out value="${orderVO.mem_id }" /> / <c:out value="${orderVO.odr_name }" /></td>
-				      <td><c:out value="${orderVO.odr_total_price }" /></td>
-				      <td><c:out value="${orderVO.payment_status }" /></td>
-				      <td>
-				      	<select name="odr_status">
-				      		<option value="주문접수" ${orderVO.odr_status eq '주문접수' ? 'selected':'' }>주문접수</option>
-				      		<option value="결제완료" ${orderVO.odr_status eq '결제완료' ? 'selected':'' }>결제완료</option>
-				      		<option value="배송준비중" ${orderVO.odr_status eq '배송준비중' ? 'selected':'' }>배송준비중</option>
-				      		<option value="배송처리" ${orderVO.odr_status eq '배송처리' ? 'selected':'' }>배송처리</option>
-				      		<option value="배송완료" ${orderVO.odr_status eq '배송완료' ? 'selected':'' }>배송완료</option>
-				      		<option value="주문취소" ${orderVO.odr_status eq '주문취소' ? 'selected':'' }>주문취소</option>
-				      		<option value="취소요청" ${orderVO.odr_status eq '취소요청' ? 'selected':'' }>취소요청</option>
-				      		<option value="취소완료" ${orderVO.odr_status eq '취소완료' ? 'selected':'' }>취소완료</option>
-				      		<option value="교환요청" ${orderVO.odr_status eq '교환요청' ? 'selected':'' }>교환요청</option>
-				      		<option value="교환완료" ${orderVO.odr_status eq '교환완료' ? 'selected':'' }>교환완료</option>
-				      	</select>
-				      	<button type="button" name="btnChangeOrderStatus" data-odr_code="${orderVO.odr_code }" class="btn btn-link">변경</button>
-				      </td>
-				      <td><button type="button" name="btnOrderDetail" data-odr_code="${orderVO.odr_code }" class="btn btn-link">Detail</button></td>
+				      <th scope="col">주문일자</th>
+				      <td scope="col"><fmt:formatDate value="${orderVO.odr_date }" pattern="yyyy-MM-dd hh:mm" /></td>
 				    </tr>
-				    </c:forEach>
-				    
+				    <tr>
+				      <th scope="col">주문자</th>
+				      <td scope="col">${orderVO.mem_id }</td>
+				    </tr>
+				    <tr>
+				      <th scope="col">주문처리상태</th>
+				      <td scope="col">${orderVO.odr_status }</td>
+				    </tr>
 				  </tbody>
 				</table>
-				<nav aria-label="...">
-				  <ul class="pagination">
-				    <!-- 이전표시 -->
-				    <c:if test="${pageMaker.prev }">
-					    <li class="page-item">
-					      <a class="page-link" href="${pageMaker.startPage - 1 }">Previous</a>
-					    </li>
-				    </c:if>
-				    
-				    <!-- 페이지번호 표시.  1  2  3  4  5 -->
-				    
-				    <c:forEach begin="${pageMaker.startPage }" end="${pageMaker.endPage }" var="num" >
-				    	<li class='page-item ${pageMaker.cri.pageNum == num ? "active": "" }'><a class="page-link" href="${num}">${num}</a></li>
-				    </c:forEach>
-				    <!-- 
-				    <li class="page-item active" aria-current="page">
-				      <span class="page-link">2</span>
-				    </li>
-				    <li class="page-item"><a class="page-link" href="#">3</a></li>
-				     -->
-				    <!-- 다음표시 -->
-				    <c:if test="${pageMaker.next }">
-					    <li class="page-item">
-					      <a class="page-link" href="${pageMaker.endPage + 1 }">Next</a>
-					    </li>
-				    </c:if>
-					
-				  </ul>
-				  
-				  	<!--페이지 번호 클릭시 list주소로 보낼 파라미터 작업-->
-					<form id="actionForm" action="/admin/order/orderList" method="get">
-						<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}">
-						<input type="hidden" name="amount" value="${pageMaker.cri.amount}">
-						<input type="hidden" name="type" value="${pageMaker.cri.type}">
-						<input type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
-						<input type="hidden" name="startDate" value="${startDate}">
-						<input type="hidden" name="endDate" value="${endDate}">
-					</form>
-					
-				</nav>
+				
+				<h5>결제정보</h5>
+				<table class="table table-bordered">
+				  <thead>
+				    <tr>
+				      <th scope="col">총 주문금액</th>
+				      <td scope="col">${paymentVO.pay_tot_price }</td>
+				    </tr>
+				  </thead>
+				  <tbody>
+				    <tr>
+				      <th scope="col">총 할인금액</th>
+				      <td scope="col">0</td>
+				    </tr>
+				    <tr>
+				      <th scope="col">총 결제금액</th>
+				      <td scope="col">${paymentVO.pay_tot_price }</td>
+				    </tr>
+				    <tr>
+				      <th scope="col">결제수단</th>
+				      <td scope="col">${paymentVO.pay_method }</td>
+				    </tr>
+				  </tbody>
+				</table>
+				
+				<h5>주문 상품 정보</h5>
+				<table class="table table-bordered">
+				  <thead>
+				    <tr>
+				      <th scope="col">이미지</th>
+				      <th scope="col">상품정보</th>
+				      <th scope="col">수량</th>
+				      <th scope="col">상품구매금액</th>
+				      <th scope="col">배송주문</th>
+				      <th scope="col">주문처리상태</th>
+				      <th scope="col">취소/교환/반품</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+				    <tr>
+				      <td scope="col">수정</td>
+				      <td scope="col">수정</td>
+				      <td scope="col">수정</td>
+				      <td scope="col">수정</td>
+				      <td scope="col">수정</td>
+				      <td scope="col">수정</td>
+				      <td scope="col">수정</td>
+				    </tr>
+				  </tbody>
+				</table>
+			 
 			</div>
 			
 
@@ -381,7 +354,7 @@ immediately after the control sidebar -->
 			actionForm.append("<input type='hidden' name='odr_code' value='" + $(this).data("odr_code") + "'>");
 			actionForm.attr("method", "get");
 			actionForm.attr("action", "/admin/order/orderDetail");
-			actionForm.submit();
+			// actionForm.submit();
 
 		});
 

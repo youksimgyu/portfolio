@@ -3,6 +3,7 @@ package com.demo.service;
 import java.util.List;
 
 import com.demo.domain.RecommendVO;
+import com.demo.dto.Criteria;
 
 public interface RecommendService {
 	
@@ -14,5 +15,7 @@ public interface RecommendService {
 	// type=1일떄 down
 	void insert2(RecommendVO vo);
 
-	List<RecommendVO> select();
+	List<RecommendVO> select(Criteria cri);
+	
+	List<RecommendVO> subselect(Integer cat_c, Criteria cri);
 }

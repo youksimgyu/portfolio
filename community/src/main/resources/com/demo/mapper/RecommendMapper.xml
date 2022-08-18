@@ -1,6 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.demo.mapper.RecommendMapper">
+
+	<!-- 검색조건 쿼리. [제목 or 작성자]선택.  value="TW" -->
+	<!-- typeArr: 파라미터타입의 Criteria클래스의 메서드를 가리킴. 검색종류(타입)의 값을 참조하게 됨. [제목 or 작성자]선택.  value="TW"  -->
+	<sql id="maincriteria">
+		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+			<foreach collection="typeArr" item="type">
+				<trim prefix="OR">
+					<choose>
+						<when test="type == 'N'.toString()">
+							boa_title like '%' || #{keyword} || '%'
+						</when>
+						<when test="type == 'C'.toString()">
+							boa_content like '%' || #{keyword} || '%'
+						</when>
+					</choose>
+				</trim>
+			</foreach>
+		</trim>
+	</sql>
+
+	<sql id="criteria">
+		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+			<foreach collection="cri.typeArr" item="type">
+				<trim prefix="OR">
+					<choose>
+						<when test="type == 'N'.toString()">
+							boa_title like '%' || #{cri.keyword} || '%'
+						</when>
+						<when test="type == 'C'.toString()">
+							boa_content like '%' || #{cri.keyword} || '%'
+						</when>
+					</choose>
+				</trim>
+			</foreach>
+		</trim>
+	</sql>
 	
 	<insert id="insert1">
 	
@@ -17,11 +53,30 @@
 	</insert>
 	
 	
-	<select id="select" resultType="com.demo.domain.RecommendVO">
-	
-		SELECT BOA_NUM, COUNT(REC_UP) AS REC_UP, COUNT(REC_DOWN) AS REC_DOWN
-		FROM RECOMMEND
-		GROUP BY BOA_NUM
+	<select id="select" parameterType="com.demo.dto.Criteria" resultType="com.demo.domain.RecommendVO">
+		
+		<![CDATA[
+		SELECT RN, BOA_NUM, REC_UP, REC_DOWN
+		FROM(	
+				SELECT /*+ INDEX_DESC(BOARD PK_BOA_NUM)*/ ROWNUM RN, BOA_NUM, REC_UP, REC_DOWN
+				FROM (
+				        SELECT B.BOA_NUM, R.REC_UP, R.REC_DOWN
+				             FROM (SELECT BOA_NUM, COUNT(REC_UP) AS REC_UP, COUNT(REC_DOWN) AS REC_DOWN
+				                   FROM RECOMMEND
+				                   GROUP BY BOA_NUM) R
+				             RIGHT JOIN BOARD B
+				             ON B.BOA_NUM = R.BOA_NUM
+				             ORDER BY B.BOA_NUM DESC
+				     )
+				WHERE
+		]]>
+		<include refid="maincriteria"></include>
+		<![CDATA[ 
+		   
+		        ROWNUM <= #{pageNum} * #{amount}
+			)
+		WHERE RN > (#{pageNum}-1) * #{amount}
+		]]>
 	
 	</select>
 	
@@ -30,6 +85,35 @@
 		SELECT COUNT(REC_UP) AS REC_UP, COUNT(REC_DOWN) AS REC_DOWN
 		FROM RECOMMEND
 		WHERE BOA_NUM = #{boa_num}
+	
+	</select>
+	
+	<select id="subselect" parameterType="com.demo.dto.Criteria" resultType="com.demo.domain.RecommendVO">
+		
+		<![CDATA[
+		SELECT RN, BOA_NUM, REC_UP, REC_DOWN
+		FROM(	
+				SELECT /*+ INDEX_DESC(BOARD PK_BOA_NUM)*/ ROWNUM RN, BOA_NUM, REC_UP, REC_DOWN
+				FROM (
+				        SELECT B.BOA_NUM, R.REC_UP, R.REC_DOWN, B.CAT_P
+				        FROM (SELECT BOA_NUM, COUNT(REC_UP) AS REC_UP, COUNT(REC_DOWN) AS REC_DOWN
+				              FROM RECOMMEND
+				              GROUP BY BOA_NUM) R
+				        RIGHT JOIN BOARD B
+				        ON B.BOA_NUM = R.BOA_NUM
+				        LEFT JOIN MEMBER M
+                 		ON B.MEM_ID = M.MEM_ID
+				        ORDER BY B.BOA_NUM DESC
+				     )
+				WHERE CAT_P = #{cat_c} AND
+		]]>
+		<include refid="criteria"></include>
+		<![CDATA[ 
+		   
+		        ROWNUM <= #{cri.pageNum} * #{cri.amount}
+			)
+		WHERE RN > (#{cri.pageNum}-1) * #{cri.amount}
+		]]>
 	
 	</select>
 

@@ -43,7 +43,7 @@ public class HomeController {
 		List<BoardNameVO> boardList = userBoardService.getBoardList(cri);
 		model.addAttribute("boardList", boardList);
 		
-		List<RecommendVO> getRecommendList = recomendService.select();
+		List<RecommendVO> getRecommendList = recomendService.select(cri);
 		model.addAttribute("getRecommendList", getRecommendList);
 		
 		// [prev] 1  2  3  4  5  [next]

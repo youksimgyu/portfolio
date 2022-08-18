@@ -62,7 +62,7 @@ public class UserBoardController {
 		List<CategoryVO> getSubList = userBoardService.getSubCategoryList(cat_c);
 		model.addAttribute("getSubList", getSubList);
 		
-		List<RecommendVO> getRecommendList = recomendService.select();
+		List<RecommendVO> getRecommendList = recomendService.subselect(cat_c, cri);
 		model.addAttribute("getRecommendList", getRecommendList);
 		
 		// [prev] 1  2  3  4  5  [next]

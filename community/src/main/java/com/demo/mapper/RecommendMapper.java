@@ -2,7 +2,10 @@ package com.demo.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.demo.domain.RecommendVO;
+import com.demo.dto.Criteria;
 
 public interface RecommendMapper {
 	
@@ -14,5 +17,7 @@ public interface RecommendMapper {
 	// type=1일떄 down
 	void insert2(RecommendVO vo);
 
-	List<RecommendVO> select();
+	List<RecommendVO> select(Criteria cri);
+	
+	List<RecommendVO> subselect(@Param("cat_c") Integer cat_c, @Param("cri") Criteria cri);
 }

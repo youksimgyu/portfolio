@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.demo.domain.OrderVO;
+import com.demo.domain.PaymentVO;
 import com.demo.dto.Criteria;
 import com.demo.mapper.AdOrderMapper;
 
@@ -16,15 +17,15 @@ public class AdOrderServiceImpl implements AdOrderService {
 	private AdOrderMapper adOrderMapper;
 	
 	@Override
-	public List<OrderVO> getOrderList(Criteria cri) {
+	public List<OrderVO> getOrderList(Criteria cri, String startDate, String endDate) {
 		// TODO Auto-generated method stub
-		return adOrderMapper.getOrderList(cri);
+		return adOrderMapper.getOrderList(cri, startDate, endDate);
 	}
 
 	@Override
-	public int getOrderTotalCount(Criteria cri) {
+	public int getOrderTotalCount(Criteria cri, String startDate, String endDate) {
 		// TODO Auto-generated method stub
-		return adOrderMapper.getOrderTotalCount(cri);
+		return adOrderMapper.getOrderTotalCount(cri, startDate, endDate);
 	}
 
 	@Override
@@ -34,9 +35,29 @@ public class AdOrderServiceImpl implements AdOrderService {
 	}
 
 	@Override
-	public void orderDelete(Long ord_code) {
+	public void orderDelete(Long odr_code) {
 		// TODO Auto-generated method stub
-		adOrderMapper.orderDelete(ord_code);
+		adOrderMapper.orderDelete(odr_code);
 	}
+
+	@Override
+	public OrderVO getOrderInfo(Long odr_code) {
+		// TODO Auto-generated method stub
+		return adOrderMapper.getOrderInfo(odr_code);
+	}
+
+	@Override
+	public PaymentVO getPaymentInfo(Long odr_code) {
+		// TODO Auto-generated method stub
+		return adOrderMapper.getPaymentInfo(odr_code);
+	}
+
+	
+
+//	@Override
+//	public void orderListDelete(List<Long> ordCodeArr) {
+//		// TODO Auto-generated method stub
+//		adOrderMapper.orderListDelete(ordCodeArr);
+//	}
 
 }

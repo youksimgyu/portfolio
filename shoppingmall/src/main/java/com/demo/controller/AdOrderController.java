@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.demo.domain.OrderVO;
+import com.demo.domain.PaymentVO;
 import com.demo.dto.Criteria;
 import com.demo.dto.PageDTO;
 import com.demo.service.AdOrderService;
@@ -29,15 +30,20 @@ public class AdOrderController {
 	private AdOrderService adOrderService;
 	
 	@GetMapping("/orderList")
-	public void orderList(Criteria cri, Model model) {
+	public void orderList(Criteria cri,@RequestParam(value = "startDate", required = false) String startDate,
+						  @RequestParam(value = "endDate", required = false) String endDate, Model model) {
+		
 		
 		// 리스트 가져와서 jsp로 전송
-		List<OrderVO> orderList = adOrderService.getOrderList(cri);
+		List<OrderVO> orderList = adOrderService.getOrderList(cri, startDate, endDate);
 		model.addAttribute("orderList", orderList);
 		
 		// 전체 갯수 가져와서 페이지정보 jsp 전송
-		int totalCount = adOrderService.getOrderTotalCount(cri);
+		int totalCount = adOrderService.getOrderTotalCount(cri, startDate, endDate);
 		model.addAttribute("pageMaker", new PageDTO(cri, totalCount));
+		
+		model.addAttribute("startDate", startDate);
+		model.addAttribute("endDate", endDate);
 	}
 	
 	@ResponseBody
@@ -66,11 +72,25 @@ public class AdOrderController {
 		
 		// 방법2
 		// mybatis에서 이구문을 작업을 해야한다. delete 주문테이블 where 주문번호  in (1,2,3,4,5)
+//		adOrderService.orderListDelete(ordCodeArr);
 		
 		entity = new ResponseEntity<String>("success", HttpStatus.OK);
 		
 		return entity;
 	}
 	
+	// 주문상세
+	@GetMapping("/orderDetail")
+	public void orderDetail(Long odr_code, Model model) {
+		
+		log.info(odr_code);
+		
+		OrderVO orderVO = adOrderService.getOrderInfo(odr_code);
+		model.addAttribute("orderVO", orderVO);
+		
+		PaymentVO paymentVO = adOrderService.getPaymentInfo(odr_code);
+		model.addAttribute("paymentVO", paymentVO);
+		
+	}
 	
 }

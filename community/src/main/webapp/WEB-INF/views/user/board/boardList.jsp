@@ -74,7 +74,7 @@
 				    </tr>
 				  </thead>
 				  <tbody>
-				    <c:forEach items="${getMainList }" var="boardNameVO" items="${getRecommendList }" var="RecommendVO">
+				    <c:forEach items="${getMainList }" var="boardNameVO" varStatus="status">
 				    <!-- BoardVO클래스의 필드명으로 코딩했지만, 호출은 getter메서드가 사용됨. -->
 				    <tr>
 				      <th scope="row"><c:out value="${boardNameVO.cat_name_c }" /></th>
@@ -93,7 +93,7 @@
 				      	</c:if>
 				      <td><fmt:formatDate value="${boardNameVO.boa_date_up }" pattern="yyyy-MM-dd" /></td>
 				      <td scope="row"><c:out value="${boardNameVO.boa_hit }" /></td>
-				      <td scope="row"><c:out value="${RecommendVO.rec_up }" /></td>
+				      <td scope="row"><c:out value="${getRecommendList[status.index].rec_up }" /></td>
 				    </tr>
 				    </c:forEach>
 				    
@@ -138,7 +138,7 @@
 						<input type="hidden" name="type" value="${pageMaker.cri.type}">
 						<input type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
 						<input type="hidden" name="cat_c" value="${cat_c }">
-						<input type="hidden" name="cat_name" value="${cat_name }">				
+						<input type="hidden" name="cat_name" value="${cat_name }">		
 					</form>
 					
 				</nav>

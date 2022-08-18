@@ -21,6 +21,23 @@
 
 	<!-- 검색조건 쿼리. [제목 or 작성자]선택.  value="TW" -->
 	<!-- typeArr: 파라미터타입의 Criteria클래스의 메서드를 가리킴. 검색종류(타입)의 값을 참조하게 됨. [제목 or 작성자]선택.  value="TW"  -->
+	<sql id="maincriteria">
+		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+			<foreach collection="typeArr" item="type">
+				<trim prefix="OR">
+					<choose>
+						<when test="type == 'N'.toString()">
+							boa_title like '%' || #{keyword} || '%'
+						</when>
+						<when test="type == 'C'.toString()">
+							boa_content like '%' || #{keyword} || '%'
+						</when>
+					</choose>
+				</trim>
+			</foreach>
+		</trim>
+	</sql>
+
 	<sql id="criteria">
 		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
 			<foreach collection="cri.typeArr" item="type">
@@ -38,24 +55,22 @@
 		</trim>
 	</sql>
 
-
 	<!-- 1)데이터 목록 데이터 가져오기 : 페이징쿼리(인덱스힌트 구문) -->
 	<select id="getMainBoardList" parameterType="com.demo.dto.Criteria" resultType="com.demo.domain.BoardNameVO">
 		<![CDATA[
 		SELECT RN, BOA_NUM, MEM_NAME, CAT_C, CAT_NAME, CAT_NAME_C, CAT_P, BOA_TITLE,
 			   BOA_CONTENT, BOA_DATE_REG, BOA_DATE_UP,
-			   EVE_NAME, BOA_HIT, BOA_REP_NUM, REP_UP, REP_DOWN, REC_UP, REC_DOWN
+			   EVE_NAME, BOA_HIT, BOA_REP_NUM, REP_UP, REP_DOWN
 		FROM (
 			    SELECT  /*+ INDEX_DESC(BOARD PK_BOA_NUM)*/
 			    	   ROWNUM RN, B.BOA_NUM, M.MEM_ID, M.MEM_NAME, B.CAT_C, B.CAT_NAME, B.CAT_NAME_C, B.CAT_P, B.BOA_TITLE,
 				   	   B.BOA_CONTENT, B.BOA_DATE_REG, B.BOA_DATE_UP,
-				   	   B.EVE_NAME, B.BOA_HIT, B.BOA_REP_NUM, B.REP_UP, B.REP_DOWN, R.REC_UP, R.REC_DOWN
+				   	   B.EVE_NAME, B.BOA_HIT, B.BOA_REP_NUM, B.REP_UP, B.REP_DOWN
 			    FROM BOARD B LEFT JOIN MEMBER M
 			    ON B.MEM_ID = M.MEM_ID
-			    INNER JOIN RECOMMEND R
-				ON B.BOA_NUM = R.BOA_NUM
 			    WHERE CAT_P = #{cat_c} AND
 		]]>
+		<include refid="criteria"></include>
 		<![CDATA[ 
 		   
 		        ROWNUM <= #{cri.pageNum} * #{cri.amount}
@@ -70,7 +85,9 @@
 	<select id="getBoardTotalCount" resultType="int">
 	
 		SELECT COUNT(*) FROM BOARD
-		WHERE CAT_P = #{cat_c} AND
+		WHERE 
+		<include refid="criteria"></include>
+		CAT_P = #{cat_c} AND
 		boa_num > 0
 		
 	</select>
@@ -121,6 +138,7 @@
 			    ON B.MEM_ID = M.MEM_ID
 			    WHERE
 		]]>
+		<include refid="maincriteria"></include>
 		<![CDATA[ 
 		   
 		        ROWNUM <= #{pageNum} * #{amount}
@@ -135,7 +153,9 @@
 	
 		SELECT COUNT(*)
 		FROM BOARD
-		WHERE boa_num > 0
+		WHERE 
+		<include refid="maincriteria"></include>
+		boa_num > 0
 		
 	</select>
 

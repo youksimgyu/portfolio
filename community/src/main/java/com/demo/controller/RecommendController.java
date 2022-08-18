@@ -40,7 +40,7 @@ public class RecommendController {
 		}
 		
 		
-		entity = new ResponseEntity<RecommendVO>(recomendService.select(boa_num), HttpStatus.OK);
+		entity = new ResponseEntity<RecommendVO>(recomendService.getRecommend(boa_num), HttpStatus.OK);
 		
 		return entity;
 	}
