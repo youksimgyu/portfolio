@@ -1,6 +1,7 @@
 package com.demo.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.demo.domain.OrderVO;
 import com.demo.domain.PaymentVO;
@@ -21,5 +22,7 @@ public interface AdOrderService {
 	OrderVO getOrderInfo(Long odr_code);
 	
 	PaymentVO getPaymentInfo(Long odr_code);
+	
+	List<Map<String, Object>> getOrderProductInfo(Long odr_code);
 
 }

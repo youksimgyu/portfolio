@@ -48,7 +48,7 @@
 			<input type="hidden" name="boa_num" value="${boardGet.boa_num }">
 			<div class="row" style="margin-top: 20px; margin-bottom: 20px; padding: 11px; border-top: 1px solid #ccc; border-bottom: 1px solid #ccc; background: #fcfcfc; line-height: 1.5em;">
 				<div class="col-10">
-				 	<span>${boardGet.boa_title }</span>
+				 	<input value="${boardGet.boa_title }" type="text" class="form-control" name="boa_title" id="boa_title">
 				</div>
 				<div class="col-2">
 				 	<span><fmt:formatDate value="${boardGet.boa_date_up }" pattern="yyyy.MM.dd hh:mm" /></span>
@@ -69,7 +69,7 @@
 					<span>조회수 ${boardGet.boa_hit }</span>
 				</div>
 				<div class="col-1">
-					<span>추천수 ${boardGet.boa_up }</span>
+					<span>추천수 ${rec_get.rec_up }</span>
 				</div>
 				<div class="col-1">
 					<span>댓글 ${boardGet.boa_rep_num }</span>
@@ -78,68 +78,25 @@
 			<div class="content-body">
 			  <div class="row">
 				<div class="col">
-					<p>${boardGet.boa_content }</p>
+					<textarea class="form-control" row="3" id="boa_content" name="boa_content">${boardGet.boa_content }</textarea>
 				</div>
 			  </div>
 			</div>
-			
-			<div class="content-footer">
-				<div class="row">
-					<div class="col" style="text-align: center;">
-					<span id="boa_up">${boardGet.boa_up }</span>
-					<input type="hidden" name="boa_up" value="${boardGet.boa_up }">
-					<button type="button" class="btn btn-outline-success" name="btn_boa_up_down" data-type="1">추천</button>
-					<button type="button" class="btn btn-outline-danger" name="btn_boa_up_down" data-type="2">비추천</button>
-					<span id="boa_down">${boardGet.boa_down }</span>
-					<input type="hidden" name="boa_down" value="${boardGet.boa_down }">
-					</div>
-				</div>
+			<div class="content-footer" style="text-align: center;">
+				<button type="button" name="btnModify" id="btnModify" class="btn btn-primary"
+						style="margin-top: 20px;">수정</button>
 			</div>
 			
-				
-			
+
 		</div>
 	</div>
 </div>
+		  
+			<!--페이지 번호 클릭시 list주소로 보낼 파라미터 작업-->
+			<form id="actionForm" action="/board/list" method="get">
+			</form>
+					
 
-			<nav aria-label="...">
-				  <ul class="pagination">
-				    <!-- 이전표시 -->
-				    <c:if test="${pageMaker.prev }">
-					    <li class="page-item">
-					      <a class="page-link" href="${pageMaker.startPage - 1 }">Previous</a>
-					    </li>
-				    </c:if>
-				    
-				    <!-- 페이지번호 표시.  1  2  3  4  5 -->
-				    
-				    <c:forEach begin="${pageMaker.startPage }" end="${pageMaker.endPage }" var="num" >
-				    	<li class='page-item ${pageMaker.cri.pageNum == num ? "active": "" }'><a class="page-link" href="${num}">${num}</a></li>
-				    </c:forEach>
-				    <!-- 
-				    <li class="page-item active" aria-current="page">
-				      <span class="page-link">2</span>
-				    </li>
-				    <li class="page-item"><a class="page-link" href="#">3</a></li>
-				     -->
-				    <!-- 다음표시 -->
-				    <c:if test="${pageMaker.next }">
-					    <li class="page-item">
-					      <a class="page-link" href="${pageMaker.endPage + 1 }">Next</a>
-					    </li>
-				    </c:if>
-					
-				  </ul>
-				  
-				  	<!--페이지 번호 클릭시 list주소로 보낼 파라미터 작업-->
-					<form id="actionForm" action="/board/list" method="get">
-						<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}">
-						<input type="hidden" name="amount" value="${pageMaker.cri.amount}">
-						<input type="hidden" name="type" value="${pageMaker.cri.type}">
-						<input type="hidden" name="keyword" value="${pageMaker.cri.keyword}">				
-					</form>
-					
-				</nav>
 
 
 </main>
@@ -147,9 +104,25 @@
 <!-- footer -->
 <%@include file="/WEB-INF/views/include/footer.jsp" %>
 
+<script type="text/javascript" src="/resources/ckeditor/ckeditor.js"></script>
+
 <script>
 
+	let actionForm = $("#actionForm");
+
 $(document).ready(function(){
+
+	// ckeditor 환경설정
+	var ckeditor_config = {
+		resize_enabled : false,
+		enterMode : CKEDITOR.ENTER_BR,
+		shiftEnterMode : CKEDITOR.ENTER_P,
+		toolbarCanCollapse : true,
+		removePlugins : "elementspath",
+		filebrowserUploadUrl: '/admin/board/imageUpload' //업로드 탭기능추가 속성. post 주소로 사용됨
+	}
+
+	CKEDITOR.replace("boa_content", ckeditor_config);
 
 	$("button[name='btn_boa_up_down']").on("click", function(){
 
@@ -176,6 +149,17 @@ $(document).ready(function(){
 
 			}
 		});
+
+	});
+
+	$("#btnModify").on("click", function(){
+
+		let boa_num = $("input[name='boa_num']").val();
+
+		actionForm.append("<input type='hidden' name='boa_num' value='" + boa_num + "'>");
+		actionForm.attr("method", "post");
+		actionForm.attr("action", "/user/board/boardGet");
+		actionForm.submit();
 
 	});
 

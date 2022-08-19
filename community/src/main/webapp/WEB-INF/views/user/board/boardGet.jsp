@@ -97,55 +97,26 @@
 			</div>
 			<div>
 
-				<button class="btn btn-primary" type="button" id="btnModify">수정</button>
+				<button class="btn btn-primary" type="button" id="btnModify" data-boa_num="${boardGet.boa_num }">수정</button>
 				<button class="btn btn-primary" type="button" id="btnDelete">삭제</button>
 
 			</div>
+			
+			<!--페이지 번호 클릭시 list주소로 보낼 파라미터 작업-->
+			<form id="actionForm" action="/board/list" method="get">
+				<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}">
+				<input type="hidden" name="amount" value="${pageMaker.cri.amount}">
+				<input type="hidden" name="type" value="${pageMaker.cri.type}">
+				<input type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
+				<input type="hidden" name="cat_c" value="${cat_c }">
+				<input type="hidden" name="cat_name" value="${cat_name }">
+			</form>
 			
 				
 			
 		</div>
 	</div>
 </div>
-
-			<nav aria-label="...">
-				  <ul class="pagination">
-				    <!-- 이전표시 -->
-				    <c:if test="${pageMaker.prev }">
-					    <li class="page-item">
-					      <a class="page-link" href="${pageMaker.startPage - 1 }">Previous</a>
-					    </li>
-				    </c:if>
-				    
-				    <!-- 페이지번호 표시.  1  2  3  4  5 -->
-				    
-				    <c:forEach begin="${pageMaker.startPage }" end="${pageMaker.endPage }" var="num" >
-				    	<li class='page-item ${pageMaker.cri.pageNum == num ? "active": "" }'><a class="page-link" href="${num}">${num}</a></li>
-				    </c:forEach>
-				    <!-- 
-				    <li class="page-item active" aria-current="page">
-				      <span class="page-link">2</span>
-				    </li>
-				    <li class="page-item"><a class="page-link" href="#">3</a></li>
-				     -->
-				    <!-- 다음표시 -->
-				    <c:if test="${pageMaker.next }">
-					    <li class="page-item">
-					      <a class="page-link" href="${pageMaker.endPage + 1 }">Next</a>
-					    </li>
-				    </c:if>
-					
-				  </ul>
-				  
-				  	<!--페이지 번호 클릭시 list주소로 보낼 파라미터 작업-->
-					<form id="actionForm" action="/board/list" method="get">
-						<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}">
-						<input type="hidden" name="amount" value="${pageMaker.cri.amount}">
-						<input type="hidden" name="type" value="${pageMaker.cri.type}">
-						<input type="hidden" name="keyword" value="${pageMaker.cri.keyword}">				
-					</form>
-					
-				</nav>
 
 
 </main>
@@ -157,6 +128,8 @@
 
 $(document).ready(function(){
 
+	let actionForm = $("#actionForm");
+	
 	$("button[name='btn_rec_up_down']").on("click", function(){
 
 		if(${sessionScope.loginStatus == null }){
@@ -180,6 +153,19 @@ $(document).ready(function(){
 
 			}
 		});
+
+	});
+	
+	// 1) 상품수정 클릭시
+	$("#btnModify").on("click", function(){
+
+		// console.log("상품코드 : " $(this).data("pdt_num"));
+
+		//상품코드를 자식으로 추가
+		actionForm.append("<input type='hidden' name='boa_num' value='" + $(this).data("boa_num") + "'>");
+		actionForm.attr("method", "get");
+		actionForm.attr("action", "/user/board/boardModify");
+		actionForm.submit();
 
 	});
 

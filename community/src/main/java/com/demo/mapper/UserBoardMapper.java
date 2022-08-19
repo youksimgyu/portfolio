@@ -37,5 +37,8 @@ public interface UserBoardMapper {
 	
 	// 전체 글 카운트
 	int getTotalBoardTotalCount(Criteria cri);
+	
+	// 게시글 수정
+	void boardModify(BoardVO vo);
 
 }

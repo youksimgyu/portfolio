@@ -1,6 +1,7 @@
 package com.demo.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,6 +51,12 @@ public class AdOrderServiceImpl implements AdOrderService {
 	public PaymentVO getPaymentInfo(Long odr_code) {
 		// TODO Auto-generated method stub
 		return adOrderMapper.getPaymentInfo(odr_code);
+	}
+
+	@Override
+	public List<Map<String, Object>> getOrderProductInfo(Long odr_code) {
+		// TODO Auto-generated method stub
+		return adOrderMapper.getOrderProductInfo(odr_code);
 	}
 
 	

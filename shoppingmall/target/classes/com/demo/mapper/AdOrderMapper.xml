@@ -117,6 +117,40 @@
 		WHERE ODR_CODE = #{odr_code}
 	
 	</select>
-
-
+	
+	<!-- 방법 1 -->
+	<select id="getOrderProductInfo" parameterType="Long" resultType="map">
+	
+		SELECT P.PDT_IMG_FOLDER, P.PDT_IMG, P.PDT_DETAIL, P.PDT_NAME, D.ODR_AMOUNT,
+			   P.PDT_PRICE * D.ODR_AMOUNT AS ODR_UNIT_PRICE, O.ODR_STATUS
+		FROM TBL_ORDER O
+		INNER JOIN TBL_ORDER_DETAIL D
+		ON O.ODR_CODE = D.ODR_CODE
+		INNER JOIN TBL_PRODUCT P
+		ON D.PDT_NUM = P.PDT_NUM
+		WHERE O.ODR_CODE = #{odr_code}
+	
+	</select>
+	
+	<!-- 방법2 -->
+	<!-- 
+	<resultMap type="map" id="getOrderProductMap">
+		<result column="pdt_num" property="pcode"/>
+		<result column="pdt_name" property="pname"/>
+	</resultMap>
+	
+	<select id="getOrderProductInfo" resultMap="getOrderProductMap">
+	
+		SELECT P.PDT_IMG_FOLDER, P.PDT_IMG, P.PDT_DETAIL, P.PDT_NAME, D.ODR_AMOUNT,
+			   P.PDT_PRICE * D.ODR_AMOUNT AS ODR_UNIT_PRICE, O.ODR_STATUS
+		FROM TBL_ORDER O
+		INNER JOIN TBL_ORDER_DETAIL D
+		ON O.ODR_CODE = D.ODR_CODE
+		INNER JOIN TBL_PRODUCT P
+		ON D.PDT_NUM = P.PDT_NUM
+		WHERE O.ODR_CODE = #{odr_code}
+	
+	</select>
+	 -->
+	 
 </mapper>

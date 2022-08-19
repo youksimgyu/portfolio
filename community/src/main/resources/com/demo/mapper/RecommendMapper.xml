@@ -9,7 +9,7 @@
 			<foreach collection="typeArr" item="type">
 				<trim prefix="OR">
 					<choose>
-						<when test="type == 'N'.toString()">
+						<when test="type == 'T'.toString()">
 							boa_title like '%' || #{keyword} || '%'
 						</when>
 						<when test="type == 'C'.toString()">
@@ -26,7 +26,7 @@
 			<foreach collection="cri.typeArr" item="type">
 				<trim prefix="OR">
 					<choose>
-						<when test="type == 'N'.toString()">
+						<when test="type == 'T'.toString()">
 							boa_title like '%' || #{cri.keyword} || '%'
 						</when>
 						<when test="type == 'C'.toString()">
@@ -56,17 +56,17 @@
 	<select id="select" parameterType="com.demo.dto.Criteria" resultType="com.demo.domain.RecommendVO">
 		
 		<![CDATA[
-		SELECT RN, BOA_NUM, REC_UP, REC_DOWN
+		SELECT RN, BOA_NUM, REC_UP, REC_DOWN, BOA_TITLE, BOA_CONTENT
 		FROM(	
-				SELECT /*+ INDEX_DESC(BOARD PK_BOA_NUM)*/ ROWNUM RN, BOA_NUM, REC_UP, REC_DOWN
+				SELECT /*+ INDEX_DESC(BOARD PK_BOA_NUM)*/ ROWNUM RN, BOA_NUM, REC_UP, REC_DOWN, BOA_TITLE, BOA_CONTENT
 				FROM (
-				        SELECT B.BOA_NUM, R.REC_UP, R.REC_DOWN
-				             FROM (SELECT BOA_NUM, COUNT(REC_UP) AS REC_UP, COUNT(REC_DOWN) AS REC_DOWN
-				                   FROM RECOMMEND
-				                   GROUP BY BOA_NUM) R
-				             RIGHT JOIN BOARD B
-				             ON B.BOA_NUM = R.BOA_NUM
-				             ORDER BY B.BOA_NUM DESC
+				        SELECT B.BOA_NUM, R.REC_UP, R.REC_DOWN, B.BOA_TITLE, B.BOA_CONTENT
+			            FROM (SELECT BOA_NUM, COUNT(REC_UP) AS REC_UP, COUNT(REC_DOWN) AS REC_DOWN
+			                  FROM RECOMMEND
+			                  GROUP BY BOA_NUM) R
+			            RIGHT JOIN BOARD B
+			            ON B.BOA_NUM = R.BOA_NUM
+			            ORDER BY B.BOA_NUM DESC
 				     )
 				WHERE
 		]]>
@@ -91,11 +91,11 @@
 	<select id="subselect" parameterType="com.demo.dto.Criteria" resultType="com.demo.domain.RecommendVO">
 		
 		<![CDATA[
-		SELECT RN, BOA_NUM, REC_UP, REC_DOWN
+		SELECT RN, BOA_NUM, REC_UP, REC_DOWN, BOA_TITLE, BOA_CONTENT
 		FROM(	
-				SELECT /*+ INDEX_DESC(BOARD PK_BOA_NUM)*/ ROWNUM RN, BOA_NUM, REC_UP, REC_DOWN
+				SELECT /*+ INDEX_DESC(BOARD PK_BOA_NUM)*/ ROWNUM RN, BOA_NUM, REC_UP, REC_DOWN, BOA_TITLE, BOA_CONTENT
 				FROM (
-				        SELECT B.BOA_NUM, R.REC_UP, R.REC_DOWN, B.CAT_P
+				        SELECT B.BOA_NUM, R.REC_UP, R.REC_DOWN, B.CAT_P, B.BOA_TITLE, B.BOA_CONTENT
 				        FROM (SELECT BOA_NUM, COUNT(REC_UP) AS REC_UP, COUNT(REC_DOWN) AS REC_DOWN
 				              FROM RECOMMEND
 				              GROUP BY BOA_NUM) R

@@ -1,6 +1,7 @@
 package com.demo.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -25,4 +26,5 @@ public interface AdOrderMapper {
 	// 결제정보
 	PaymentVO getPaymentInfo(Long odr_code);
 	// 주문상세
+	List<Map<String, Object>> getOrderProductInfo(Long odr_code);
 }

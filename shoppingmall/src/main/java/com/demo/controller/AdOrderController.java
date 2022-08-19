@@ -1,6 +1,9 @@
 package com.demo.controller;
 
 import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +21,7 @@ import com.demo.domain.PaymentVO;
 import com.demo.dto.Criteria;
 import com.demo.dto.PageDTO;
 import com.demo.service.AdOrderService;
+import com.demo.util.UploadFileUtils;
 
 import lombok.extern.log4j.Log4j;
 
@@ -25,6 +29,10 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 @RequestMapping("/admin/order/*")
 public class AdOrderController {
+	
+	// name이 servlet-context의  bean id와 같아야 함
+	@Resource(name = "uploadPath")
+	private String uploadPath; // "C:/Dev/upload"
 
 	@Autowired
 	private AdOrderService adOrderService;
@@ -91,6 +99,27 @@ public class AdOrderController {
 		PaymentVO paymentVO = adOrderService.getPaymentInfo(odr_code);
 		model.addAttribute("paymentVO", paymentVO);
 		
+		List<Map<String, Object>> orderDetailVO = adOrderService.getOrderProductInfo(odr_code);
+		// 날짜폴더명의 \를 /로 변환하는 작업
+		for(int i=0; i<orderDetailVO.size(); i++) {
+			Map<String, Object> orderProduct = orderDetailVO.get(i);
+			String img_folder = String.valueOf(orderProduct.get("PDT_IMG_FOLDER")).replace("\\", "/");
+			orderProduct.put("PDT_IMG_FOLDER", img_folder);
+		}
+		model.addAttribute("orderDetailVO", orderDetailVO);
+		
+	}
+	
+	// 상품목록에서 이미지 보여주기
+	@ResponseBody
+	@GetMapping("/displayFile")
+	public ResponseEntity<byte[]> displayFile(String folderName, String fileName){
+		
+//		log.info("폴더이름: " + folderName);
+//		log.info("파일이름: " + fileName);
+		
+		// 이미지를 바이트배열로 읽어오는 작업
+		return UploadFileUtils.getFile(uploadPath, folderName + "\\" + fileName);
 	}
 	
 }

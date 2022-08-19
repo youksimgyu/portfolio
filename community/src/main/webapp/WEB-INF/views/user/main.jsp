@@ -145,8 +145,27 @@
 <script>
 
 	$(document).ready(function(){
-		
+
 		let actionForm = $("#actionForm");
+
+		$("a#search").on("click", function(e){
+			e.preventDefault();
+
+			let keyword = $(this).parent().find("input[name='keyword']").val();
+			
+			
+			location.href = "/?type=TC&keyword=" + keyword;
+
+		});
+
+		$("#searchEnter").keydown(function(key) {
+
+			let keyword = $("#searchEnter").val();
+
+			if( key.keyCode == 13 ){
+				location.href = "/?type=TC&keyword=" + keyword;
+			}
+		});
 		
 		// 페이지 번호 클릭
 		$("ul.pagination li a.page-link").on("click", function(e){

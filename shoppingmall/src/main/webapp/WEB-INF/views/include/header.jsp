@@ -9,7 +9,7 @@
   	<!-- 로그인 이전상태 -->
   	<c:if test="${sessionScope.loginStatus == null }">
     <a class="p-2 text-dark" href="/member/login">LOGIN</a> |
-    <a class="p-2 text-dark" href="/member/join">JOIN</a> |
+    <a class="p-2 text-dark" href="/member/join">JOIN</a>
     </c:if>
     
     <!-- 로그인 이후상태 -->
@@ -19,13 +19,12 @@
     <a class="p-2 text-dark" href="/member/confirmPW">MODIFY</a> |
     </c:if>
     
-    <a class="p-2 text-dark" href="#">MYPAGE
     <c:if test="${sessionScope.loginStatus != null }">
     	<span style="color:red;">Point [${sessionScope.loginStatus.mem_point}]</span>
     </c:if>	
-    </a> |
     
     <c:if test="${sessionScope.loginStatus != null }">
+    | <a class="p-2 text-dark" href="#">MYPAGE</a> |
     <a class="p-2 text-dark" href="/user/order/orderListInfo?type=cartOrder">ORDER</a> |
     <a class="p-2 text-dark" href="/user/cart/cart_list">CART</a>
     </c:if>

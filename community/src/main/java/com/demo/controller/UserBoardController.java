@@ -75,7 +75,7 @@ public class UserBoardController {
 	
 	// 글 가져오기
 	@GetMapping("/boardGet")
-	public void boardGet(Integer boa_num, @ModelAttribute("cat_name") String cat_name, @ModelAttribute("cri") Criteria cri, Model model) {
+	public void boardGet(Integer boa_num, Model model) {
 		
 		// 게시물 조회수 올리기
 		userBoardService.boa_hit(boa_num);
@@ -191,12 +191,24 @@ public class UserBoardController {
 	
 	
 	@GetMapping("/boardModify")
-	public String boardModify(Integer boa_num, @ModelAttribute("cat_name") String cat_name, @ModelAttribute("cri") Criteria cri, Model model) {
+	public void boardModify(Integer boa_num, Model model) {
 		
 		// 글 가져오기
 		BoardNameVO boardGet = userBoardService.boardGet(boa_num);
 		model.addAttribute("boardGet", boardGet);
 		
-		return "redirect:/"; // get주소로 이동
+		// 추천 데이터 가져오기
+		RecommendVO rec_get = recomendService.getRecommend(boa_num);
+		model.addAttribute("rec_get", rec_get);
+
+	}
+	
+	@PostMapping("/boardModify")
+	public String boardModify(BoardVO vo) {
+		
+		// 업데이트 구문  (제목, 글만)
+		userBoardService.boardModify(vo);
+		
+		return "redirect:/user/board/boardGet";
 	}
 }

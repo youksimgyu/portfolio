@@ -127,8 +127,20 @@
 				    </c:if>
 					
 				  </ul>
-				<div style="text-align: center;">
-					<button type="button" class="btn btn-primary" id="btnInsert">글 쓰기</button>
+				<div style="text-align: right;">
+					<form id="searchForm" action="/user/board/boardList" method="get">
+						<input type="hidden" name="type" value="TC">
+						<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}">
+						<input type="hidden" name="amount" value="${pageMaker.cri.amount}">
+						
+						<input class="form-control" style="width: 200px; display: inline;" type="text" name="keyword" value="${pageMaker.cri.keyword }">
+						
+						<input type="hidden" name="cat_c" value="${cat_c }">
+						<input type="hidden" name="cat_name" value="${cat_name }">
+
+						<button type="submit" class="btn btn-primary" id="btnSearch">검색</button>
+						<button type="button" class="btn btn-primary" id="btnInsert">글 쓰기</button>
+					</form>
 				</div>
 				  
 				  	<!--페이지 번호 클릭시 list주소로 보낼 파라미터 작업-->
@@ -138,7 +150,7 @@
 						<input type="hidden" name="type" value="${pageMaker.cri.type}">
 						<input type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
 						<input type="hidden" name="cat_c" value="${cat_c }">
-						<input type="hidden" name="cat_name" value="${cat_name }">		
+						<input type="hidden" name="cat_name" value="${cat_name }">
 					</form>
 					
 				</nav>
@@ -161,6 +173,17 @@
 $(document).ready(function(){
 
 	let actionForm = $("#actionForm");
+	let searchForm = $("#searchForm");
+
+	// 카테고리별 검색기능
+	$("#btnSearch").on("click", function(){
+
+		searchForm.find("input[name='pageNum']").val("1");
+		searchForm.attr("method", "get");
+		searchForm.attr("action", "/user/board/boardList/${cat_c}/${cat_name}");
+		searchForm.submit();
+
+	});
 	
 	// 페이지 번호 클릭
 	$("ul.pagination li a.page-link").on("click", function(e){

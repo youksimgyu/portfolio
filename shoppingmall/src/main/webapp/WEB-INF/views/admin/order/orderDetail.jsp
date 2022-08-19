@@ -78,7 +78,7 @@ desired effect
 			
 			<div class="box body">
 				<h3>주문상세조회</h3>
-				<h5>주문정보</h5>
+				<h5 style="color: red;">[주문정보]</h5>
 			  	<table class="table table-bordered">
 				  <thead>
 				    <tr>
@@ -102,7 +102,7 @@ desired effect
 				  </tbody>
 				</table>
 				
-				<h5>결제정보</h5>
+				<h5 style="color: red;">[결제정보]</h5>
 				<table class="table table-bordered">
 				  <thead>
 				    <tr>
@@ -126,7 +126,7 @@ desired effect
 				  </tbody>
 				</table>
 				
-				<h5>주문 상품 정보</h5>
+				<h5 style="color: red;">[주문상품정보]</h5>
 				<table class="table table-bordered">
 				  <thead>
 				    <tr>
@@ -134,21 +134,22 @@ desired effect
 				      <th scope="col">상품정보</th>
 				      <th scope="col">수량</th>
 				      <th scope="col">상품구매금액</th>
-				      <th scope="col">배송주문</th>
 				      <th scope="col">주문처리상태</th>
 				      <th scope="col">취소/교환/반품</th>
 				    </tr>
 				  </thead>
 				  <tbody>
+				  <c:forEach items="${orderDetailVO }" var="orderProduct">
 				    <tr>
-				      <td scope="col">수정</td>
-				      <td scope="col">수정</td>
-				      <td scope="col">수정</td>
-				      <td scope="col">수정</td>
-				      <td scope="col">수정</td>
-				      <td scope="col">수정</td>
-				      <td scope="col">수정</td>
+				      <td scope="col"><img src="/admin/order/displayFile?folderName=${orderProduct.PDT_IMG_FOLDER }&fileName=s_${orderProduct.PDT_IMG }"
+				      		 style="width: 80px;height: 80px;" onerror="this.onerror=null; this.src='/image/no_client.png'"></td>
+				      <td scope="col">${orderProduct.PDT_NAME }</td>
+				      <td scope="col">${orderProduct.ODR_AMOUNT }</td>
+				      <td scope="col">${orderProduct.ODR_UNIT_PRICE }</td>
+				      <td scope="col">${orderProduct.ODR_STATUS }</td>
+				      <td scope="col"><button type="button" class="btn btn-link">주문취소</button></td>
 				    </tr>
+				  </c:forEach>
 				  </tbody>
 				</table>
 			 

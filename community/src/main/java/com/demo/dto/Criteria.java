@@ -19,7 +19,7 @@ public class Criteria {
 	
 	//기본생성자 정의
 	public Criteria() {
-		this(1, 10);
+		this(1, 2);
 	}
 
 	//매개변수가 있는 생성자 정의

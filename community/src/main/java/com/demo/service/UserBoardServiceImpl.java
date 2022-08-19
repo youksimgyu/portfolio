@@ -71,4 +71,10 @@ public class UserBoardServiceImpl implements UserBoardService {
 		return userBoardMapper.getTotalBoardTotalCount(cri);
 	}
 
+	@Override
+	public void boardModify(BoardVO vo) {
+		// TODO Auto-generated method stub
+		userBoardMapper.boardModify(vo);
+	}
+
 }
