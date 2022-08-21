@@ -116,5 +116,14 @@
 		]]>
 	
 	</select>
+	
+	<select id="getrec_id" resultType="com.demo.domain.RecommendVO">
+	
+		SELECT REC_ID
+        FROM RECOMMEND
+        WHERE BOA_NUM = #{boa_num}
+        AND REC_ID = #{rec_id}
+	
+	</select>
 
 </mapper>

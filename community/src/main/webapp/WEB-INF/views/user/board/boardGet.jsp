@@ -96,9 +96,11 @@
 				</div>
 			</div>
 			<div>
-
-				<button class="btn btn-primary" type="button" id="btnModify" data-boa_num="${boardGet.boa_num }">수정</button>
-				<button class="btn btn-primary" type="button" id="btnDelete">삭제</button>
+				<!-- boardGet.mem_id는 글쓴이 아이디, mem_id는 로그인한 아이디  -->
+				<c:if test="${boardGet.mem_id == mem_id and boardGet.mem_id != null }">
+					<button class="btn btn-primary" type="button" id="btnModify" data-boa_num="${boardGet.boa_num }">수정</button>
+					<button class="btn btn-primary" type="button" id="btnDelete" data-boa_num="${boardGet.boa_num }">삭제</button>
+				</c:if>
 
 			</div>
 			
@@ -148,6 +150,12 @@ $(document).ready(function(){
 			data: data,
 			success: function(result){
 
+				console.log("클릭");
+				
+				if(result.rec_id != null) { // 추천테이블에 데이터 있을 때
+					alert("이미 진행 했습니다");
+				}
+
 				 $("#rec_up").text(result.rec_up);
 				 $("#rec_down").text(result.rec_down);
 
@@ -167,6 +175,18 @@ $(document).ready(function(){
 		actionForm.attr("action", "/user/board/boardModify");
 		actionForm.submit();
 
+	});
+	
+	// 게시글 삭제
+	$("#btnDelete").on("click", function(){
+		
+		if(confirm("글을 삭제하시겠습니까")){
+			actionForm.append("<input type='hidden' name='boa_num' value='" + $(this).data("boa_num") + "'>");
+			actionForm.attr("method", "get");
+			actionForm.attr("action", "/user/board/boardDelete");
+			actionForm.submit();
+		}
+		
 	});
 
 });

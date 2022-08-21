@@ -1,5 +1,7 @@
 package com.demo.controller;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,15 +34,25 @@ public class RecommendController {
 		vo.setRec_id(rec_id);
 		vo.setBoa_num(boa_num);
 		
-		// 추천,비추천일 때에 따라 insert
-		if(type == 1) {
-			recomendService.insert1(vo);
-		} else if(type == 2) {
-			recomendService.insert2(vo);
+		// 추천기능 데이터 여부
+		RecommendVO recommendCheck = recomendService.getrec_id(vo);
+		
+		if(recommendCheck == null) { //데이터 없으면 추천기능 진행
+		
+			// 추천,비추천일 때에 따라 insert
+			if(type == 1) {
+				recomendService.insert1(vo);
+			} else if(type == 2) {
+				recomendService.insert2(vo);
+			}
+			
+			entity = new ResponseEntity<RecommendVO>(recomendService.getRecommend(boa_num), HttpStatus.OK);
+			
+		} else if(recommendCheck != null) { // 이미 추천 했으면
+			
+			entity = new ResponseEntity<RecommendVO>(recomendService.getRecommend(boa_num), HttpStatus.OK);
+
 		}
-		
-		
-		entity = new ResponseEntity<RecommendVO>(recomendService.getRecommend(boa_num), HttpStatus.OK);
 		
 		return entity;
 	}

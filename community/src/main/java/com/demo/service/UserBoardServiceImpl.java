@@ -77,4 +77,10 @@ public class UserBoardServiceImpl implements UserBoardService {
 		userBoardMapper.boardModify(vo);
 	}
 
+	@Override
+	public void boardDelete(Integer boa_num) {
+		// TODO Auto-generated method stub
+		userBoardMapper.boardDelete(boa_num);
+	}
+
 }

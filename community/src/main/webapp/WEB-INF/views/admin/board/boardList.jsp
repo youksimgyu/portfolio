@@ -63,35 +63,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 			
 				<!-- 검색기능 -->
 				<form id="searchForm" action="/admin/board/boardList" method="get">
-					
-					<!-- 카테고리 선택부분 -->
-					<div class="form-group mb-3 mt-3 row">
-					<div class="col-sm-3">
-					  <select name="cat_p" id="firstCategory" class="form-control">
-			  			<option>1차 카테고리 선택</option>
-						<c:forEach items="${cateList }" var="categoryVO">
-							<option value="${categoryVO.cat_c }">${categoryVO.cat_name }</option>
-						</c:forEach>
-				  	  </select>
-				  	  
-	  	   	  		<input type="hidden" id="cat_name" name="cat_name">
-					<input type="hidden" id="cat_name_c" name="cat_name_c">
-						
-					</div>
-					
-					<div class="col-sm-3">
-				  		<select name="cat_c" id="secondCategory" class="form-control">
-				  			<option value="">2차 카테고리 선택</option>
-				  		</select>
-				   </div>
-				 </div>
 				
 				<div class="form-group mb-3 mt-3 row">
 				<div class="col-sm-3">
 				  <select name="type" class="form-control">
-					  <option value="NC" <c:out value="${pageMaker.cri.type eq null ? 'selected' : '' }" />>전체</option>
-					  <option value="N" <c:out value="${pageMaker.cri.type eq 'N' ? 'selected' : '' }" />>제목</option><!-- Title -->
-					  <option value="C" <c:out value="${pageMaker.cri.type eq 'C' ? 'selected' : '' }" />>내용</option><!-- Content -->
+					  <option value="TC" <c:out value="${pageMaker.cri.type eq null ? 'selected' : '' }" />>전체</option>
 				  </select>
 				</div>
 			    <div class="col-sm-3">
@@ -100,7 +76,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				  <input type="hidden" name="amount" value="${pageMaker.cri.amount }">
 				</div>
 			    <div class="col-sm-3">
-				  <button type="button" id="btnSearch" class="btn btn-link">Search</button>
+				  <button type="submit" id="btnSearch" class="btn btn-link">Search</button>
 				</div>
 				</div>
 			  	</form>
@@ -224,6 +200,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 	$(document).ready(function(){
 
 		let actionForm = $("#actionForm");
+		let searchForm = $("#searchForm");
 
 		// 1) 상품수정 클릭시
 		$("button[name='btnBoardEdit']").on("click", function(){
@@ -236,8 +213,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 			actionForm.submit();
 
 		});
-
-		let searchForm = $("#searchForm");
 
 		// 검색버튼 클릭시 pageNum 초기화
 		$("#btnSearch").on("click", function(){

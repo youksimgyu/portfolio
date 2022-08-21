@@ -52,8 +52,6 @@ public class UserBoardController {
 	@GetMapping("/boardList/{cat_c}/{cat_name}")
 	public String boardList(@PathVariable("cat_c") Integer cat_c, @PathVariable("cat_name") String cat_name, @ModelAttribute("cri") Criteria cri, Model model) {
 		
-		log.info("1차 카테고리 : " + cat_c);
-		
 		// 1차 카테고리에 해당되는 전체 글 가져오기
 		List<BoardNameVO> getMainList = userBoardService.getMainBoardList(cat_c, cri);
 		model.addAttribute("getMainList", getMainList);
@@ -75,11 +73,17 @@ public class UserBoardController {
 	
 	// 글 가져오기
 	@GetMapping("/boardGet")
-	public void boardGet(Integer boa_num, Model model) {
+	public void boardGet(Integer boa_num, Model model, HttpSession session) {
 		
 		// 게시물 조회수 올리기
 		userBoardService.boa_hit(boa_num);
 		
+		// 수정/삭제버튼이 로그인시 글작성자랑 같으면 표시하기
+		if(session.getAttribute("loginStatus") != null) {
+			String mem_id = ((MemberVO) session.getAttribute("loginStatus")).getMem_id();
+			model.addAttribute("mem_id", mem_id);
+		}
+
 		// 글 가져오기
 		BoardNameVO boardGet = userBoardService.boardGet(boa_num);
 		model.addAttribute("boardGet", boardGet);
@@ -87,7 +91,7 @@ public class UserBoardController {
 		// 추천 데이터 가져오기
 		RecommendVO rec_get = recomendService.getRecommend(boa_num);
 		model.addAttribute("rec_get", rec_get);
-			
+		
 	}
 	
 	@GetMapping("/boardInsert")
@@ -209,6 +213,15 @@ public class UserBoardController {
 		// 업데이트 구문  (제목, 글만)
 		userBoardService.boardModify(vo);
 		
-		return "redirect:/user/board/boardGet";
+		return "redirect:/user/board/boardGet?boa_num=" +vo.getBoa_num();
+	}
+	
+	@GetMapping("/boardDelete")
+	public String boardDelete(Integer boa_num) {
+		
+		// 글 삭제
+		userBoardService.boardDelete(boa_num);
+		
+		return "redirect:/";
 	}
 }

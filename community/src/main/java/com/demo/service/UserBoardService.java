@@ -39,6 +39,10 @@ public interface UserBoardService {
 	// 게시글 수정
 	void boardModify(BoardVO vo);
 	
+	// 게시글 삭제
+	void boardDelete(Integer boa_num);
+
+	
 	
 	
 }

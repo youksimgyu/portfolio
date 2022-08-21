@@ -35,6 +35,12 @@ public class AdminController {
 
 	}
 	
+	@GetMapping("/main")
+	public void main() {
+		
+
+	}
+	
 	@PostMapping("/adLogin")
 	public String adLoing_ok(AdLoginDTO dto, RedirectAttributes rttr, HttpSession session) throws Exception {
 		

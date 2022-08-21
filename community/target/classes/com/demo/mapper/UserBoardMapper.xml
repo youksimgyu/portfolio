@@ -97,7 +97,7 @@
 	
 	<select id="boardGet" resultType="com.demo.domain.BoardNameVO">	
 	
-		SELECT B.BOA_NUM, M.MEM_NAME, B.CAT_C, B.CAT_NAME, B.CAT_NAME_C, B.CAT_P, B.BOA_TITLE,
+		SELECT B.BOA_NUM, M.MEM_ID, M.MEM_NAME, B.CAT_C, B.CAT_NAME, B.CAT_NAME_C, B.CAT_P, B.BOA_TITLE,
 			   B.BOA_CONTENT, B.BOA_DATE_REG, B.BOA_DATE_UP,
 			   B.EVE_NAME, B.BOA_HIT, B.BOA_REP_NUM, B.REP_UP, B.REP_DOWN
 		FROM BOARD B LEFT JOIN MEMBER M
@@ -170,12 +170,19 @@
 	<update id="boardModify">
 	
 		UPDATE BOARD
-		SET BOA_TITEL = #{boa_title},
-			BOA_CONTENT = #{boa_content}
+		SET BOA_TITLE = #{boa_title},
+			BOA_CONTENT = #{boa_content},
 			BOA_DATE_UP = SYSDATE
 		WHERE BOA_NUM = #{boa_num}
 	
 	</update>
+	
+	<delete id="boardDelete">
+	
+		DELETE FROM BOARD
+		WHERE BOA_NUM = #{boa_num}
+	
+	</delete>
 
 
 </mapper>

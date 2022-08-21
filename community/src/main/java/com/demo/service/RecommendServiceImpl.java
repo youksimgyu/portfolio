@@ -46,4 +46,12 @@ public class RecommendServiceImpl implements RecommendService {
 		return recommendMapper.subselect(cat_c, cri);
 	}
 
+	@Override
+	public RecommendVO getrec_id(RecommendVO vo) {
+		// TODO Auto-generated method stub
+		return recommendMapper.getrec_id(vo);
+	}
+
+
+
 }

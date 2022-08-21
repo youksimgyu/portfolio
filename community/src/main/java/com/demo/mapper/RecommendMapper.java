@@ -20,4 +20,6 @@ public interface RecommendMapper {
 	List<RecommendVO> select(Criteria cri);
 	
 	List<RecommendVO> subselect(@Param("cat_c") Integer cat_c, @Param("cri") Criteria cri);
+	
+	RecommendVO getrec_id(RecommendVO vo);
 }

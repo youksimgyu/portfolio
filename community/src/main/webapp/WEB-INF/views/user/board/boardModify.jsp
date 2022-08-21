@@ -38,7 +38,9 @@
 
 <main class="container">
 
-
+<form id="boardModify" method="post" action="boardModify" class="contatiner p-5 my-5 border" enctype="multipart/form-data">
+	<!-- 세션에서 받은 아이디 숨기기 -->
+ 	<input type="hidden" name="mem_id" value="${mem_id }">
 
 <div class="p-5 my-5 border row">
 
@@ -78,12 +80,12 @@
 			<div class="content-body">
 			  <div class="row">
 				<div class="col">
-					<textarea class="form-control" row="3" id="boa_content" name="boa_content">${boardGet.boa_content }</textarea>
+					<textarea row="3" id="boa_content" name="boa_content">${boardGet.boa_content }</textarea>
 				</div>
 			  </div>
 			</div>
 			<div class="content-footer" style="text-align: center;">
-				<button type="button" name="btnModify" id="btnModify" class="btn btn-primary"
+				<button type="submit" name="btnModify" id="btnModify" class="btn btn-primary"
 						style="margin-top: 20px;">수정</button>
 			</div>
 			
@@ -91,6 +93,7 @@
 		</div>
 	</div>
 </div>
+</form>
 		  
 			<!--페이지 번호 클릭시 list주소로 보낼 파라미터 작업-->
 			<form id="actionForm" action="/board/list" method="get">
@@ -149,17 +152,6 @@ $(document).ready(function(){
 
 			}
 		});
-
-	});
-
-	$("#btnModify").on("click", function(){
-
-		let boa_num = $("input[name='boa_num']").val();
-
-		actionForm.append("<input type='hidden' name='boa_num' value='" + boa_num + "'>");
-		actionForm.attr("method", "post");
-		actionForm.attr("action", "/user/board/boardGet");
-		actionForm.submit();
 
 	});
 

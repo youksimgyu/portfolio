@@ -37,11 +37,14 @@
 			<foreach collection="typeArr" item="type">
 				<trim prefix="OR">
 					<choose>
-						<when test="type == 'N'.toString()">
-							ad_boa_title like '%' || #{keyword} || '%'
+						<when test="type == 'T'.toString()">
+							boa_title like '%' || #{keyword} || '%'
 						</when>
 						<when test="type == 'C'.toString()">
-							ad_boa_content like '%' || #{keyword} || '%'
+							boa_content like '%' || #{keyword} || '%'
+						</when>
+						<when test="type == 'M'.toString()">
+							mem_id like '%' || #{keyword} || '%'
 						</when>
 					</choose>
 				</trim>

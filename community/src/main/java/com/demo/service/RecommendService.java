@@ -18,4 +18,6 @@ public interface RecommendService {
 	List<RecommendVO> select(Criteria cri);
 	
 	List<RecommendVO> subselect(Integer cat_c, Criteria cri);
+	
+	RecommendVO getrec_id(RecommendVO vo);
 }

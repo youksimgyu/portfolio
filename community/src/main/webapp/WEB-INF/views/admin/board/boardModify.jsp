@@ -99,24 +99,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
 	<div class="form-group mb-3 mt-3 row">
 		<label for="boa_title" class="col-sm-2 col-form-label">작성자</label>
 		<c:if test="${!empty boardVO.mem_name }">
-		<div class="col form-control">
-			<span>${boardVO.mem_name }</span>
+		<div class="col-sm-4">
+			<input type="text" class="form-control" value="${boardVO.mem_name }" readonly>
 		</div>
 		</c:if>
 		<c:if test="${empty boardVO.mem_name }">
-		<div class="col form-control">
-			<span>관리자</span>
+		<div class="col-sm-4">
+			<input type="text" class="form-control" value="관리자" readonly>
 		</div>
 		</c:if>
-		<div class="col-2 form-control">
-			<span>조회수 ${boardVO.boa_hit }</span>
-		</div>
-		<div class="col-1 form-control">
-			<span>추천수 ${boardVO.boa_up }</span>
-		</div>
-		<div class="col-1 form-control">
-			<span>댓글 ${boardVO.boa_rep_num }</span>
-		</div>
 	</div>
 	
 	<div class="form-group row">
