@@ -90,6 +90,20 @@
 	
 	</delete>
 	
+	<delete id="orderDetailDelete">
+	
+		DELETE TBL_ORDER_DETAIL
+		WHERE ODR_CODE = #{odr_code}
+	
+	</delete>
+	
+	<delete id="orderPaymentDelete">
+	
+		DELETE TBL_PAYMENT
+		WHERE ODR_CODE = #{odr_code}
+	
+	</delete>
+	
 	<!-- 
 	<delete id="orderListDelete">
 	
@@ -121,7 +135,7 @@
 	<!-- 방법 1 -->
 	<select id="getOrderProductInfo" parameterType="Long" resultType="map">
 	
-		SELECT P.PDT_IMG_FOLDER, P.PDT_IMG, P.PDT_DETAIL, P.PDT_NAME, D.ODR_AMOUNT,
+		SELECT D.ODR_CODE, D.PDT_NUM, P.PDT_IMG_FOLDER, P.PDT_IMG, P.PDT_DETAIL, P.PDT_NAME, D.ODR_AMOUNT,
 			   P.PDT_PRICE * D.ODR_AMOUNT AS ODR_UNIT_PRICE, O.ODR_STATUS
 		FROM TBL_ORDER O
 		INNER JOIN TBL_ORDER_DETAIL D
@@ -152,5 +166,29 @@
 	
 	</select>
 	 -->
+	 
+	<delete id="orderDetailProductDelete">
+	
+		DELETE TBL_ORDER_DETAIL
+		WHERE ODR_CODE = #{odr_code}
+		AND PDT_NUM = ${pdt_num}
+	
+	</delete>
+	
+	<update id="orderTotalPriceChange">
+	
+		UPDATE TBL_ORDER
+		SET ODR_TOTAL_PRICE = ODR_TOTAL_PRICE - #{unit_price}
+		WHERE ODR_CODE = #{odr_code}
+	
+	</update>
+	
+	<update id="paymentTotalPriceChange">
+	
+		UPDATE TBL_PAYMENT
+		SET PAY_TOT_PRICE = PAY_TOT_PRICE - #{unit_price}
+		WHERE ODR_CODE = #{odr_code}
+	
+	</update>
 	 
 </mapper>

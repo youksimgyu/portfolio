@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.demo.domain.OrderVO;
 import com.demo.domain.PaymentVO;
@@ -35,10 +36,13 @@ public class AdOrderServiceImpl implements AdOrderService {
 		adOrderMapper.orderStatusChange(odr_code, odr_status);
 	}
 
+	@Transactional
 	@Override
 	public void orderDelete(Long odr_code) {
 		// TODO Auto-generated method stub
 		adOrderMapper.orderDelete(odr_code);
+		adOrderMapper.orderDetailDelete(odr_code);
+		adOrderMapper.orderPaymentDelete(odr_code);
 	}
 
 	@Override
@@ -57,6 +61,16 @@ public class AdOrderServiceImpl implements AdOrderService {
 	public List<Map<String, Object>> getOrderProductInfo(Long odr_code) {
 		// TODO Auto-generated method stub
 		return adOrderMapper.getOrderProductInfo(odr_code);
+	}
+
+	// 주문상품 개별취소기능 
+	@Transactional
+	@Override
+	public void orderUnitProductCancel(Long odr_code, Integer pdt_num, int unit_price) {
+		// TODO Auto-generated method stub
+		adOrderMapper.orderDetailProductDelete(odr_code, pdt_num);
+		adOrderMapper.orderTotalPriceChange(odr_code, unit_price);
+		adOrderMapper.paymentTotalPriceChange(odr_code, unit_price);
 	}
 
 	

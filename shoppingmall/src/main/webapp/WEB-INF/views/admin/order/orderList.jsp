@@ -373,11 +373,12 @@ immediately after the control sidebar -->
 
 		let actionForm = $("#actionForm");
 
-		// 1) 상품수정 클릭시
+		// 1) 상품디테일 클릭시
 		$("button[name='btnOrderDetail']").on("click", function(){
 			// console.log("상품코드 : " $(this).data("pdt_num"));
 
 			//상품코드를 자식으로 추가
+			actionForm.empty();
 			actionForm.append("<input type='hidden' name='odr_code' value='" + $(this).data("odr_code") + "'>");
 			actionForm.attr("method", "get");
 			actionForm.attr("action", "/admin/order/orderDetail");

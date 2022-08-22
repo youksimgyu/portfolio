@@ -147,7 +147,7 @@ desired effect
 				      <td scope="col">${orderProduct.ODR_AMOUNT }</td>
 				      <td scope="col">${orderProduct.ODR_UNIT_PRICE }</td>
 				      <td scope="col">${orderProduct.ODR_STATUS }</td>
-				      <td scope="col"><button type="button" class="btn btn-link">주문취소</button></td>
+				      <td scope="col"><button type="button" name="btnOrderCancel" data-odr_code="${orderProduct.ODR_CODE }" data-pdt_num="${orderProduct.PDT_NUM }" data-unit_price="${orderProduct.ODR_UNIT_PRICE }" class="btn btn-link">주문취소</button></td>
 				    </tr>
 				  </c:forEach>
 				  </tbody>
@@ -262,6 +262,21 @@ immediately after the control sidebar -->
     
 <script>
 	$(document).ready(function(){
+
+		// 주문 상품별 삭제작업
+		$("button[name='btnOrderCancel']").on("click", function(){
+
+			if(confirm("주문상품을 취소하시겠습니까")){
+
+				let odr_code = $(this).data("odr_code");
+				let pdt_num = $(this).data("pdt_num");
+				let unit_price = $(this).data("unit_price");
+
+				// console.log("odr_code" + odr_code);
+				// console.log("pdt_num" + pdt_num);
+				location.href = "/admin/order/orderUnitProductCancel?odr_code=" + odr_code + "&pdt_num=" + pdt_num + "&unit_price=" + unit_price;
+			}
+		});
 
 		// 배송상태 변경작업
 		$("button[name='btnChangeOrderStatus'").on("click", function(){

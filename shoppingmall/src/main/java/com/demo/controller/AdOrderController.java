@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.demo.domain.OrderVO;
 import com.demo.domain.PaymentVO;
@@ -91,8 +92,6 @@ public class AdOrderController {
 	@GetMapping("/orderDetail")
 	public void orderDetail(Long odr_code, Model model) {
 		
-		log.info(odr_code);
-		
 		OrderVO orderVO = adOrderService.getOrderInfo(odr_code);
 		model.addAttribute("orderVO", orderVO);
 		
@@ -108,6 +107,17 @@ public class AdOrderController {
 		}
 		model.addAttribute("orderDetailVO", orderDetailVO);
 		
+	}
+	
+	@GetMapping("/orderUnitProductCancel")
+	public String orderUnitProductCancel(Long odr_code, Integer pdt_num, int unit_price, RedirectAttributes rttr) {
+		
+		// 주문 개별상품 취소기능
+		adOrderService.orderUnitProductCancel(odr_code, pdt_num, unit_price);
+		
+		rttr.addAttribute("odr_code", odr_code);
+		
+		return "redirect:/admin/order/orderDetail";
 	}
 	
 	// 상품목록에서 이미지 보여주기

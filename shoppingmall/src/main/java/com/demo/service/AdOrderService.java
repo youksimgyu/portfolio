@@ -24,5 +24,7 @@ public interface AdOrderService {
 	PaymentVO getPaymentInfo(Long odr_code);
 	
 	List<Map<String, Object>> getOrderProductInfo(Long odr_code);
+	
+	void orderUnitProductCancel(Long odr_code, Integer pdt_num, int unit_price);
 
 }
