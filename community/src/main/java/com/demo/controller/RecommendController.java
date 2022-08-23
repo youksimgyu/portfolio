@@ -50,7 +50,7 @@ public class RecommendController {
 			
 		} else if(recommendCheck != null) { // 이미 추천 했으면
 
-			entity = new ResponseEntity<RecommendVO>(recomendService.getRecommend(boa_num), HttpStatus.OK);
+			entity = new ResponseEntity<RecommendVO>(recommendCheck, HttpStatus.OK);
 
 		}
 		

@@ -1,10 +1,13 @@
 package com.demo.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,9 +28,9 @@ public class ReplyController {
 	private ReplyService replyService;
 	
 	@PostMapping("/replyInsert")
-	public ResponseEntity<String> replyInsert(Integer boa_num, String rep_content, ReplyVO vo, HttpSession session) {
+	public ResponseEntity<Integer> replyInsert(Integer boa_num, String rep_content, ReplyVO vo, HttpSession session) {
 		
-		ResponseEntity<String> entity = null;
+		ResponseEntity<Integer> entity = null;
 		
 		// 세션에서 아이디 가져와서 넣기
 		String mem_id = ((MemberVO) session.getAttribute("loginStatus")).getMem_id();
@@ -37,7 +40,18 @@ public class ReplyController {
 		
 		replyService.replyInsert(vo);
 		
-		entity = new ResponseEntity<String>("success", HttpStatus.OK);
+		entity = new ResponseEntity<Integer>(boa_num, HttpStatus.OK);
+		
+		return entity;
+	}
+	
+	@GetMapping("/replyList")
+	public ResponseEntity<List<ReplyVO>> replyList(Integer boa_num) {
+		ResponseEntity<List<ReplyVO>> entity = null;
+		
+		List<ReplyVO> replyList = replyService.replyList(boa_num);
+		
+		entity = new ResponseEntity<List<ReplyVO>>(replyList, HttpStatus.OK);
 		
 		return entity;
 	}

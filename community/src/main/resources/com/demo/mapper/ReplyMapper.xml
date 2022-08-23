@@ -8,5 +8,13 @@
 		VALUES (SEQ_REP_NUM.NEXTVAL, #{mem_id}, #{boa_num}, #{rep_content}, SYSDATE)
 	
 	</insert>
+	
+	<select id="replyList" resultType="List">
+	
+		SELECT REP_NUM, MEM_ID, BOA_NUM, REP_CONTENT, REP_DATE_REG
+		FROM REPLY
+		WHERE BOA_NUM = #{boa_num}
+	
+	</select>
 
 </mapper>
