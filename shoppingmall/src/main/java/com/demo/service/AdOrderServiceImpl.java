@@ -1,5 +1,6 @@
 package com.demo.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +13,10 @@ import com.demo.domain.PaymentVO;
 import com.demo.dto.Criteria;
 import com.demo.mapper.AdOrderMapper;
 
+import lombok.extern.log4j.Log4j;
+
 @Service
+@Log4j
 public class AdOrderServiceImpl implements AdOrderService {
 
 	@Autowired
@@ -67,10 +71,24 @@ public class AdOrderServiceImpl implements AdOrderService {
 	@Transactional
 	@Override
 	public void orderUnitProductCancel(Long odr_code, Integer pdt_num, int unit_price) {
-		// TODO Auto-generated method stub
+
 		adOrderMapper.orderDetailProductDelete(odr_code, pdt_num);
 		adOrderMapper.orderTotalPriceChange(odr_code, unit_price);
 		adOrderMapper.paymentTotalPriceChange(odr_code, unit_price);
+	}
+
+	@Override
+	public String restOrderCheck(Long odr_code) {
+		// TODO Auto-generated method stub
+		return adOrderMapper.restOrderCheck(odr_code);
+	}
+
+	@Transactional
+	@Override
+	public void restOrderDelete(Long odr_code) {
+		// TODO Auto-generated method stub
+		adOrderMapper.orderDelete(odr_code);
+		adOrderMapper.orderPaymentDelete(odr_code);
 	}
 
 	

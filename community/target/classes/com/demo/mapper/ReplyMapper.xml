@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.mapper.ReplyMapper">
+
+	<insert id="replyInsert">
+	
+		INSERT INTO REPLY (REP_NUM, MEM_ID, BOA_NUM, REP_CONTENT, REP_DATE_REG)
+		VALUES (SEQ_REP_NUM.NEXTVAL, #{mem_id}, #{boa_num}, #{rep_content}, SYSDATE)
+	
+	</insert>
+
+</mapper>

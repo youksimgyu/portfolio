@@ -167,6 +167,7 @@
 	</select>
 	 -->
 	 
+	 
 	<delete id="orderDetailProductDelete">
 	
 		DELETE TBL_ORDER_DETAIL
@@ -190,5 +191,14 @@
 		WHERE ODR_CODE = #{odr_code}
 	
 	</update>
+	
+	<select id="restOrderCheck" resultType="String">
+	
+		SELECT ROWNUM RN
+		FROM TBL_ORDER_DETAIL
+		WHERE ODR_CODE = #{odr_code}
+		AND ROWNUM = 1
+	
+	</select>
 	 
 </mapper>

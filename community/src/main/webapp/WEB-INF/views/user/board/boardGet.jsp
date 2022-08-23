@@ -104,6 +104,19 @@
 
 			</div>
 			
+			<!-- Reply단 -->
+			<div>
+				<span style="display: inline-block; padding-left:5px; margin-top: 20px; margin-bottom: 10px">댓글 쓰기</span>
+				<div class="row">
+					<div class="col-8">
+						<textarea style="resize: none; width: 100%;" name="rep_content"></textarea>
+					</div>
+					<div class="col-1">
+						<button type="button" class="form-control" name="btnReplyInsert" id="btnReplyInsert" data-boa_num="${boardGet.boa_num }">등록</button>
+					</div>
+				</div>
+			</div>
+			
 			<!--페이지 번호 클릭시 list주소로 보낼 파라미터 작업-->
 			<form id="actionForm" action="/board/list" method="get">
 				<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}">
@@ -150,7 +163,7 @@ $(document).ready(function(){
 			data: data,
 			success: function(result){
 
-				console.log("클릭");
+				console.log(result.rec_id);
 				
 				if(result.rec_id != null) { // 추천테이블에 데이터 있을 때
 					alert("이미 진행 했습니다");
@@ -187,6 +200,42 @@ $(document).ready(function(){
 			actionForm.submit();
 		}
 		
+	});
+	
+	// 댓글 쓰기
+	$("#btnReplyInsert").on("click", function(){
+
+		if(${sessionScope.loginStatus == null }){
+			alert("로그인 해주세요");
+			return;
+		}
+
+		let rep_content = $("textarea[name='rep_content']").val();
+		let boa_num =$(this).data("boa_num");
+
+		if(rep_content == null){
+			alert("댓글을 입력해주세요");
+		}
+
+		// console.log("rep_content : " + rep_content);
+		// console.log("boa_num : " + boa_num);
+
+		let data = { rep_content : rep_content, boa_num : boa_num}
+		$.ajax({
+			url: '/user/reply/replyInsert',
+			type: 'post',
+			data: data,
+			success: function(result){
+				
+				if(result == "success"){
+					alert("상품후기가 등록되었습니다");
+				}
+
+			}
+		});
+		
+
+
 	});
 
 });

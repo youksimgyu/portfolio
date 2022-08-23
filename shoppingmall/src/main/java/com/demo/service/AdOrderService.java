@@ -26,5 +26,10 @@ public interface AdOrderService {
 	List<Map<String, Object>> getOrderProductInfo(Long odr_code);
 	
 	void orderUnitProductCancel(Long odr_code, Integer pdt_num, int unit_price);
+	
+	// 디테일 상품에 모두 삭제되었는지 체크
+	String restOrderCheck(Long odr_code);
+	// tbl_order, tbl_payment 삭제
+	void restOrderDelete(Long odr_code);
 
 }

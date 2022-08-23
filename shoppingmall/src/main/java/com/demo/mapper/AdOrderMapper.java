@@ -37,4 +37,6 @@ public interface AdOrderMapper {
 	void orderTotalPriceChange(@Param("odr_code") Long odr_code, @Param("unit_price") int unit_price);
 	// 3) 결제테이블 : 결제 총금액 수정
 	void paymentTotalPriceChange(@Param("odr_code") Long odr_code, @Param("unit_price") int unit_price);
+	// 디테일 상품에 모두 삭제되었는지 체크
+	String restOrderCheck(Long odr_code);
 }

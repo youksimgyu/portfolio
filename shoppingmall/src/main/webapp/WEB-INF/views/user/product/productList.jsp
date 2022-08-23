@@ -287,6 +287,7 @@
 
     actionForm.attr("method", "get");
     actionForm.attr("action", "/user/product/productDetail");
+    actionForm.find("input[name='pdt_num']").remove();
 	
     actionForm.append("<input type='hidden' name='pdt_num' value='" + pdt_num + "'>");
 

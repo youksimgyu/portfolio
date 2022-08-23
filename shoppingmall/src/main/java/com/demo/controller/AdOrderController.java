@@ -112,12 +112,25 @@ public class AdOrderController {
 	@GetMapping("/orderUnitProductCancel")
 	public String orderUnitProductCancel(Long odr_code, Integer pdt_num, int unit_price, RedirectAttributes rttr) {
 		
-		// 주문 개별상품 취소기능
-		adOrderService.orderUnitProductCancel(odr_code, pdt_num, unit_price);
+		String url = "";
+		String data = adOrderService.restOrderCheck(odr_code);
 		
-		rttr.addAttribute("odr_code", odr_code);
+		if(data != null) {
+			// 주문 개별상품 취소기능
+			adOrderService.orderUnitProductCancel(odr_code, pdt_num, unit_price);
+			rttr.addAttribute("odr_code", odr_code);
+			url = "redirect:/admin/order/orderDetail";
+		}
 		
-		return "redirect:/admin/order/orderDetail";
+		data = adOrderService.restOrderCheck(odr_code);
+		
+		if(data == null) {
+			adOrderService.restOrderDelete(odr_code);
+			url = "redirect:/admin/order/orderList";
+		}
+
+		
+		return url;
 	}
 	
 	// 상품목록에서 이미지 보여주기
