@@ -228,6 +228,9 @@
         url: '/user/cart/cart_add',
         data: { pdt_num :$("div#Modal_productDetail input#pdt_num").val(), cart_amount : $("div#Modal_productDetail input#pdt_amount").val() },
         dataType: 'text',
+        beforeSend : function(xmlHttpRequest) {
+			xmlHttpRequest.setRequestHeader("AJAX", "true");
+		},
         success: function(result){
         	
         	if(result == "success"){
@@ -236,6 +239,11 @@
               		location.href="/user/cart/cart_list";
             }
         	}
+        	
+        },
+        error: function(xhr, status, error){
+        	
+        	// 에러 났을 시 추가작업
         	
         }
       });

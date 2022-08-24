@@ -156,6 +156,13 @@ public class MemberController {
 			if(bCryptPasswordEncoder.matches(passwd, db_passwd)) {
 				url = "/"; // 메인페이지
 				session.setAttribute("loginStatus", vo); // 인증성공시 서버측에 세션을 통한 정보를 저장.
+				
+				// preHandle() 메서드에서 세션형태로 저장한 것을 사용 로그인 전 마지막 보고 있던 주소
+				String dest = (String) session.getAttribute("dest");
+				// ()의 값이 true면 dest
+				// ()의 값이 false면 "/"
+				url = (dest != null) ? dest : "/";
+				
 				msg = "loginSuccess";
 				
 				log.info("로그인 성공 : " + msg);

@@ -18,6 +18,19 @@
 <!-- bootstrap 5.2 -->
 <%@include file="/WEB-INF/views/include/plugin1.jsp" %>
 
+<style>
+
+	.replyImage{
+		width: 20px;
+		height: 20px;
+	}
+	
+	.btnImage{
+		border: none;
+		background-color: white;
+	}
+
+</style>
 
     <script>
     	if('${msg}' == 'logout'){
@@ -105,14 +118,38 @@
 			</div>
 			
 			<!-- Reply단 -->
-			<div>
-				<span style="display: inline-block; padding-left:5px; margin-top: 20px; margin-bottom: 10px">댓글 쓰기</span>
-				<div class="row">
-					<div class="col-8">
-						<textarea style="resize: none; width: 100%;" name="rep_content"></textarea>
-					</div>
-					<div class="col-1">
-						<button type="button" class="form-control" name="btnReplyInsert" id="btnReplyInsert" data-boa_num="${boardGet.boa_num }">등록</button>
+			<div class="container" style="padding-top: 5%;">
+			
+				
+				<div style="padding-top:2%; padding-bottom:2%; border-top: 1px solid lightgray;">
+					<ul>
+						<li style="list-style: none;">
+							<div style="display: flex; justify-content: space-between;">
+								<div style="display: inline-block;">
+									<span>작성자</span>
+									<span>작성시간</span>
+								</div>
+								<div style="display: inline-block;">
+									<button class="btnImage"><img src="/resources/images/good.png" class="replyImage"></button><span></span>
+									<button class="btnImage"><img src="/resources/images/bad.png" class="replyImage"></button><span></span>
+								</div>
+							</div>
+							<div style="display: flex; justify-content: space-between;">
+								<span style="padding: 1%;">글내용 글내용 글내용 글내용 글내용 글내용 글내용 글내용 글내용 글내용 </span>
+							</div>
+						</li>
+					</ul>
+				</div>
+				
+				<div style="border-top: 1px solid lightgray;">
+					<span style="display: inline-block; padding-left:1%; margin-top: 2%; margin-bottom: 2%">댓글 쓰기</span>
+					<div class="row">
+						<div class="col-8">
+							<textarea style="resize: none; width: 100%;" name="rep_content"></textarea>
+						</div>
+						<div class="col-1">
+							<button type="button" class="form-control" name="btnReplyInsert" id="btnReplyInsert" data-boa_num="${boardGet.boa_num }">등록</button>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -227,16 +264,8 @@ $(document).ready(function(){
 
 						if(result) {
 							alert("상품후기가 등록되었습니다");
-							// console.log("result : " + result);
-
-							$.ajax({
-							url: '/user/reply/replyList',
-							type: 'get',
-							data: result,
-							success: function(result){
-								
-								}
-							});
+							
+							location.href = "/user/board/boardGet?boa_num=" + result;
 						}
 				}
 			});

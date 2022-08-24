@@ -9,11 +9,16 @@
 	
 	</insert>
 	
-	<select id="replyList" resultType="List">
+	<select id="replyList" resultType="com.demo.domain.ReplyListVO">
 	
-		SELECT REP_NUM, MEM_ID, BOA_NUM, REP_CONTENT, REP_DATE_REG
-		FROM REPLY
-		WHERE BOA_NUM = #{boa_num}
+		SELECT RN, REP_NUM, MEM_ID, MEM_NAME, BOA_NUM, REP_CONTENT, REP_DATE_REG
+		FROM (SELECT RN, REP_NUM, MEM_ID, MEM_NAME, BOA_NUM, REP_CONTENT, REP_DATE_REG
+		      FROM (SELECT /*+ INDEX_DESC(REPLY PK_REP_NUM) */
+		                   ROWNUM RN, R.REP_NUM, R.MEM_ID, M.MEM_NAME, R.BOA_NUM, R.REP_CONTENT, R.REP_DATE_REG
+		            FROM REPLY R
+		            LEFT JOIN MEMBER M
+		            ON R.MEM_ID = M.MEM_ID
+		            WHERE R.BOA_NUM = #{boa_num}))
 	
 	</select>
 

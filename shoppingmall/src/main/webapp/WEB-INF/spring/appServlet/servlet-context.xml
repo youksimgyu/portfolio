@@ -49,4 +49,48 @@
 		<beans:constructor-arg value="C:\\Dev\\upload\\"></beans:constructor-arg>
 	</beans:bean>
 	
+	<!-- 인터셉서 샘플 -->
+	<beans:bean id="testInterceptor" class="com.demo.Interceptor.TestInterceptor"></beans:bean>
+	<interceptors>
+		<interceptor>
+			<!-- 인터셉터에 영향을 받을 주소 넣기 -->
+			<mapping path=""/>
+			<!-- 인터셉터에 영향을 받지 않는 주소 넣기 -->
+			<exclude-mapping path=""/>
+			<!-- 인터셉터 클래스의 bean id를 가져와서 넣기 -->
+			<beans:ref bean="testInterceptor"/>
+		</interceptor>
+	</interceptors>
+	
+	<!-- 로그인 인터셉터 -->
+	<beans:bean id="loginInterceptor" class="com.demo.Interceptor.LoginInterceptor"></beans:bean>
+	<interceptors>
+		<interceptor>
+			<!-- 인터셉터에 영향을 받을 주소 넣기 -->
+			<mapping path="/member/modify"/>
+			<mapping path="/member/confirmPW"/>
+			<mapping path="/user/cart/*"/>
+			<mapping path="/user/order/*"/>
+			
+			<!-- 인터셉터에 영향을 받지 않는 주소 넣기 -->
+			<exclude-mapping path=""/>
+			<!-- 인터셉터 클래스의 bean id를 가져와서 넣기 -->
+			<beans:ref bean="loginInterceptor"/>
+		</interceptor>
+	</interceptors>
+	
+	<!-- 어드민 인터셉터 -->
+	<beans:bean id="adminInterceptor" class="com.demo.Interceptor.AdminInterceptor"></beans:bean>
+	<interceptors>
+		<interceptor>
+			<!-- 인터셉터에 영향을 받을 주소 넣기 -->
+			<mapping path=""/>
+			<!-- 인터셉터에 영향을 받지 않는 주소 넣기 -->
+			<exclude-mapping path=""/>
+			<!-- 인터셉터 클래스의 bean id를 가져와서 넣기 -->
+			<beans:ref bean="adminInterceptor"/>
+		</interceptor>
+	</interceptors>
+	
+	
 </beans:beans>

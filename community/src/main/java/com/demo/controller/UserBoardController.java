@@ -33,6 +33,7 @@ import com.demo.domain.RecommendVO;
 import com.demo.dto.Criteria;
 import com.demo.dto.PageDTO;
 import com.demo.service.RecommendService;
+import com.demo.service.ReplyService;
 import com.demo.service.UserBoardService;
 
 import lombok.extern.log4j.Log4j;
@@ -47,6 +48,9 @@ public class UserBoardController {
 
 	@Autowired
 	private RecommendService recomendService;
+	
+	@Autowired
+	private ReplyService replyService;
 	
 	// 1차 카테고리 기준 전체 글
 	@GetMapping("/boardList/{cat_c}/{cat_name}")
@@ -91,6 +95,9 @@ public class UserBoardController {
 		// 추천 데이터 가져오기
 		RecommendVO rec_get = recomendService.getRecommend(boa_num);
 		model.addAttribute("rec_get", rec_get);
+		
+		// 댓글 리스트 가져오기
+		
 		
 	}
 	
