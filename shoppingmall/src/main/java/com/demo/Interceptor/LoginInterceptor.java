@@ -13,6 +13,7 @@ import com.demo.domain.MemberVO;
 //설정 : servlet-context.xml에 클래스정보를 등록해야 한다
 public class LoginInterceptor extends HandlerInterceptorAdapter {
 
+	// 컨트롤러(메서드) 이전에 동작하는 메서드
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
@@ -42,7 +43,6 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		return result; // true 면, 다음진행은 컨트롤러로 제어가 넘어간다
 	}
 
-	
 	// ajax요청을 체크한다
 	private boolean isAjaxRequest(HttpServletRequest request) {
 
@@ -79,6 +79,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		}
 	}
 
+	// 컨트롤러(메서드) 이후에 동작하는 메서드
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {

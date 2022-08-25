@@ -244,6 +244,9 @@
         error: function(xhr, status, error){
         	
         	// 에러 났을 시 추가작업
+        	if(xhr.status == 400){
+        		location.href = "/member/login";
+        	}
         	
         }
       });

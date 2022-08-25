@@ -292,11 +292,22 @@ immediately after the control sidebar -->
 				type : 'get',
 				data: { odr_code : odr_code, odr_status : odr_status},
 				dataType : 'text',
+				beforeSend : function(xmlHttpRequest) {
+					xmlHttpRequest.setRequestHeader("AJAX", "true");
+				},
 				success: function(result){
 					if(result == "success"){
 						alert("배송상태가 변경되었습니다");
 					}
-				}
+				},
+		        error: function(xhr, status, error){
+		        	
+		        	// 에러 났을 시 추가작업
+		        	if(xhr.status == 400){
+		        		location.href = "/admin/adLogin";
+		        	}
+		        	
+		        }
 			});
 		});
 
@@ -344,13 +355,24 @@ immediately after the control sidebar -->
 				type: 'post',
 				dataType: 'text',
 				data: {ordCodeArr: ordCodeArr},
+				beforeSend : function(xmlHttpRequest) {
+					xmlHttpRequest.setRequestHeader("AJAX", "true");
+				},
 				success: function(result){
 					if(result == "success"){
 						alert("선택한 주문정보가 삭제되었습니다");
 
 						location.href = "/admin/order/orderList";
 					}
-				}
+				},
+		        error: function(xhr, status, error){
+		        	
+		        	// 에러 났을 시 추가작업
+		        	if(xhr.status == 400){
+		        		location.href = "/admin/adLogin";
+		        	}
+		        	
+		        }
 
 			});
 

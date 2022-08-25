@@ -84,9 +84,9 @@
 	<interceptors>
 		<interceptor>
 			<!-- 인터셉터에 영향을 받을 주소 넣기 -->
-			<mapping path=""/>
+			<mapping path="/admin/**"/>
 			<!-- 인터셉터에 영향을 받지 않는 주소 넣기 -->
-			<exclude-mapping path=""/>
+			<exclude-mapping path="/admin/adLogin"/>
 			<!-- 인터셉터 클래스의 bean id를 가져와서 넣기 -->
 			<beans:ref bean="adminInterceptor"/>
 		</interceptor>
