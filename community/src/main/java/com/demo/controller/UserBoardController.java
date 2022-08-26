@@ -30,6 +30,7 @@ import com.demo.domain.BoardVO;
 import com.demo.domain.CategoryVO;
 import com.demo.domain.MemberVO;
 import com.demo.domain.RecommendVO;
+import com.demo.domain.ReplyListVO;
 import com.demo.dto.Criteria;
 import com.demo.dto.PageDTO;
 import com.demo.service.RecommendService;
@@ -97,7 +98,8 @@ public class UserBoardController {
 		model.addAttribute("rec_get", rec_get);
 		
 		// 댓글 리스트 가져오기
-		
+		List<ReplyListVO> replyList = replyService.replyList(boa_num);
+		model.addAttribute("replyList", replyList);
 		
 	}
 	

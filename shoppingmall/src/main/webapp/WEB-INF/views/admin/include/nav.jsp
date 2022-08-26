@@ -57,6 +57,17 @@
 					<li><a href="/admin/order/orderList">주문목록</a></li>
 					<li><a href="/admin/order/orderList">주문변경(삭제/수정)기록</a></li>
 				</ul></li>
+				
+			<li class="treeview"><a href="#"><i class="fa fa-link"></i>
+				<span>통계차트</span> <span class="pull-right-container"> <i
+					class="fa fa-angle-left pull-right"></i>
+				</span> </a>
+				<ul class="treeview-menu">
+					<li><a href="/admin/chart/overall">전체통계차트</a></li>
+					<li><a href="/admin/chart/monthOrder">월별주문통계</a></li>
+					<li><a href="/admin/chart/monthMember">월별회원통계</a></li>
+				</ul>
+			</li>
 
 			<li class="treeview"><a href="#"><i class="fa fa-link"></i>
 					<span>회원관리</span> <span class="pull-right-container"> <i

@@ -2,6 +2,7 @@ package com.demo.mapper;
 
 import java.util.List;
 
+import com.demo.domain.ReplyListVO;
 import com.demo.domain.ReplyVO;
 
 public interface ReplyMapper {
@@ -10,6 +11,6 @@ public interface ReplyMapper {
 	void replyInsert(ReplyVO vo);
 	
 	// 댓글 가져오기 리스트
-	List<ReplyVO> replyList(Integer boa_num);
+	List<ReplyListVO> replyList(Integer boa_num);
 	
 }

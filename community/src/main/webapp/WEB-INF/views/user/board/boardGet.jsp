@@ -120,14 +120,21 @@
 			<!-- Reply단 -->
 			<div class="container" style="padding-top: 5%;">
 			
-				
-				<div style="padding-top:2%; padding-bottom:2%; border-top: 1px solid lightgray;">
+				<c:forEach items="${replyList }" var="replyListVO">
+
+
+				<div style="padding-top:2%; padding-bottom:2%; border-top:1px solid lightgray;">
 					<ul>
 						<li style="list-style: none;">
 							<div style="display: flex; justify-content: space-between;">
 								<div style="display: inline-block;">
-									<span>작성자</span>
-									<span>작성시간</span>
+									<c:if test="${!empty replyListVO.mem_name }">
+									<span><c:out value="${replyListVO.mem_name }" /></span>
+									</c:if>
+									<c:if test="${empty replyListVO.mem_name }">
+									<span><c:out value="관리자" /></span>
+									</c:if>
+									<span style="color: lightgray;"><fmt:formatDate value="${replyListVO.rep_date_reg }" pattern="yyyy-MM-dd" /></span>
 								</div>
 								<div style="display: inline-block;">
 									<button class="btnImage"><img src="/resources/images/good.png" class="replyImage"></button><span></span>
@@ -135,19 +142,27 @@
 								</div>
 							</div>
 							<div style="display: flex; justify-content: space-between;">
-								<span style="padding: 1%;">글내용 글내용 글내용 글내용 글내용 글내용 글내용 글내용 글내용 글내용 </span>
+								<span style="padding: 1%;"><c:out value="${replyListVO.rep_content }" /></span>
 							</div>
 						</li>
 					</ul>
 				</div>
+				</c:forEach>
 				
 				<div style="border-top: 1px solid lightgray;">
 					<span style="display: inline-block; padding-left:1%; margin-top: 2%; margin-bottom: 2%">댓글 쓰기</span>
 					<div class="row">
 						<div class="col-8">
+							<c:if test="${sessionScope.loginStatus == null }">
+							<a href="#" id="replyTextarea">
+							<textarea style="cursor: Hand; resize: none; width: 100%;" name="rep_content" disabled placeholder="댓글 작성을 하시려면 로그인 해주세요. 로그인 하시겠습니까?"></textarea>
+							</a>
+							</c:if>
+							<c:if test="${sessionScope.loginStatus != null }">
 							<textarea style="resize: none; width: 100%;" name="rep_content"></textarea>
+							</c:if>
 						</div>
-						<div class="col-1">
+						<div class="col-2">
 							<button type="button" class="form-control" name="btnReplyInsert" id="btnReplyInsert" data-boa_num="${boardGet.boa_num }">등록</button>
 						</div>
 					</div>
@@ -179,6 +194,14 @@
 <script>
 
 $(document).ready(function(){
+	
+	$("#replyTextarea").on("click", function(e){
+		e.preventDefault();
+		if(confirm("로그인 하시겠습니까?")){
+			location.href = "/member/login";
+		}
+		
+	});
 
 	let actionForm = $("#actionForm");
 	

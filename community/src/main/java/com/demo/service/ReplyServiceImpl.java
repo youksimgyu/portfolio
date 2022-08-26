@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.demo.domain.ReplyListVO;
 import com.demo.domain.ReplyVO;
 import com.demo.mapper.ReplyMapper;
 
@@ -21,7 +22,7 @@ public class ReplyServiceImpl implements ReplyService {
 	}
 
 	@Override
-	public List<ReplyVO> replyList(Integer boa_num) {
+	public List<ReplyListVO> replyList(Integer boa_num) {
 		// TODO Auto-generated method stub
 		return replyMapper.replyList(boa_num);
 	}
