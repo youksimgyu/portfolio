@@ -36,7 +36,7 @@
 		
 		<load-on-startup>1</load-on-startup>
 		
-		<!-- 파일업로드 설정. WAS(Tomcat)자체 설정 -->
+		<!-- 파일업로드 설정. WAS(Tomcat)자체 설정 리눅스 폴더 - /usr/local/tomcat/tomcat9/webapps/temp -->
 		<multipart-config>
 			<location>C:\\Dev\\upload</location>
 			<max-file-size>20971520</max-file-size><!-- 20mb -->
