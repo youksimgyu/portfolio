@@ -144,13 +144,25 @@ $(document).ready(function(){
 			type: 'get',
 			data: data,
 			dataType : 'json',
+			beforeSend : function(xmlHttpRequest) {
+		        xmlHttpRequest.setRequestHeader("AJAX", "true");
+		    },
 			success: function(result){
 
 				 // console.log("result : " + result.boa_up);
 				 $("#boa_up").text(result.boa_up);
 				 $("#boa_down").text(result.boa_down);
 
-			}
+			},
+		    error: function(xhr, status, error){
+		        
+		        // 에러 났을 시 추가작업
+		        // ajax이면 인터셉터에서 400번 에러를 보내고 ajax에서 400번에러를 받으면 로그인 페이지로 연결
+		        if(xhr.status == 400){
+		            location.href = "/member/login";
+		        }
+		        
+		    }
 		});
 
 	});

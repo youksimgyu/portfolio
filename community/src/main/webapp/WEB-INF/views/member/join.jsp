@@ -158,6 +158,9 @@ $(document).ready(function(){
 	     type: "get",
 	     dataType: 'text',
 	     data: { mem_id : $("#mem_id").val()},
+	     beforeSend : function(xmlHttpRequest) {
+	         xmlHttpRequest.setRequestHeader("AJAX", "true");
+	     },
 	     success: function(result){
 	         
 	       console.log(result);
@@ -170,6 +173,15 @@ $(document).ready(function(){
 	           $("#idCheckStatus").css({'display':'inline', 'color':'red'});
 	           $("#idCheckStatus").html("<b>사용불가능</b>");
 	           isIDCheck = false;
+	       },
+	       error: function(xhr, status, error){
+	           
+	           // 에러 났을 시 추가작업
+	           // ajax이면 인터셉터에서 400번 에러를 보내고 ajax에서 400번에러를 받으면 로그인 페이지로 연결
+	           if(xhr.status == 400){
+	               location.href = "/member/login";
+	           }
+	           
 	       }
 	     }
 	   });

@@ -221,6 +221,9 @@ $(document).ready(function(){
 			url: '/user/recommend/boa_up_down',
 			type: 'get',
 			data: data,
+			beforeSend : function(xmlHttpRequest) {
+		        xmlHttpRequest.setRequestHeader("AJAX", "true");
+		    },
 			success: function(result){
 				
 				if(result.rec_id == null){
@@ -230,7 +233,16 @@ $(document).ready(function(){
 					alert("이미 진행 했습니다");
 				}
 
-			}
+			},
+		    error: function(xhr, status, error){
+		        
+		        // 에러 났을 시 추가작업
+		        // ajax이면 인터셉터에서 400번 에러를 보내고 ajax에서 400번에러를 받으면 로그인 페이지로 연결
+		        if(xhr.status == 400){
+		            location.href = "/member/login";
+		        }
+		        
+		    }
 		});
 
 	});
@@ -283,14 +295,26 @@ $(document).ready(function(){
 				url: '/user/reply/replyInsert',
 				type: 'post',
 				data: data,
+				beforeSend : function(xmlHttpRequest) {
+			        xmlHttpRequest.setRequestHeader("AJAX", "true");
+			    },
 				success: function(result){
 
 						if(result) {
-							alert("상품후기가 등록되었습니다");
+							alert("댓글이 등록되었습니다");
 							
 							location.href = "/user/board/boardGet?boa_num=" + result;
 						}
-				}
+				},
+			    error: function(xhr, status, error){
+			        
+			        // 에러 났을 시 추가작업
+			        // ajax이면 인터셉터에서 400번 에러를 보내고 ajax에서 400번에러를 받으면 로그인 페이지로 연결
+			        if(xhr.status == 400){
+			            location.href = "/member/login";
+			        }
+			        
+			    }
 			});
 		}
 	
