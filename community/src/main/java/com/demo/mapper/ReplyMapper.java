@@ -2,8 +2,11 @@ package com.demo.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.demo.domain.ReplyListVO;
 import com.demo.domain.ReplyVO;
+import com.demo.dto.Criteria;
 
 public interface ReplyMapper {
 
@@ -12,5 +15,11 @@ public interface ReplyMapper {
 	
 	// 댓글 가져오기 리스트
 	List<ReplyListVO> replyList(Integer boa_num);
+	
+	// 카테고리별 댓글수 리스트
+	List<ReplyVO> subselect(@Param("cat_c") Integer cat_c, @Param("cri") Criteria cri);
+
+	// 전체 댓글수 리스트
+	List<ReplyVO> select(Criteria cri);
 	
 }

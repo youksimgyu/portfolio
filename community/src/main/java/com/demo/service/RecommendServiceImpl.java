@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.demo.domain.RecommendVO;
+import com.demo.domain.Reply_RecommendVO;
 import com.demo.dto.Criteria;
 import com.demo.mapper.RecommendMapper;
 
@@ -51,6 +52,39 @@ public class RecommendServiceImpl implements RecommendService {
 		// TODO Auto-generated method stub
 		return recommendMapper.getrec_id(vo);
 	}
+
+	@Override
+	public Reply_RecommendVO getrep_id(Reply_RecommendVO vo) {
+		// TODO Auto-generated method stub
+		return recommendMapper.getrep_id(vo);
+	}
+
+	@Override
+	public void insert3(Reply_RecommendVO vo) {
+		// TODO Auto-generated method stub
+		recommendMapper.insert3(vo);
+	}
+
+	@Override
+	public void insert4(Reply_RecommendVO vo) {
+		// TODO Auto-generated method stub
+		recommendMapper.insert4(vo);
+	}
+
+	@Override
+	public Reply_RecommendVO getReply_Recommend(Integer rep_num) {
+		// TODO Auto-generated method stub
+		return recommendMapper.getReply_Recommend(rep_num);
+	}
+
+	@Override
+	public List<Reply_RecommendVO> Replyselect(Integer boa_num) {
+		// TODO Auto-generated method stub
+		return recommendMapper.Replyselect(boa_num);
+	}
+
+
+
 
 
 

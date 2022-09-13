@@ -120,8 +120,7 @@
 			<!-- Reply단 -->
 			<div class="container" style="padding-top: 5%;">
 			
-				<c:forEach items="${replyList }" var="replyListVO">
-
+				<c:forEach items="${replyList }" var="replyListVO" varStatus="status">
 
 				<div style="padding-top:2%; padding-bottom:2%; border-top:1px solid lightgray;">
 					<ul>
@@ -137,8 +136,15 @@
 									<span style="color: lightgray;"><fmt:formatDate value="${replyListVO.rep_date_reg }" pattern="yyyy-MM-dd" /></span>
 								</div>
 								<div style="display: inline-block;">
-									<button class="btnImage"><img src="/resources/images/good.png" class="replyImage"></button><span></span>
-									<button class="btnImage"><img src="/resources/images/bad.png" class="replyImage"></button><span></span>
+									<input type="hidden" id="rep_num" value="${replyListVO.rep_num }">
+									<button class="btnImage" data-type="1"><img src="/resources/images/good.png" class="replyImage"></button>
+									<c:if test="${reply_RecommendList[status.index].rep_up != 0 }">
+										<span id="rep_up">${reply_RecommendList[status.index].rep_up }</span>
+									</c:if>
+									<button class="btnImage" data-type="2"><img src="/resources/images/bad.png" class="replyImage"></button>
+									<c:if test="${reply_RecommendList[status.index].rep_down != 0 }">
+										<span id="rep_down">${reply_RecommendList[status.index].rep_down }</span>
+									</c:if>
 								</div>
 							</div>
 							<div style="display: flex; justify-content: space-between;">
@@ -205,6 +211,7 @@ $(document).ready(function(){
 
 	let actionForm = $("#actionForm");
 	
+	// 게시물 추천
 	$("button[name='btn_rec_up_down']").on("click", function(){
 
 		if(${sessionScope.loginStatus == null }){
@@ -215,7 +222,7 @@ $(document).ready(function(){
 		let boa_num = $("input[name='boa_num']").val();
 
 		// 자바스크립트 Object객체 구문
-		let data = { type : type, boa_num : boa_num};
+		let data = { type : type, boa_num : boa_num}
 		
 		$.ajax({
 			url: '/user/recommend/boa_up_down',
@@ -231,6 +238,58 @@ $(document).ready(function(){
 					$("#rec_down").text(result.rec_down);
 				} else if(result.rec_id != null) {
 					alert("이미 진행 했습니다");
+				}
+
+			},
+		    error: function(xhr, status, error){
+		        
+		        // 에러 났을 시 추가작업
+		        // ajax이면 인터셉터에서 400번 에러를 보내고 ajax에서 400번에러를 받으면 로그인 페이지로 연결
+		        if(xhr.status == 400){
+		            location.href = "/member/login";
+		        }
+		        
+		    }
+		});
+
+	});
+	
+	// 댓글 추천 버튼
+	$("button[class='btnImage']").on("click", function(){
+
+		if(${sessionScope.loginStatus == null }){
+			alert("로그인 해주세요");
+		}
+
+		let btnImage = $(this);
+
+		let boa_num = $("input[name='boa_num']").val();
+		let type = $(this).data("type");
+		let rep_num = $(this).parent().find("#rep_num").val();
+
+		// 자바스크립트 Object객체 구문
+		let data = { type : type, rep_num : rep_num, boa_num : boa_num}
+		
+		$.ajax({
+			url: '/user/recommend/rep_up_down',
+			type: 'get',
+			data: data,
+			beforeSend : function(xmlHttpRequest) {
+		        xmlHttpRequest.setRequestHeader("AJAX", "true");
+		    },
+			success: function(result){
+				
+				if(result.rep_id != null) { // 데이터가 있다는 뜻. 이미진행한 상태
+					alert("이미 진행했습니다.");
+				} else {
+					
+					if(result.rep_up != 0) {
+						btnImage.parent().find("span#rep_up").text(result.rep_up);
+					}
+				
+					if(result.rep_down != 0) {
+						btnImage.parent().find("span#rep_down").text(result.rep_down);
+					}
 				}
 
 			},
@@ -306,7 +365,7 @@ $(document).ready(function(){
 							location.href = "/user/board/boardGet?boa_num=" + result;
 						}
 				},
-			    error: function(xhr, status, error){
+			    error: function(xhr, status, error) {
 			        
 			        // 에러 났을 시 추가작업
 			        // ajax이면 인터셉터에서 400번 에러를 보내고 ajax에서 400번에러를 받으면 로그인 페이지로 연결

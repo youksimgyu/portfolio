@@ -14,6 +14,7 @@ public class ReplyVO {
 	private String mem_id;
 	private Integer boa_num;
 	private String rep_content;
+	private int reply;
 	private Date rep_date_reg;
 
 	

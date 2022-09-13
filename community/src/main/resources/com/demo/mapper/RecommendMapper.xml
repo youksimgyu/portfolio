@@ -125,5 +125,57 @@
         AND REC_ID = #{rec_id}
 	
 	</select>
+	
+	
+	
+	<select id="getrep_id" resultType="com.demo.domain.Reply_RecommendVO">
+	
+		SELECT REP_ID, REP_UP, REP_DOWN
+        FROM REPLY_RECOMMEND
+        WHERE REP_NUM = #{rep_num}
+        AND REP_ID = #{rep_id}
+	
+	</select>
+	
+	<insert id="insert3">
+	
+		INSERT INTO REPLY_RECOMMEND (REC_REC_NUM, REP_NUM, BOA_NUM, REP_ID, REP_UP)
+		VALUES (REC_REC_NUM.NEXTVAL, #{rep_num}, #{boa_num}, #{rep_id}, 1)
+		
+	</insert>
+	
+	<insert id="insert4">
+	
+		INSERT INTO REPLY_RECOMMEND (REC_REC_NUM, REP_NUM, BOA_NUM, REP_ID, REP_DOWN)
+		VALUES (REC_REC_NUM.NEXTVAL, #{rep_num}, #{boa_num}, #{rep_id}, 2)
+		
+	</insert>
+	
+	<select id="getReply_Recommend" resultType="com.demo.domain.Reply_RecommendVO">
+	
+		SELECT COUNT(REP_UP) AS REP_UP, COUNT(REP_DOWN) AS REP_DOWN
+		FROM REPLY_RECOMMEND
+		WHERE REP_NUM = #{rep_num}
+	
+	</select>
+	
+	<select id="Replyselect" parameterType="com.demo.dto.Criteria" resultType="com.demo.domain.Reply_RecommendVO">
+
+		SELECT RN, REP_NUM, REP_UP, REP_DOWN
+		FROM(	
+				SELECT /*+ INDEX_DESC(REPLY PK_REP_NUM)*/ ROWNUM RN, REP_NUM, REP_UP, REP_DOWN
+				FROM (
+				        SELECT B.REP_NUM, R.REP_UP, R.REP_DOWN
+			            FROM (SELECT REP_NUM, COUNT(REP_UP) AS REP_UP, COUNT(REP_DOWN) AS REP_DOWN
+			                  FROM REPLY_RECOMMEND
+			                  GROUP BY REP_NUM
+                              ORDER BY REP_NUM) R
+			            RIGHT JOIN REPLY B
+			            ON B.REP_NUM = R.REP_NUM
+			            WHERE BOA_NUM = #{boa_num}
+                        ORDER BY REP_NUM DESC))
+	
+	</select>
+	
 
 </mapper>

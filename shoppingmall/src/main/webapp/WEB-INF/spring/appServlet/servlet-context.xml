@@ -44,11 +44,6 @@
 	<!-- 파일업로드 bean설정. id="multipartResolver" 예약어-->
 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver"></beans:bean>
 	
-	<!-- Ckeditor 리눅스 폴더 - /usr/local/tomcat/tomcat9/webapps/upload -->
-	<beans:bean>
-	
-	</beans:bean>
-	
 	<!-- 파일이 저장될 경로 설정  리눅스 폴더 - /usr/local/tomcat/upload -->
 	<beans:bean id="uploadPath" class="java.lang.String">
 		<beans:constructor-arg value="C:\\Dev\\upload\\"></beans:constructor-arg>

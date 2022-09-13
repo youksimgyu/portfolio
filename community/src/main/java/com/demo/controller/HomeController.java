@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.demo.domain.BoardNameVO;
 import com.demo.domain.RecommendVO;
+import com.demo.domain.ReplyVO;
 import com.demo.dto.Criteria;
 import com.demo.dto.PageDTO;
 import com.demo.service.RecommendService;
+import com.demo.service.ReplyService;
 import com.demo.service.UserBoardService;
 
 /**
@@ -29,6 +31,9 @@ public class HomeController {
 	
 	@Autowired
 	private RecommendService recomendService;
+	
+	@Autowired
+	private ReplyService replyService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
@@ -45,6 +50,9 @@ public class HomeController {
 		
 		List<RecommendVO> getRecommendList = recomendService.select(cri);
 		model.addAttribute("getRecommendList", getRecommendList);
+		
+		List<ReplyVO> getReplyList = replyService.select(cri);
+		model.addAttribute("getReplyList", getReplyList);
 		
 		// [prev] 1  2  3  4  5  [next]
 		int totalCount = userBoardService.getTotalBoardTotalCount(cri);

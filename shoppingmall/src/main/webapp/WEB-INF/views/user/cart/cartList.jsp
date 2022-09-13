@@ -45,8 +45,8 @@
 <%@include file="/WEB-INF/views/include/categoryMenu.jsp" %>
 
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-  <h1 class="display-4">Pricing</h1>
-  <p class="lead">Quickly build an effective pricing table for your potential customers with this Bootstrap example. It’s built with default Bootstrap components and utilities with little customization.</p>
+  <h1 class="display-4">CART LIST</h1>
+
 </div>
 
     <div class="container">
@@ -90,14 +90,16 @@
 	    				  	<input type="hidden" name="pdt_num" value='<c:out value="${cartVO.pdt_num }" />'>
 
     				  	<input type="number" class="w-25" name="cart_amount" min="1" value='<c:out value="${cartVO.cart_amount }" />'>
+    				  	<!--
     				  	<button type="button" name="btnCartAmountChange1" data-cart_code="${cartVO.cart_code }" class="btn btn-link">수량변경(Ajax)</button>
+    				  	 -->
     				  	<button type="button" name="btnCartAmountChange2" data-cart_code="${cartVO.cart_code }" class="btn btn-link">수량변경</button>
     				  </td>
     				  <td><c:out value="${cartVO.mem_point }" /></td>
     				  <td>[기본배송]조건</td>
     				  <td><span class="unitprice"><fmt:formatNumber type="number" maxFractionDigits="3" value="${price }"></fmt:formatNumber></span></td>
 				      <td>
-				      	<button type="button" name="btnCartDelete" data-cart_code="${cartVO.cart_code }" class="btn btn-link">Delete</button>
+				      	<!-- <button type="button" name="btnCartDelete" data-cart_code="${cartVO.cart_code }" class="btn btn-link">Delete</button> -->
 				      	<a href="/user/cart/cart_delete?cart_code=${cartVO.cart_code }">Delete</a>
 				      </td>
 				    </tr>

@@ -31,6 +31,8 @@ import com.demo.domain.CategoryVO;
 import com.demo.domain.MemberVO;
 import com.demo.domain.RecommendVO;
 import com.demo.domain.ReplyListVO;
+import com.demo.domain.ReplyVO;
+import com.demo.domain.Reply_RecommendVO;
 import com.demo.dto.Criteria;
 import com.demo.dto.PageDTO;
 import com.demo.service.RecommendService;
@@ -65,8 +67,13 @@ public class UserBoardController {
 		List<CategoryVO> getSubList = userBoardService.getSubCategoryList(cat_c);
 		model.addAttribute("getSubList", getSubList);
 		
+		// 카테고리별 추천수
 		List<RecommendVO> getRecommendList = recomendService.subselect(cat_c, cri);
 		model.addAttribute("getRecommendList", getRecommendList);
+		
+		// 카테고리별 댓글수
+		List<ReplyVO> getReplyList = replyService.subselect(cat_c, cri);
+		model.addAttribute("getReplyList", getReplyList);
 		
 		// [prev] 1  2  3  4  5  [next]
 		int totalCount = userBoardService.getBoardTotalCount(cat_c, cri);
@@ -100,6 +107,10 @@ public class UserBoardController {
 		// 댓글 리스트 가져오기
 		List<ReplyListVO> replyList = replyService.replyList(boa_num);
 		model.addAttribute("replyList", replyList);
+		
+		// 댓글 추천 리스트 가져오기
+		List<Reply_RecommendVO> reply_RecommendList = recomendService.Replyselect(boa_num);
+		model.addAttribute("reply_RecommendList", reply_RecommendList);
 		
 	}
 	

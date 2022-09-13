@@ -65,7 +65,19 @@
 				    <tr>
 				      <th scope="row"><c:out value="${boardNameVO.cat_name_c }" /></th>
 				      <td>
-				      	<a class="move" href="#" data-boa_num="${boardNameVO.boa_num }"><c:out value="${boardNameVO.boa_title }" escapeXml="true" /></a>
+				      	<a class="move" href="#" data-boa_num="${boardNameVO.boa_num }">
+				      		<c:out value="${boardNameVO.boa_title }" escapeXml="true" />
+				      	</a>
+				      	
+				      	<span style="color:red;">
+					      	<c:if test="${getReplyList[status.index].reply != 0 }">
+					      		<c:out value="[${getReplyList[status.index].reply }]"></c:out>
+					      	</c:if>
+					      	<c:if test="${getReplyList[status.index].reply == 0 }">
+					      		<c:out value=""></c:out>
+					      	</c:if>
+				      	</span>
+				      	
 				      </td>
 				      	<c:if test="${!empty boardNameVO.mem_name }">
 				      	<td scope="row">
@@ -78,7 +90,12 @@
 				      	</td>
 				      	</c:if>
 				      <td><fmt:formatDate value="${boardNameVO.boa_date_up }" pattern="yyyy-MM-dd" /></td>
+				      <c:if test="${!empty boardNameVO.boa_hit }">
 				      <td scope="row"><c:out value="${boardNameVO.boa_hit }" /></td>
+				      </c:if>
+				      <c:if test="${empty boardNameVO.boa_hit }">
+				      <td scope="row"><c:out value="0" /></td>
+				      </c:if>
 				      <td scope="row"><c:out value="${getRecommendList[status.index].rec_up }" /></td>
 				    </tr>
 				    </c:forEach>
